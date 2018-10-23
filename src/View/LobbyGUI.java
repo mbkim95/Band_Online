@@ -5,14 +5,13 @@
  */
 package View;
 
-import java.awt.Color;
-
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import Controller.Client;
+import Controller.ChatClient;
+import Controller.LobbyClient;
 
 /**
  *
@@ -24,7 +23,8 @@ public class LobbyGUI extends javax.swing.JFrame {
      * Creates new form LobbyGUI
      */
 	static String NICKNAME;
-	Client client;
+	ChatClient chat;
+	LobbyClient lobby;
 	
     public LobbyGUI() {
         initComponents();
@@ -33,9 +33,11 @@ public class LobbyGUI extends javax.swing.JFrame {
     public LobbyGUI(String nickname) {
     	NICKNAME = nickname;    	
         initComponents();
-        client = new Client();
-        client.connect(this, NICKNAME);
-        //rate.setText(win/lose * 100 + "%");
+        chat = new ChatClient();
+        chat.connect(this, NICKNAME);
+        lobby = new LobbyClient();
+        lobby.connect(this, NICKNAME);
+        id.setText(NICKNAME);
     }    
     
     public void appendMsg(String msg) {
@@ -102,18 +104,14 @@ public class LobbyGUI extends javax.swing.JFrame {
         userList = new javax.swing.JTextArea();
         jPanel1 = new javax.swing.JPanel();
         name = new javax.swing.JLabel();
-        record = new javax.swing.JLabel();
-        win_rate = new javax.swing.JLabel();
         id = new javax.swing.JLabel();
-        rec = new javax.swing.JLabel();
-        rate = new javax.swing.JLabel();
         ChatPanel = new javax.swing.JPanel();
         textField = new javax.swing.JTextField();
         chatScroll = new javax.swing.JScrollPane();
         textPane = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Lobby");
+        setTitle("로 비");
         setLocation(new java.awt.Point(600, 300));
         setResizable(false);
 
@@ -170,9 +168,9 @@ public class LobbyGUI extends javax.swing.JFrame {
             .addGroup(room2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(room2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(title2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(title2, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, room2Layout.createSequentialGroup()
-                        .addGap(0, 125, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(enter_btn2)))
                 .addContainerGap())
         );
@@ -183,7 +181,7 @@ public class LobbyGUI extends javax.swing.JFrame {
                 .addComponent(title2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(enter_btn2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         room3.setBackground(new java.awt.Color(255, 255, 255));
@@ -315,10 +313,10 @@ public class LobbyGUI extends javax.swing.JFrame {
             LobbyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LobbyPanelLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addGroup(LobbyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(room2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(room1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(LobbyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(room1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(room2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(LobbyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(room4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(room3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -334,8 +332,10 @@ public class LobbyGUI extends javax.swing.JFrame {
 
         userLabel.setText("대기 중인 사용자");
 
+        userList.setEditable(false);
         userList.setColumns(20);
         userList.setRows(5);
+        userList.setText("asdf\nqwe\nvx\nzxc\nv\nad\n");
         userList.setRequestFocusEnabled(false);
         listPanel.setViewportView(userList);
 
@@ -344,14 +344,7 @@ public class LobbyGUI extends javax.swing.JFrame {
 
         name.setText("닉네임");
 
-        record.setText("전적");
-
-        win_rate.setText("승률");
-        win_rate.setToolTipText("");
-
-        id.setText(NICKNAME);
-
-        
+        id.setText("name");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -359,33 +352,19 @@ public class LobbyGUI extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(record)
-                    .addComponent(name)
-                    .addComponent(win_rate))
+                .addComponent(name)
                 .addGap(22, 22, 22)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(rec, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                    .addComponent(id, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(id, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(49, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(name)
                     .addComponent(id))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(record)
-                    .addComponent(rec))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(win_rate)
-                    .addComponent(rate))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(46, 46, 46))
         );
 
         name.getAccessibleContext().setAccessibleName("");
@@ -463,12 +442,12 @@ public class LobbyGUI extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>                
+    }// </editor-fold>               
 
     private void textFieldActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
     	String msg = "[" + NICKNAME + "] : " + textField.getText() + "\n";
-    	client.sendMessage(msg);
+    	chat.sendMessage(msg);
     	textField.setText("");
     }                                         
 
@@ -508,7 +487,7 @@ public class LobbyGUI extends javax.swing.JFrame {
     
     private void exit_btnActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-    	ExitGUI exit = new ExitGUI(client);
+    	ExitGUI exit = new ExitGUI(lobby, chat);
     	exit.start();
     }  
 
@@ -566,10 +545,7 @@ public class LobbyGUI extends javax.swing.JFrame {
     private javax.swing.JLabel name;
     private javax.swing.JButton next_btn;
     private javax.swing.JButton prev_btn;
-    private javax.swing.JButton exit_btn;
-    private javax.swing.JLabel rate;
-    private javax.swing.JLabel rec;
-    private javax.swing.JLabel record;
+    private javax.swing.JButton exit_btn;    
     private javax.swing.JPanel room1;
     private javax.swing.JPanel room2;
     private javax.swing.JPanel room3;
@@ -582,6 +558,5 @@ public class LobbyGUI extends javax.swing.JFrame {
     private javax.swing.JLabel title4;
     private javax.swing.JLabel userLabel;
     private javax.swing.JTextArea userList;
-    private javax.swing.JLabel win_rate;
     // End of variables declaration                   
 }

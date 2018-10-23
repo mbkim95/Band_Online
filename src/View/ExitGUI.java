@@ -1,6 +1,7 @@
 package View;
 
-import Controller.Client;
+import Controller.ChatClient;
+import Controller.LobbyClient;
 
 /**
  *
@@ -8,13 +9,15 @@ import Controller.Client;
  */
 public class ExitGUI extends javax.swing.JFrame {
 
-	Client client;
+	LobbyClient lobby;
+	ChatClient chat;
     /**
      * Creates new form exitGUI
      */
 	
-    public ExitGUI(Client client) {
-    	this.client = client;
+    public ExitGUI(LobbyClient lobby, ChatClient chat) {
+    	this.lobby = lobby;
+    	this.chat = chat;
         initComponents();
     }
 
@@ -83,7 +86,8 @@ public class ExitGUI extends javax.swing.JFrame {
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-    	client.disconnect();
+    	lobby.disconnect();
+    	chat.disconnect();
     }                                        
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         

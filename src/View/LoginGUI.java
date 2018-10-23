@@ -5,7 +5,6 @@
  */
 package View;
 
-import Controller.Client;
 import Controller.DB_Controller;
 import Model.UserData;
 
