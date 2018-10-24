@@ -32,18 +32,18 @@ public class LobbyGUI extends javax.swing.JFrame {
     
     public LobbyGUI(String nickname) {
     	NICKNAME = nickname;    	
-        initComponents();
-        chat = new ChatClient();
-        chat.connect(this, NICKNAME);
-        lobby = new LobbyClient();
-        lobby.connect(this, NICKNAME);
-        id.setText(NICKNAME);
+    	initComponents();
+    	chat = new ChatClient();
+    	chat.connect(this, NICKNAME);
+    	lobby = new LobbyClient();
+    	lobby.connect(this, NICKNAME);
+    	id.setText(NICKNAME);
     }    
     
     public void appendMsg(String msg) {
     	try {
     		StyledDocument document = (StyledDocument) textPane.getDocument();    		
-        	document.insertString(document.getLength(), msg, null);
+    		document.insertString(document.getLength(), msg, null);
         	chatScroll.getVerticalScrollBar().setValue(chatScroll.getVerticalScrollBar().getMaximum());		// 채팅창 자동 스크롤
     	} catch (BadLocationException e) {
     		e.printStackTrace();
@@ -335,7 +335,7 @@ public class LobbyGUI extends javax.swing.JFrame {
         userList.setEditable(false);
         userList.setColumns(20);
         userList.setRows(5);
-        userList.setText("asdf\nqwe\nvx\nzxc\nv\nad\n");
+        userList.setText("");
         userList.setRequestFocusEnabled(false);
         listPanel.setViewportView(userList);
 
@@ -467,8 +467,8 @@ public class LobbyGUI extends javax.swing.JFrame {
 
     private void enter_btn1ActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
-    	InGameGUI game = new InGameGUI(this);
-    	game.start();
+    	BandGUI band= new BandGUI(this);
+    	band.start();
     	setVisible(false);
     }                                          
 
