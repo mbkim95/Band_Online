@@ -5,12 +5,14 @@
  */
 package View;
 
+import java.util.ArrayList;
+
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import Controller.ChatClient;
+import Controller.LobbyChatClient;
 import Controller.LobbyClient;
 
 /**
@@ -23,8 +25,11 @@ public class LobbyGUI extends javax.swing.JFrame {
      * Creates new form LobbyGUI
      */
 	static String NICKNAME;
-	ChatClient chat;
+	LobbyChatClient chat;
 	LobbyClient lobby;
+	ArrayList<String> roomList = new ArrayList<String>();		// 게임방 목록 저장 배열
+	int idx = 0;												// 게임방 목록을 위한 인덱스
+	int num = 0;
 	
     public LobbyGUI() {
         initComponents();
@@ -33,7 +38,7 @@ public class LobbyGUI extends javax.swing.JFrame {
     public LobbyGUI(String nickname) {
     	NICKNAME = nickname;    	
     	initComponents();
-    	chat = new ChatClient();
+    	chat = new LobbyChatClient();
     	chat.connect(this, NICKNAME);
     	lobby = new LobbyClient();
     	lobby.connect(this, NICKNAME);
@@ -43,8 +48,8 @@ public class LobbyGUI extends javax.swing.JFrame {
     public void appendMsg(String msg) {
     	try {
     		StyledDocument document = (StyledDocument) textPane.getDocument();    		
-    		document.insertString(document.getLength(), msg, null);
-        	chatScroll.getVerticalScrollBar().setValue(chatScroll.getVerticalScrollBar().getMaximum());		// 채팅창 자동 스크롤
+    		document.insertString(document.getLength(), msg, null);        	
+    		chatScroll.getVerticalScrollBar().setValue(chatScroll.getVerticalScrollBar().getMaximum());		// 채팅창 자동 스크롤
     	} catch (BadLocationException e) {
     		e.printStackTrace();
     	}
@@ -56,8 +61,8 @@ public class LobbyGUI extends javax.swing.JFrame {
     		SimpleAttributeSet styleSet = new SimpleAttributeSet();
     		StyleConstants.setForeground(styleSet, new java.awt.Color(0, 204, 51));
     		StyleConstants.setItalic(styleSet, true);
-        	document.insertString(document.getLength(), msg, styleSet);
-        	chatScroll.getVerticalScrollBar().setValue(chatScroll.getVerticalScrollBar().getMaximum());		// 채팅창 자동 스크롤
+        	document.insertString(document.getLength(), msg, styleSet);    		
+    		chatScroll.getVerticalScrollBar().setValue(chatScroll.getVerticalScrollBar().getMaximum());		// 채팅창 자동 스크롤
     	} catch (BadLocationException e) {
     		e.printStackTrace();
     	}
@@ -69,6 +74,52 @@ public class LobbyGUI extends javax.swing.JFrame {
     
     public void appendUserList(String nickname) {    	
     	userList.append(nickname + "\n");
+    }    
+    
+    public void clearGameRoom() {
+    	roomList.clear();
+    	clearRoomList();    	
+    }
+    
+    public void addGameRoom(String room) {
+    	roomList.add(room);
+    	int n = roomList.size();
+
+    	if(n == 1) {
+    		title1.setText(roomList.get(0));
+    		enter_btn1.setEnabled(true);
+    	}else if(n == 2) {
+    		title2.setText(roomList.get(1));
+    		enter_btn2.setEnabled(true);
+    	}else if(n == 3) {
+    		title3.setText(roomList.get(2));
+    		enter_btn3.setEnabled(true);
+    	}else if(n == 4) {
+    		title4.setText(roomList.get(3));
+    		enter_btn4.setEnabled(true);
+    	}else if(n > 4){
+    		next_btn.setEnabled(true);
+    	}
+    }
+    
+    public void sendRoomInfo(String title, int select) {
+    	BandGUI band = new BandGUI(this, num, title, NICKNAME, select);
+    	band.start();
+    	lobby.sendMessage("1 "+ NICKNAME + "###" + title);
+    	setVisible(false);
+    }
+    
+    public void clearRoomList() {
+    	title1.setText("    ");
+        enter_btn1.setEnabled(false);
+        title2.setText("    ");
+        enter_btn2.setEnabled(false);
+        title3.setText("    ");
+        enter_btn3.setEnabled(false);
+        title4.setText("    ");
+        enter_btn4.setEnabled(false);
+        prev_btn.setEnabled(false);
+        next_btn.setEnabled(false);
     }
 
     /**
@@ -453,36 +504,92 @@ public class LobbyGUI extends javax.swing.JFrame {
 
     private void next_btnActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
+    	int limit = roomList.size();
+    	clearRoomList();
+    	if(idx < limit) {
+    		idx += 4;
+    		prev_btn.setEnabled(true);
+        	title1.setText(roomList.get(idx));
+        	enter_btn1.setEnabled(true);
+        	if(idx + 1 < limit) {
+        		title2.setText(roomList.get(idx+1));
+        		enter_btn2.setEnabled(true);
+        	}if(idx + 2 < limit) {
+        		title3.setText(roomList.get(idx+2));
+        		enter_btn3.setEnabled(true);
+        	}if(idx + 3 < limit) {
+        		title4.setText(roomList.get(idx+3));
+        		enter_btn4.setEnabled(true);
+        	}if(idx + 4 < limit){
+        		next_btn.setEnabled(true);
+        	}else {
+        		next_btn.setEnabled(false);
+        	}
+    	}   	
     }                                        
 
     private void make_btnActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-    	RoomSettingGUI rs = new RoomSettingGUI();
+    	RoomSettingGUI rs = new RoomSettingGUI(this);
     	rs.start();
     }                                        
 
-    private void prev_btnActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        // TODO add your handling code here:
+    private void prev_btnActionPerformed(java.awt.event.ActionEvent evt) {                                
+        // TODO add your handling code here:    	
+    	int limit = roomList.size();
+    	clearRoomList();
+    	if(idx < limit) {
+    		idx -= 4;
+    		next_btn.setEnabled(true);
+        	title1.setText(roomList.get(idx));
+        	enter_btn1.setEnabled(true);
+        	if(idx + 1 < limit) {
+        		title2.setText(roomList.get(idx+1));
+        		enter_btn2.setEnabled(true);
+        	}if(idx + 2 < limit) {
+        		title3.setText(roomList.get(idx+2));
+        		enter_btn3.setEnabled(true);
+        	}if(idx + 3 < limit) {
+        		title4.setText(roomList.get(idx+3));
+        		enter_btn4.setEnabled(true);
+        	}if(idx + 4 < limit){
+        		prev_btn.setEnabled(true);
+        	}if(idx == 0){
+        		prev_btn.setEnabled(false);
+        	}
+    	}
     }                                        
 
     private void enter_btn1ActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
-    	BandGUI band= new BandGUI(this);
-    	band.start();
+    	lobby.sendMessage("7 " + NICKNAME + "###" + title1.getText());
+    	/*InGameGUI game = new InGameGUI(client, this, title1.getText(), ID, NICKNAME);
+    	game.start();*/
     	setVisible(false);
     }                                          
 
     private void enter_btn2ActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
+    	lobby.sendMessage("7 " + NICKNAME + "###" + title2.getText());
+    	/*InGameGUI game = new InGameGUI(client, this, title2.getText(), ID, NICKNAME);
+    	game.start();*/
+    	setVisible(false);
     }                                          
 
     private void enter_btn3ActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
+    	lobby.sendMessage("7 " + NICKNAME + "###" + title3.getText());
+    	/*InGameGUI game = new InGameGUI(client, this, title3.getText(), ID, NICKNAME);
+    	game.start();*/
+    	setVisible(false);
     }                                          
 
     private void enter_btn4ActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
-       
+    	lobby.sendMessage("7 " + NICKNAME + "###" + title4.getText());
+    	/*InGameGUI game = new InGameGUI(client, this, title4.getText(), ID, NICKNAME);
+    	game.start();*/
+    	setVisible(false);
     }
     
     private void exit_btnActionPerformed(java.awt.event.ActionEvent evt) {                                         
@@ -527,6 +634,7 @@ public class LobbyGUI extends javax.swing.JFrame {
             }
         });
         */
+        clearRoomList();
     }
 
     // Variables declaration - do not modify                     

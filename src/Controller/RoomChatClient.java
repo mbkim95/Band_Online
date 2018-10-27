@@ -5,24 +5,30 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import View.BandGUI;
 import View.LobbyGUI;
 
-public class LobbyClient {
+public class RoomChatClient{
+	private int port;
 	private Socket socket;	
 	private DataOutputStream out;
 	private String cmd;
 	private String nickname;
-	private LobbyGUI gui;
+	private BandGUI gui;
 	private Receiver receiver;
 	
-	public void connect(LobbyGUI gui, String nickname) {
+	public RoomChatClient(int port) {
+		this.port = port;
+	}
+	
+	public void connect(BandGUI gui, String nickname) {
 		try {
-			socket = new Socket("127.0.0.1", 7001);
-			System.out.println("로비 서버 연결됨");
+			socket = new Socket("127.0.0.1", 8777+port);
+			System.out.println("합주실 채팅 서버 연결됨 (포트 : " + (8777+port) + ")");
 			this.nickname = nickname;
 			out = new DataOutputStream(socket.getOutputStream());		
 			out.writeUTF(nickname);
-			System.out.println("로비서버에 닉네임 전송 완료");
+			System.out.println("채팅서버에 닉네임 전송 완료");
 			receiver = new Receiver(socket, gui);
 			receiver.start();			
 		}catch(IOException e) {
@@ -59,41 +65,26 @@ public class LobbyClient {
 	
 	class Receiver extends Thread {
 		private DataInputStream in;
-		LobbyGUI lobby;
+		BandGUI band;
 
-		public Receiver(Socket socket, LobbyGUI lobby) throws IOException {			
+		public Receiver(Socket socket, BandGUI band) throws IOException {			
 			in = new DataInputStream(socket.getInputStream());
-			this.lobby = lobby;
+			this.band = band;
 		}
 		
 		public void checkCmd(String cmd) {								// 서버로부터 받은 명령 체크
 			int chk = Integer.parseInt(cmd.substring(0, 1));			
 			String msg;
 			
-			switch(chk) {
-			case 1:														// 유저 목록 업데이트
-				try {
-					lobby.clearUserList(); 					
-					int n = Integer.parseInt(cmd.substring(2, cmd.length()));
-					for(int i=0; i<n; i++) {
-						msg = in.readUTF();
-						lobby.appendUserList(msg);
-					}
-				}catch(IOException e) {
-					e.printStackTrace();
-				}
+			switch(chk) {					
+			case 1:														// 채팅 메시지
+				msg = cmd.substring(2, cmd.length());
+				band.appendMsg(msg);
+				break;			
+			case 2:														// 시스템 메시지
+				msg = cmd.substring(2, cmd.length());
+				band.appendSystemMsg(msg);
 				break;
-			case 2:														// 방 목록 업데이트
-				try {
-					lobby.clearGameRoom();
-					int n = Integer.parseInt(cmd.substring(2, cmd.length()));
-					for(int i=0; i<n; i++) {
-						msg = in.readUTF();
-						lobby.addGameRoom(msg);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();					
-				}
 			}				
 		}
 
@@ -104,9 +95,10 @@ public class LobbyClient {
 					checkCmd(cmd);
 				}
 			} catch (IOException e) {				
-				System.out.println("로비 클라이언트 종료");
+				System.out.println("채팅 클라이언트 종료");
 				System.exit(0);
 			}
 		}
-	}	
+	}
+	
 }

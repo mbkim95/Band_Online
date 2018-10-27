@@ -5,29 +5,37 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class LobbyServer extends Thread{
+public class RoomChatServer extends Thread{
+	private int port;
 	private ServerSocket serverSocket;
 	private Socket socket;
 	private String msg;
-	private int roomNum = 0;
-	private Map<String, DataOutputStream> clientsMap = new HashMap<String, DataOutputStream>();		// 클라이언트 저장용 맵
-	private Map<String, RoomServer> serverMap = new HashMap<String, RoomServer>();
-	private ArrayList<String> roomList = new ArrayList<String>();
+	private Map<String, DataOutputStream> clientsMap = new HashMap<String, DataOutputStream>();
+	private Map<String, DataOutputStream> tmpMap = new HashMap<String, DataOutputStream>();
+	
+	public RoomChatServer(int port) {
+		this.port = port;
+	}
 
 	public void setting() throws IOException {
 		Collections.synchronizedMap(clientsMap);
-		serverSocket = new ServerSocket(7001);
+		serverSocket = new ServerSocket(port);
 		while (true) {
-			System.out.println("로비 서버 대기중...");
+			System.out.println("합주실 채팅 서버 대기중... (포트 : " + port + ")");
 			socket = serverSocket.accept();
-			System.out.println(socket.getInetAddress() + "에서 로비서버에 접속했습니다.");
+			System.out.println(socket.getInetAddress() + "에서 합주실 채팅 서버에 접속했습니다.");
 			Receiver receiver = new Receiver(socket);
 			receiver.start();			
 		}
@@ -43,16 +51,25 @@ public class LobbyServer extends Thread{
 	}
 
 	public void addClient(String nick, DataOutputStream out) throws IOException {
-		clientsMap.put(nick, out);		
-		sendUserList();
+		clientsMap.put(nick, out);			
+		sendCmd("2 [" + nick + "]님이 접속하셨습니다\n");
 	}
 
 	public void removeClient(String nick) {		
+		clientsMap.remove(nick);			
+		sendCmd("2 [" + nick + "]님이 접속을 종료하였습니다\n");	
+	}
+	
+	public void enterRoom(String nick) {
+		tmpMap.put(nick, clientsMap.get(nick));
 		clientsMap.remove(nick);
-		sendUserList();				
+	}
+	
+	public void exitRoom(String nick) {
+		clientsMap.put(nick, tmpMap.get(nick));
+		tmpMap.remove(nick);
 	}
 
-	// 메시지 내용 전파
 	public void sendCmd(String msg) {
 		Iterator<String> it = clientsMap.keySet().iterator();
 		String key = "";
@@ -64,26 +81,7 @@ public class LobbyServer extends Thread{
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	public void sendUserList() {		
-		Iterator<String> it = clientsMap.keySet().iterator();				
-		String key = "";
-		String len = String.valueOf(clientsMap.size());		
-		while (it.hasNext()) {
-			key = it.next();
-			try {				
-				clientsMap.get(key).writeUTF("1 " + len);
-				Iterator iterator = clientsMap.entrySet().iterator();
-				while (iterator.hasNext()) {
-					Entry entry = (Entry)iterator.next();
-					clientsMap.get(key).writeUTF((String) entry.getKey());
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+	}	
 	
 	public void sendMessage(String msg) {
 		Iterator<String> it = clientsMap.keySet().iterator();
@@ -91,43 +89,13 @@ public class LobbyServer extends Thread{
 		while (it.hasNext()) {
 			key = it.next();
 			try {
-				clientsMap.get(key).writeUTF("2 " + msg);
+				clientsMap.get(key).writeUTF("1 " + msg);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
-	public void sendRoomList() {		
-		Iterator<String> it = clientsMap.keySet().iterator();				
-		String key = "";
-		String len = String.valueOf(roomList.size());
-		while (it.hasNext()) {
-			key = it.next();
-			try {				
-				clientsMap.get(key).writeUTF("2 " + len);
-				for(int i=0; i<roomList.size(); i++) {
-					clientsMap.get(key).writeUTF(roomList.get(i));
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public void addRoom(String title) {
-		RoomServer room = new RoomServer(roomNum);
-		RoomChatServer roomChat = new RoomChatServer(8777+roomNum++);
-		room.start();
-		roomChat.start();
-		serverMap.put(title,  room);
-		roomList.add(title);
-	}
-	
-	public void deleteRoom(String title) {
-		serverMap.remove(title);
-	}
-	
+
 	class Receiver extends Thread {
 		private DataInputStream in;
 		private DataOutputStream out;
@@ -138,26 +106,25 @@ public class LobbyServer extends Thread{
 			in = new DataInputStream(socket.getInputStream());
 			nick = in.readUTF();	
 			addClient(nick, out);
-			sendRoomList();
 		}
 		
 		public void checkMsg(String msg) {
 			String cmd = msg.substring(0, 1);
 			switch(cmd) {
-			case "1":										// 방 생성
+			case "1":										// 방 생성 (채팅 안되게 설정)
 				String nickname = msg.substring(2, msg.indexOf("###"));
 				String title = msg.substring(msg.indexOf("###")+3, msg.length());
-				addRoom(title);
-				sendRoomList();
+				enterRoom(nickname);				
 				break;
 			}
+			
 		}
 
 		public void run() {
 			try {
 				while (in != null) {
 					msg = in.readUTF();
-					checkMsg(msg);				
+					sendMessage(msg);				
 				}
 			} catch (IOException e) {
 				removeClient(nick);

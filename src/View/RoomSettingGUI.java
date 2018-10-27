@@ -14,8 +14,15 @@ public class RoomSettingGUI extends javax.swing.JFrame {
     /**
      * Creates new form RoomSettingGUI
      */
+	LobbyGUI lobby;
+	
     public RoomSettingGUI() {
         initComponents();
+    }
+    
+    public RoomSettingGUI(LobbyGUI lobby) {
+    	this.lobby = lobby;    	
+    	initComponents();
     }
 
     /**
@@ -98,7 +105,10 @@ public class RoomSettingGUI extends javax.swing.JFrame {
     }                                     
 
     private void accept_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
+        // TODO add your handling code here:    
+    	SelectGUI select = new SelectGUI(lobby, title.getText());
+    	select.start();
+    	dispose();
     }                                          
 
     private void cancel_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           
@@ -132,13 +142,13 @@ public class RoomSettingGUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(RoomSettingGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        setVisible(true);
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+      /*  java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new RoomSettingGUI().setVisible(true);
             }
-        });
+        });*/
     }
 
     // Variables declaration - do not modify                     

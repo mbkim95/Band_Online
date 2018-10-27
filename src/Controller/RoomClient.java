@@ -7,7 +7,7 @@ import java.net.Socket;
 
 import View.LobbyGUI;
 
-public class LobbyClient {
+public class RoomClient {
 	private Socket socket;	
 	private DataOutputStream out;
 	private String cmd;

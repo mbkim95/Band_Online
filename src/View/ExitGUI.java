@@ -1,6 +1,6 @@
 package View;
 
-import Controller.ChatClient;
+import Controller.LobbyChatClient;
 import Controller.LobbyClient;
 
 /**
@@ -10,12 +10,12 @@ import Controller.LobbyClient;
 public class ExitGUI extends javax.swing.JFrame {
 
 	LobbyClient lobby;
-	ChatClient chat;
+	LobbyChatClient chat;
     /**
      * Creates new form exitGUI
      */
 	
-    public ExitGUI(LobbyClient lobby, ChatClient chat) {
+    public ExitGUI(LobbyClient lobby, LobbyChatClient chat) {
     	this.lobby = lobby;
     	this.chat = chat;
         initComponents();

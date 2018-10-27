@@ -21,7 +21,7 @@ public class Server {
 
 	public void setting() throws IOException {				
 		LobbyServer lobby = new LobbyServer();
-		ChatServer chat = new ChatServer();
+		LobbyChatServer chat = new LobbyChatServer();
 		lobby.start();
 		chat.start();		
 	}

@@ -9,6 +9,13 @@ import java.awt.Image;
 import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+
+import Controller.RoomChatClient;
+import Controller.RoomClient;
 
 /**
  *
@@ -19,7 +26,13 @@ public class BandGUI extends javax.swing.JFrame {
     /**
      * Creates new form InGameGUI
      */
+	RoomClient room;
+	RoomChatClient chat;
+	String nickname;
 	LobbyGUI lobby;
+	String title;
+	int select;
+	int port;
 	
     public BandGUI() {
         initComponents();
@@ -29,6 +42,81 @@ public class BandGUI extends javax.swing.JFrame {
     	this.lobby = lobby;
     	initComponents();
     }
+    
+    public BandGUI(LobbyGUI lobby, int port, String title, String nickname, int select) {
+    	this.lobby = lobby;
+    	this.port = port;
+    	this.title = title;
+    	this.nickname = nickname;
+    	this.select = select;
+    	initComponents();
+    	changeImage();
+    	room = new RoomClient();
+    	chat = new RoomChatClient(port);
+    }
+    
+    public void changeImage() {
+    	Image i;
+    	ImageIcon icon;
+    	switch(select) {
+    	case 0:
+    		i = Toolkit.getDefaultToolkit().getImage("rsc/images/guitar1.png");
+    		icon = new ImageIcon(i);  //이미지 넣기
+    		guitar1.setIcon(icon); // NOI18N
+    		break;
+    	case 1:
+    		i = Toolkit.getDefaultToolkit().getImage("rsc/images/guitar2.png");
+    		icon = new ImageIcon(i);  //이미지 넣기
+    		guitar2.setIcon(icon); // NOI18N
+    		break;
+    	case 2:
+    		i = Toolkit.getDefaultToolkit().getImage("rsc/images/bass.png");
+    		icon = new ImageIcon(i);  //이미지 넣기
+    		bass.setIcon(icon); // NOI18N
+    		break;
+    	case 3:
+    		i = Toolkit.getDefaultToolkit().getImage("rsc/images/keyboard.png");
+    		icon = new ImageIcon(i);  //이미지 넣기
+    		keyboard.setIcon(icon); // NOI18N
+    		break;
+    	case 4:
+    		i = Toolkit.getDefaultToolkit().getImage("rsc/images/drum.png");
+    		icon = new ImageIcon(i);  //이미지 넣기
+    		drum.setIcon(icon); // NOI18N
+    		break;
+    	}
+    }
+    
+    public void appendMsg(String msg) {
+    	try {
+    		StyledDocument document = (StyledDocument) chatPane.getDocument();    		
+    		document.insertString(document.getLength(), msg, null);        	
+    		chatPanel.getVerticalScrollBar().setValue(chatPanel.getVerticalScrollBar().getMaximum());		// 채팅창 자동 스크롤
+    	} catch (BadLocationException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    public void appendSystemMsg(String msg) {
+    	try {
+    		StyledDocument document = (StyledDocument) chatPane.getDocument();
+    		SimpleAttributeSet styleSet = new SimpleAttributeSet();
+    		StyleConstants.setForeground(styleSet, new java.awt.Color(0, 204, 51));
+    		StyleConstants.setItalic(styleSet, true);
+        	document.insertString(document.getLength(), msg, styleSet);    		
+    		chatPanel.getVerticalScrollBar().setValue(chatPanel.getVerticalScrollBar().getMaximum());		// 채팅창 자동 스크롤
+    	} catch (BadLocationException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    public void clearUserList() {
+    	player_list.setText("");    	
+    }
+    
+    public void appendUserList(String nickname) {    	
+    	player_list.append(nickname + "\n");
+    } 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -39,7 +127,6 @@ public class BandGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
-        jLabel9 = new javax.swing.JLabel();
         chatPanel = new javax.swing.JScrollPane();
         chatPane = new javax.swing.JTextPane();
         chatField = new javax.swing.JTextField();
@@ -54,11 +141,8 @@ public class BandGUI extends javax.swing.JFrame {
         guitar2 = new javax.swing.JLabel();
         keyboard = new javax.swing.JLabel();
 
-        jLabel9.setFont(new java.awt.Font("굴림", 0, 24)); // NOI18N
-        jLabel9.setText("낮");
-
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("합주실");
+        setTitle(title);
         setLocation(new java.awt.Point(600, 300));
         setResizable(false);
 
@@ -195,6 +279,9 @@ public class BandGUI extends javax.swing.JFrame {
 
     private void chatFieldActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
+    	String msg = "[" + nickname + "] : " + chatField.getText() + "\n";
+    	chat.sendMessage(msg);
+    	chatField.setText("");
     }                                         
 
     private void exit_btnActionPerformed(java.awt.event.ActionEvent evt) {                                         
@@ -249,7 +336,6 @@ public class BandGUI extends javax.swing.JFrame {
     private javax.swing.JLabel guitar1;
     private javax.swing.JLabel guitar2;
     private javax.swing.JPanel instruments_Panel;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel keyboard;
     private javax.swing.JLabel list;
     private javax.swing.JTextArea player_list;

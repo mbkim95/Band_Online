@@ -7,7 +7,7 @@ import java.net.Socket;
 
 import View.LobbyGUI;
 
-public class ChatClient{
+public class LobbyChatClient{
 	private Socket socket;	
 	private DataOutputStream out;
 	private String cmd;
@@ -17,7 +17,7 @@ public class ChatClient{
 	
 	public void connect(LobbyGUI gui, String nickname) {
 		try {
-			socket = new Socket("127.0.0.1", 7002);
+			socket = new Socket("127.0.0.1", 8001);
 			System.out.println("채팅 서버 연결됨");
 			this.nickname = nickname;
 			out = new DataOutputStream(socket.getOutputStream());		
