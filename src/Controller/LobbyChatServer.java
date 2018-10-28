@@ -106,10 +106,8 @@ public class LobbyChatServer extends Thread{
 		public void checkMsg(String msg) {
 			String cmd = msg.substring(0, 1);
 			switch(cmd) {
-			case "1":										// 방 생성 (채팅 안되게 설정)
-				String nickname = msg.substring(2, msg.indexOf("###"));
-				String title = msg.substring(msg.indexOf("###")+3, msg.length());
-				enterRoom(nickname);				
+			case "1":										// 채팅
+				sendMessage(msg.substring(2, msg.length()));
 				break;
 			}
 			
@@ -119,7 +117,7 @@ public class LobbyChatServer extends Thread{
 			try {
 				while (in != null) {
 					msg = in.readUTF();
-					sendMessage(msg);				
+					checkMsg(msg);				
 				}
 			} catch (IOException e) {
 				removeClient(nick);

@@ -15,16 +15,26 @@ public class SelectGUI extends javax.swing.JFrame {
      * Creates new form selectGUI
      */
 	
-	LobbyGUI lobby;
-	String title;
+	private LobbyGUI lobby;
+	private String title;
+	private int idx;
+	private boolean make = false;
 	
     public SelectGUI() {
         initComponents();
     }
     
-    public SelectGUI(LobbyGUI lobby, String title) {
+    public SelectGUI(LobbyGUI lobby, String title, int idx) {
     	this.lobby = lobby;
     	this.title = title;
+    	this.idx = idx;
+    	initComponents();
+    }
+    
+    public SelectGUI(LobbyGUI lobby, String title, boolean make) {
+    	this.lobby = lobby;
+    	this.title = title;
+    	this.make = make;
     	initComponents();
     }
 
@@ -95,7 +105,10 @@ public class SelectGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
 //    	BandGUI band = new BandGUI(lobby, title, select_list.getSelectedIndex());
 //    	band.start();
-    	lobby.sendRoomInfo(title, select_list.getSelectedIndex());
+    	if(make)
+    		lobby.sendRoomInfo(title, select_list.getSelectedIndex());
+    	else 
+    		lobby.enterRoom(title, idx, select_list.getSelectedIndex());    	
     	dispose();    	
     }                                         
 

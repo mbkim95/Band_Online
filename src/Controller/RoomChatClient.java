@@ -9,7 +9,7 @@ import View.BandGUI;
 import View.LobbyGUI;
 
 public class RoomChatClient{
-	private int port;
+	private int num;
 	private Socket socket;	
 	private DataOutputStream out;
 	private String cmd;
@@ -17,14 +17,14 @@ public class RoomChatClient{
 	private BandGUI gui;
 	private Receiver receiver;
 	
-	public RoomChatClient(int port) {
-		this.port = port;
+	public RoomChatClient(int num) {
+		this.num = num;
 	}
 	
 	public void connect(BandGUI gui, String nickname) {
 		try {
-			socket = new Socket("127.0.0.1", 8777+port);
-			System.out.println("합주실 채팅 서버 연결됨 (포트 : " + (8777+port) + ")");
+			socket = new Socket("127.0.0.1", 8777+num);
+			System.out.println("합주실 채팅 서버 연결됨 (포트 : " + (8777+num) + ")");
 			this.nickname = nickname;
 			out = new DataOutputStream(socket.getOutputStream());		
 			out.writeUTF(nickname);

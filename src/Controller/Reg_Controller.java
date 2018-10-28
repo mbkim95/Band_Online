@@ -16,7 +16,5 @@ public class Reg_Controller {
 	
 	public boolean is_OK() {
 		return this.id_chk && this.pw_chk && this.nick_chk;
-	}
-	
-	
+	}	
 }

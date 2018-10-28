@@ -12,22 +12,26 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.sound.midi.Instrument;
+
 public class RoomServer extends Thread{
 	private ServerSocket serverSocket;
 	private Socket socket;
 	private String msg;
-	private int port;
+	private int num;
 	private Map<String, DataOutputStream> clientsMap = new HashMap<String, DataOutputStream>();		// 클라이언트 저장용 맵
+	private ArrayList<String> instruments = new ArrayList<String>();
 	
-	public RoomServer(int port) {
-		this.port = port;
+	public RoomServer(int num) {
+		this.num = num;
 	}
 
 	public void setting() throws IOException {
 		Collections.synchronizedMap(clientsMap);
-		serverSocket = new ServerSocket(7777 + port);
+		int portNum = 7777 + num;
+		serverSocket = new ServerSocket(portNum);
 		while (true) {
-			System.out.println("합주실 서버 대기중... (포트번호 : " + (7777+port) + ")");
+			System.out.println("합주실 서버 대기중... (포트 : " + portNum + ")");
 			socket = serverSocket.accept();
 			System.out.println(socket.getInetAddress() + "에서 합주실서버에 접속했습니다.");
 			Receiver receiver = new Receiver(socket);
@@ -87,19 +91,6 @@ public class RoomServer extends Thread{
 		}
 	}
 	
-	public void sendMessage(String msg) {
-		Iterator<String> it = clientsMap.keySet().iterator();
-		String key = "";
-		while (it.hasNext()) {
-			key = it.next();
-			try {
-				clientsMap.get(key).writeUTF("2 " + msg);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}	
-
 	class Receiver extends Thread {
 		private DataInputStream in;
 		private DataOutputStream out;
@@ -119,6 +110,13 @@ public class RoomServer extends Thread{
 				String nickname = msg.substring(2, msg.indexOf("###"));
 				String title = msg.substring(msg.indexOf("###")+3, msg.length());				
 				break;
+			case "2":									// 악기 이미지 변경
+				instruments.add(msg.substring(2, msg.length()));
+				sendCmd("2 " + instruments.size());
+				for(int i=0; i<instruments.size(); i++) {
+					sendCmd(instruments.get(i));
+				}
+				break;				
 			}
 			
 		}

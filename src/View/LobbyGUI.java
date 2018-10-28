@@ -29,7 +29,6 @@ public class LobbyGUI extends javax.swing.JFrame {
 	LobbyClient lobby;
 	ArrayList<String> roomList = new ArrayList<String>();		// 게임방 목록 저장 배열
 	int idx = 0;												// 게임방 목록을 위한 인덱스
-	int num = 0;
 	
     public LobbyGUI() {
         initComponents();
@@ -103,11 +102,18 @@ public class LobbyGUI extends javax.swing.JFrame {
     }
     
     public void sendRoomInfo(String title, int select) {
-    	BandGUI band = new BandGUI(this, num, title, NICKNAME, select);
-    	band.start();
     	lobby.sendMessage("1 "+ NICKNAME + "###" + title);
     	setVisible(false);
+    	System.out.println(roomList.size()-1);
+    	BandGUI band = new BandGUI(this, roomList.size()-1, title, NICKNAME, select);
+    	band.start();
     }
+    
+    public void enterRoom(String title, int room, int select) {
+    	BandGUI band = new BandGUI(this, room, title, NICKNAME, select);
+    	band.start();
+    }
+    
     
     public void clearRoomList() {
     	title1.setText("    ");
@@ -498,7 +504,7 @@ public class LobbyGUI extends javax.swing.JFrame {
     private void textFieldActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
     	String msg = "[" + NICKNAME + "] : " + textField.getText() + "\n";
-    	chat.sendMessage(msg);
+    	chat.sendMessage("1 " + msg);
     	textField.setText("");
     }                                         
 
@@ -562,9 +568,8 @@ public class LobbyGUI extends javax.swing.JFrame {
 
     private void enter_btn1ActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
-    	lobby.sendMessage("7 " + NICKNAME + "###" + title1.getText());
-    	/*InGameGUI game = new InGameGUI(client, this, title1.getText(), ID, NICKNAME);
-    	game.start();*/
+    	SelectGUI select = new SelectGUI(this, title1.getText(), idx);
+    	select.start();
     	setVisible(false);
     }                                          
 

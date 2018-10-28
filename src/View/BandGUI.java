@@ -26,13 +26,13 @@ public class BandGUI extends javax.swing.JFrame {
     /**
      * Creates new form InGameGUI
      */
-	RoomClient room;
-	RoomChatClient chat;
-	String nickname;
-	LobbyGUI lobby;
-	String title;
-	int select;
-	int port;
+	private RoomClient room;
+	private RoomChatClient chat;
+	private String nickname;
+	private LobbyGUI lobby;
+	private String title;
+	private int select;
+	private int port;
 	
     public BandGUI() {
         initComponents();
@@ -50,15 +50,18 @@ public class BandGUI extends javax.swing.JFrame {
     	this.nickname = nickname;
     	this.select = select;
     	initComponents();
-    	changeImage();
-    	room = new RoomClient();
+    	changeImage(select);
+    	room = new RoomClient(port);
+    	room.connect(this, nickname);
     	chat = new RoomChatClient(port);
+    	chat.connect(this, nickname);
+    	room.sendMessage("2 "+select);
     }
     
-    public void changeImage() {
+    public void changeImage(int img) {
     	Image i;
     	ImageIcon icon;
-    	switch(select) {
+    	switch(img) {
     	case 0:
     		i = Toolkit.getDefaultToolkit().getImage("rsc/images/guitar1.png");
     		icon = new ImageIcon(i);  //이미지 넣기
@@ -286,7 +289,6 @@ public class BandGUI extends javax.swing.JFrame {
 
     private void exit_btnActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-    	System.out.println(lobby == null);
     	lobby.setVisible(true);
     	dispose();
     }                                        

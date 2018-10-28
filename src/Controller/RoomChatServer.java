@@ -18,22 +18,22 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class RoomChatServer extends Thread{
-	private int port;
+	private int num;
 	private ServerSocket serverSocket;
 	private Socket socket;
 	private String msg;
 	private Map<String, DataOutputStream> clientsMap = new HashMap<String, DataOutputStream>();
 	private Map<String, DataOutputStream> tmpMap = new HashMap<String, DataOutputStream>();
 	
-	public RoomChatServer(int port) {
-		this.port = port;
+	public RoomChatServer(int num) {
+		this.num = num;
 	}
 
 	public void setting() throws IOException {
 		Collections.synchronizedMap(clientsMap);
-		serverSocket = new ServerSocket(port);
+		serverSocket = new ServerSocket(8777+num);
 		while (true) {
-			System.out.println("합주실 채팅 서버 대기중... (포트 : " + port + ")");
+			System.out.println("합주실 채팅 서버 대기중... (포트 : " + (8777+num) + ")");
 			socket = serverSocket.accept();
 			System.out.println(socket.getInetAddress() + "에서 합주실 채팅 서버에 접속했습니다.");
 			Receiver receiver = new Receiver(socket);
@@ -117,7 +117,6 @@ public class RoomChatServer extends Thread{
 				enterRoom(nickname);				
 				break;
 			}
-			
 		}
 
 		public void run() {

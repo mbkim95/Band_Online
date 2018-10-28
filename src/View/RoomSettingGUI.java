@@ -106,7 +106,7 @@ public class RoomSettingGUI extends javax.swing.JFrame {
 
     private void accept_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:    
-    	SelectGUI select = new SelectGUI(lobby, title.getText());
+    	SelectGUI select = new SelectGUI(lobby, title.getText(), true);
     	select.start();
     	dispose();
     }                                          

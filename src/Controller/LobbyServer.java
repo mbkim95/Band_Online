@@ -117,10 +117,10 @@ public class LobbyServer extends Thread{
 	
 	public void addRoom(String title) {
 		RoomServer room = new RoomServer(roomNum);
-		RoomChatServer roomChat = new RoomChatServer(8777+roomNum++);
+		RoomChatServer roomChat = new RoomChatServer(roomNum++);
 		room.start();
 		roomChat.start();
-		serverMap.put(title,  room);
+		serverMap.put(title, room);
 		roomList.add(title);
 	}
 	
