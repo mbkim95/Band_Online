@@ -23,9 +23,9 @@ public class Server {
 		LobbyServer lobby = new LobbyServer();
 		LobbyChatServer chat = new LobbyChatServer();
 		lobby.start();
-		chat.start();		
+		chat.start();
 	}
-
+	
 	public static void main(String[] args) throws IOException {
 		Server server = new Server();
 		server.setting();

@@ -45,6 +45,7 @@ public class LobbyServer extends Thread{
 	public void addClient(String nick, DataOutputStream out) throws IOException {
 		clientsMap.put(nick, out);		
 		sendUserList();
+		sendRoomList();
 	}
 
 	public void removeClient(String nick) {		
@@ -107,6 +108,7 @@ public class LobbyServer extends Thread{
 			try {				
 				clientsMap.get(key).writeUTF("2 " + len);
 				for(int i=0; i<roomList.size(); i++) {
+					System.out.println("send to " + key + " " + roomList.get(i));
 					clientsMap.get(key).writeUTF(roomList.get(i));
 				}
 			} catch (IOException e) {
@@ -138,7 +140,7 @@ public class LobbyServer extends Thread{
 			in = new DataInputStream(socket.getInputStream());
 			nick = in.readUTF();	
 			addClient(nick, out);
-			sendRoomList();
+
 		}
 		
 		public void checkMsg(String msg) {

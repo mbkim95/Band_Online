@@ -35,17 +35,17 @@ public class RoomChatClient{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void disconnect() {
 		try {
 			if(receiver != null) {
-				receiver.in.close();
-				receiver.interrupt();
+				this.receiver.in.close();
+				this.receiver.interrupt();
 			}
 			if(out != null)
-				out.close();
+				this.out.close();
 			if(socket != null)
-				socket.close();
+				this.socket.close();
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -95,8 +95,8 @@ public class RoomChatClient{
 					checkCmd(cmd);
 				}
 			} catch (IOException e) {				
-				System.out.println("채팅 클라이언트 종료");
-				System.exit(0);
+				System.out.println("합주실 채팅 클라이언트 종료");
+				//System.exit(0);
 			}
 		}
 	}

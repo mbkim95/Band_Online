@@ -8,4 +8,4 @@ public class Client {
 		LoginGUI login = new LoginGUI();
  		login.start();
 	}
-}
+} 

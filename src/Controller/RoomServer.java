@@ -105,18 +105,31 @@ public class RoomServer extends Thread{
 		
 		public void checkMsg(String msg) {
 			String cmd = msg.substring(0, 1);
+			String nickname, title;
 			switch(cmd) {
 			case "1":										// 방 생성
-				String nickname = msg.substring(2, msg.indexOf("###"));
-				String title = msg.substring(msg.indexOf("###")+3, msg.length());				
+				nickname = msg.substring(2, msg.indexOf("###"));
+				title = msg.substring(msg.indexOf("###")+3, msg.length());				
 				break;
-			case "2":									// 악기 이미지 변경
+			case "2":										// 악기 이미지 변경
 				instruments.add(msg.substring(2, msg.length()));
 				sendCmd("2 " + instruments.size());
 				for(int i=0; i<instruments.size(); i++) {
 					sendCmd(instruments.get(i));
 				}
 				break;				
+			case "3":										// 방 나가기
+				nickname = msg.substring(2, msg.indexOf("###"));
+				String n = msg.substring(msg.indexOf("###")+3, msg.length());
+				instruments.remove(n);
+				removeClient(nickname);
+				sendCmd("2 " + instruments.size()+1);
+				int tmp = Integer.parseInt(n) + 5;
+				System.out.println("tmp : " + tmp);
+				sendCmd(Integer.toString(tmp));
+				for(int i=0; i<instruments.size(); i++) {
+					sendCmd(instruments.get(i));
+				}
 			}
 			
 		}

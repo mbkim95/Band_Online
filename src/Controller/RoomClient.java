@@ -111,8 +111,8 @@ public class RoomClient {
 					checkCmd(cmd);
 				}
 			} catch (IOException e) {				
-				System.out.println("로비 클라이언트 종료");
-				System.exit(0);
+				System.out.println("합주실 클라이언트 종료");
+				//System.exit(0);
 			}
 		}
 	}	

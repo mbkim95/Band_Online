@@ -52,12 +52,12 @@ public class RoomChatServer extends Thread{
 
 	public void addClient(String nick, DataOutputStream out) throws IOException {
 		clientsMap.put(nick, out);			
-		sendCmd("2 [" + nick + "]님이 접속하셨습니다\n");
+		sendCmd("2 [" + nick + "]님이 합주실에 들어왔습니다\n");
 	}
 
 	public void removeClient(String nick) {		
 		clientsMap.remove(nick);			
-		sendCmd("2 [" + nick + "]님이 접속을 종료하였습니다\n");	
+		sendCmd("2 [" + nick + "]님이 합주실에서 나갔습니다\n");	
 	}
 	
 	public void enterRoom(String nick) {
@@ -110,12 +110,15 @@ public class RoomChatServer extends Thread{
 		
 		public void checkMsg(String msg) {
 			String cmd = msg.substring(0, 1);
+			String message; 
 			switch(cmd) {
-			case "1":										// 방 생성 (채팅 안되게 설정)
-				String nickname = msg.substring(2, msg.indexOf("###"));
-				String title = msg.substring(msg.indexOf("###")+3, msg.length());
-				enterRoom(nickname);				
+			case "1":										// 방에서 나가기
+				String nickname = msg.substring(2, msg.length());
+				removeClient(nickname);
 				break;
+			case "2":										// 채팅
+				message = msg.substring(2, msg.length());
+				sendMessage(message);
 			}
 		}
 
@@ -123,7 +126,7 @@ public class RoomChatServer extends Thread{
 			try {
 				while (in != null) {
 					msg = in.readUTF();
-					sendMessage(msg);				
+					checkMsg(msg);				
 				}
 			} catch (IOException e) {
 				removeClient(nick);

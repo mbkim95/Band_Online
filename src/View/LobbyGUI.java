@@ -83,10 +83,12 @@ public class LobbyGUI extends javax.swing.JFrame {
     public void addGameRoom(String room) {
     	roomList.add(room);
     	int n = roomList.size();
-
+    	System.out.println("n : " + n);
+    	System.out.println("asdf : " + roomList.get(0));
     	if(n == 1) {
     		title1.setText(roomList.get(0));
     		enter_btn1.setEnabled(true);
+    		System.out.println("111");
     	}else if(n == 2) {
     		title2.setText(roomList.get(1));
     		enter_btn2.setEnabled(true);
@@ -116,6 +118,7 @@ public class LobbyGUI extends javax.swing.JFrame {
     
     
     public void clearRoomList() {
+    	System.out.println("ccccccc");
     	title1.setText("    ");
         enter_btn1.setEnabled(false);
         title2.setText("    ");
@@ -638,8 +641,7 @@ public class LobbyGUI extends javax.swing.JFrame {
                 new LobbyGUI().setVisible(true);
             }
         });
-        */
-        clearRoomList();
+        */        
     }
 
     // Variables declaration - do not modify                     

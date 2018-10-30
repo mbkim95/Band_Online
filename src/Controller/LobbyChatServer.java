@@ -50,7 +50,7 @@ public class LobbyChatServer extends Thread{
 		sendCmd("2 [" + nick + "]님이 접속하셨습니다\n");
 	}
 
-	public void removeClient(String nick) {		
+	public void removeClient(String nick) {
 		clientsMap.remove(nick);			
 		sendCmd("2 [" + nick + "]님이 접속을 종료하였습니다\n");	
 	}

@@ -87,8 +87,10 @@ public class LobbyClient {
 				try {
 					lobby.clearGameRoom();
 					int n = Integer.parseInt(cmd.substring(2, cmd.length()));
+					System.out.println("clients n : " + n);
 					for(int i=0; i<n; i++) {
 						msg = in.readUTF();
+						System.out.println("received " + msg);
 						lobby.addGameRoom(msg);
 					}
 				} catch (IOException e) {
@@ -103,7 +105,7 @@ public class LobbyClient {
 					cmd = in.readUTF();					
 					checkCmd(cmd);
 				}
-			} catch (IOException e) {				
+			} catch (IOException e) {
 				System.out.println("로비 클라이언트 종료");
 				System.exit(0);
 			}

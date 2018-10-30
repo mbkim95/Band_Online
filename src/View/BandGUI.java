@@ -87,6 +87,31 @@ public class BandGUI extends javax.swing.JFrame {
     		icon = new ImageIcon(i);  //이미지 넣기
     		drum.setIcon(icon); // NOI18N
     		break;
+    	case 5:
+    		i = Toolkit.getDefaultToolkit().getImage("rsc/images/guitar1_black.png");
+    		icon = new ImageIcon(i);  //이미지 넣기
+    		guitar1.setIcon(icon); // NOI18N
+    		break;
+    	case 6:
+    		i = Toolkit.getDefaultToolkit().getImage("rsc/images/guitar2_black.png");
+    		icon = new ImageIcon(i);  //이미지 넣기
+    		guitar2.setIcon(icon); // NOI18N
+    		break;
+    	case 7:
+    		i = Toolkit.getDefaultToolkit().getImage("rsc/images/bass_black.png");
+    		icon = new ImageIcon(i);  //이미지 넣기
+    		bass.setIcon(icon); // NOI18N
+    		break;
+    	case 8:
+    		i = Toolkit.getDefaultToolkit().getImage("rsc/images/keyboard_black.png");
+    		icon = new ImageIcon(i);  //이미지 넣기
+    		keyboard.setIcon(icon); // NOI18N
+    		break;
+    	case 9:
+    		i = Toolkit.getDefaultToolkit().getImage("rsc/images/drum_black.png");
+    		icon = new ImageIcon(i);  //이미지 넣기
+    		drum.setIcon(icon); // NOI18N
+    		break;
     	}
     }
     
@@ -282,13 +307,17 @@ public class BandGUI extends javax.swing.JFrame {
 
     private void chatFieldActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
-    	String msg = "[" + nickname + "] : " + chatField.getText() + "\n";
+    	String msg = "2 [" + nickname + "] : " + chatField.getText() + "\n";
     	chat.sendMessage(msg);
     	chatField.setText("");
     }                                         
 
     private void exit_btnActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
+    	chat.sendMessage("1 " + nickname);
+    	room.sendMessage("3 " + nickname + "###" + select);
+    	chat = null;
+    	room = null;
     	lobby.setVisible(true);
     	dispose();
     }                                        
