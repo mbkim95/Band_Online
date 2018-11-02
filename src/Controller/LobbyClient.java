@@ -96,6 +96,7 @@ public class LobbyClient {
 				} catch (IOException e) {
 					e.printStackTrace();					
 				}
+				break;
 			}				
 		}
 

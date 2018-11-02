@@ -24,11 +24,12 @@ public class LobbyGUI extends javax.swing.JFrame {
     /**
      * Creates new form LobbyGUI
      */
-	static String NICKNAME;
-	LobbyChatClient chat;
-	LobbyClient lobby;
-	ArrayList<String> roomList = new ArrayList<String>();		// 게임방 목록 저장 배열
-	int idx = 0;												// 게임방 목록을 위한 인덱스
+	private static String NICKNAME;
+	private LobbyChatClient chat;
+	private  LobbyClient lobby;
+	private ArrayList<String> roomList = new ArrayList<String>();		// 게임방 목록 저장 배열
+	private int idx = 0;												// 게임방 목록을 위한 인덱스
+	private BandGUI band;
 	
     public LobbyGUI() {
         initComponents();
@@ -83,12 +84,9 @@ public class LobbyGUI extends javax.swing.JFrame {
     public void addGameRoom(String room) {
     	roomList.add(room);
     	int n = roomList.size();
-    	System.out.println("n : " + n);
-    	System.out.println("asdf : " + roomList.get(0));
     	if(n == 1) {
     		title1.setText(roomList.get(0));
     		enter_btn1.setEnabled(true);
-    		System.out.println("111");
     	}else if(n == 2) {
     		title2.setText(roomList.get(1));
     		enter_btn2.setEnabled(true);
@@ -107,18 +105,21 @@ public class LobbyGUI extends javax.swing.JFrame {
     	lobby.sendMessage("1 "+ NICKNAME + "###" + title);
     	setVisible(false);
     	System.out.println(roomList.size()-1);
-    	BandGUI band = new BandGUI(this, roomList.size()-1, title, NICKNAME, select);
+    	band = new BandGUI(this, lobby, roomList.size()-1, title, NICKNAME, select);
     	band.start();
     }
     
     public void enterRoom(String title, int room, int select) {
-    	BandGUI band = new BandGUI(this, room, title, NICKNAME, select);
+    	band = new BandGUI(this, lobby, room, title, NICKNAME, select);
     	band.start();
     }
     
-    
+    public void removeRoom(String title) {
+    	System.out.println("lobby : " + title);
+    	lobby.sendMessage("2 " + title);
+    }
+        
     public void clearRoomList() {
-    	System.out.println("ccccccc");
     	title1.setText("    ");
         enter_btn1.setEnabled(false);
         title2.setText("    ");

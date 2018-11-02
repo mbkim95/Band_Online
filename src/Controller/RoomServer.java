@@ -54,6 +54,7 @@ public class RoomServer extends Thread{
 	}
 
 	public void removeClient(String nick) {		
+		System.out.println("nick : " + nick);
 		clientsMap.remove(nick);
 		sendUserList();				
 	}
@@ -120,18 +121,21 @@ public class RoomServer extends Thread{
 				break;				
 			case "3":										// 방 나가기
 				nickname = msg.substring(2, msg.indexOf("###"));
-				String n = msg.substring(msg.indexOf("###")+3, msg.length());
+				title = msg.substring(msg.indexOf("###")+3, msg.indexOf("***"));
+				String n = msg.substring(msg.indexOf("***")+3, msg.length());
 				instruments.remove(n);
-				removeClient(nickname);
-				sendCmd("2 " + instruments.size()+1);
+				sendCmd("2 " + (instruments.size()+1));
 				int tmp = Integer.parseInt(n) + 5;
-				System.out.println("tmp : " + tmp);
 				sendCmd(Integer.toString(tmp));
 				for(int i=0; i<instruments.size(); i++) {
 					sendCmd(instruments.get(i));
 				}
-			}
-			
+				if(instruments.size() == 0) {
+					sendCmd("3 " + title);					
+				}
+				removeClient(nickname);
+				break;
+			}			
 		}
 
 		public void run() {

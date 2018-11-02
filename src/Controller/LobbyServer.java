@@ -127,6 +127,8 @@ public class LobbyServer extends Thread{
 	}
 	
 	public void deleteRoom(String title) {
+		System.out.println("delete " + title);
+		roomList.remove(title);
 		serverMap.remove(title);
 	}
 	
@@ -140,17 +142,24 @@ public class LobbyServer extends Thread{
 			in = new DataInputStream(socket.getInputStream());
 			nick = in.readUTF();	
 			addClient(nick, out);
-
 		}
 		
 		public void checkMsg(String msg) {
 			String cmd = msg.substring(0, 1);
+			String nickname, title;
 			switch(cmd) {
 			case "1":										// 规 积己
-				String nickname = msg.substring(2, msg.indexOf("###"));
-				String title = msg.substring(msg.indexOf("###")+3, msg.length());
+				nickname = msg.substring(2, msg.indexOf("###"));
+				title = msg.substring(msg.indexOf("###")+3, msg.length());
 				addRoom(title);
 				sendRoomList();
+				break;
+			case "2":										// 规 力芭
+				title = msg.substring(2, msg.length());
+				System.out.println("server title : " + title);
+				deleteRoom(title);
+				sendRoomList();
+				System.out.println("deltetetete!!!");
 				break;
 			}
 		}

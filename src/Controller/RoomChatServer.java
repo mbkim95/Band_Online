@@ -119,6 +119,7 @@ public class RoomChatServer extends Thread{
 			case "2":										// Ã¤ÆÃ
 				message = msg.substring(2, msg.length());
 				sendMessage(message);
+				break;
 			}
 		}
 

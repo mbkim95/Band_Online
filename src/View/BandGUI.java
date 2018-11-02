@@ -14,6 +14,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import Controller.LobbyClient;
 import Controller.RoomChatClient;
 import Controller.RoomClient;
 
@@ -28,6 +29,7 @@ public class BandGUI extends javax.swing.JFrame {
      */
 	private RoomClient room;
 	private RoomChatClient chat;
+	private LobbyClient l_client;
 	private String nickname;
 	private LobbyGUI lobby;
 	private String title;
@@ -43,8 +45,9 @@ public class BandGUI extends javax.swing.JFrame {
     	initComponents();
     }
     
-    public BandGUI(LobbyGUI lobby, int port, String title, String nickname, int select) {
+    public BandGUI(LobbyGUI lobby, LobbyClient l_client, int port, String title, String nickname, int select) {
     	this.lobby = lobby;
+    	this.l_client = l_client;
     	this.port = port;
     	this.title = title;
     	this.nickname = nickname;
@@ -144,7 +147,15 @@ public class BandGUI extends javax.swing.JFrame {
     
     public void appendUserList(String nickname) {    	
     	player_list.append(nickname + "\n");
-    } 
+    }
+    
+    public void deleteRoom() {
+    	System.out.println("delete room!!!");
+    	System.out.println(title);
+    	lobby.removeRoom(title);
+    	//dispose();
+    	//lobby.setVisible(true);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -315,9 +326,9 @@ public class BandGUI extends javax.swing.JFrame {
     private void exit_btnActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
     	chat.sendMessage("1 " + nickname);
-    	room.sendMessage("3 " + nickname + "###" + select);
-    	chat = null;
-    	room = null;
+    	room.sendMessage("3 " + nickname + "###" + title + "***" + select);
+//    	chat = null;
+//    	room = null;
     	lobby.setVisible(true);
     	dispose();
     }                                        
