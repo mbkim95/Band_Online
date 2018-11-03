@@ -106,12 +106,12 @@ public class LobbyGUI extends javax.swing.JFrame {
     	setVisible(false);
     	System.out.println(roomList.size()-1);
     	band = new BandGUI(this, lobby, roomList.size()-1, title, NICKNAME, select);
-    	band.start();
+    	band.open();
     }
     
     public void enterRoom(String title, int room, int select) {
     	band = new BandGUI(this, lobby, room, title, NICKNAME, select);
-    	band.start();
+    	band.open();
     }
     
     public void removeRoom(String title) {
@@ -541,7 +541,7 @@ public class LobbyGUI extends javax.swing.JFrame {
     private void make_btnActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
     	RoomSettingGUI rs = new RoomSettingGUI(this);
-    	rs.start();
+    	rs.open();
     }                                        
 
     private void prev_btnActionPerformed(java.awt.event.ActionEvent evt) {                                
@@ -573,7 +573,7 @@ public class LobbyGUI extends javax.swing.JFrame {
     private void enter_btn1ActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
     	SelectGUI select = new SelectGUI(this, title1.getText(), idx);
-    	select.start();
+    	select.open();
     	setVisible(false);
     }                                          
 
@@ -604,13 +604,13 @@ public class LobbyGUI extends javax.swing.JFrame {
     private void exit_btnActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
     	ExitGUI exit = new ExitGUI(lobby, chat);
-    	exit.start();
+    	exit.open();
     }  
 
     /**
      * @param args the command line arguments
      */
-    public void start() {
+    public void open() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

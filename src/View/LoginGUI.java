@@ -155,7 +155,7 @@ public class LoginGUI extends javax.swing.JFrame {
         	setVisible(false);
         	UserData user = db_cont.getUser(id_input.getText());        	
             LobbyGUI lobby = new LobbyGUI(user.getNickname());                 
-            lobby.start();
+            lobby.open();
     	}else {
     		error_Msg.setForeground(new java.awt.Color(255, 51, 51));
             error_Msg.setText("다시 확인해주세요");
@@ -172,7 +172,7 @@ public class LoginGUI extends javax.swing.JFrame {
         	setVisible(false);
         	UserData user = db_cont.getUser(id_input.getText());        	
             LobbyGUI lobby = new LobbyGUI(user.getNickname());                 
-            lobby.start();
+            lobby.open();
     	}else {
     		error_Msg.setForeground(new java.awt.Color(255, 51, 51));
             error_Msg.setText("다시 확인해주세요");
@@ -183,14 +183,14 @@ public class LoginGUI extends javax.swing.JFrame {
     // 가입 버튼 누르면 진행되는 부분
     private void reg_btnActionPerformed(java.awt.event.ActionEvent evt) {    	
     	RegGUI reg = new RegGUI();
-    	reg.start();    	
+    	reg.open();    	
         // TODO add your handling code here:
     }                                       
 
     /**
      * @param args the command line arguments
      */
-    public void start() {
+    public void open() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

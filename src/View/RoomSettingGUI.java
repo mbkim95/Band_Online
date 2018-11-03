@@ -107,7 +107,7 @@ public class RoomSettingGUI extends javax.swing.JFrame {
     private void accept_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:    
     	SelectGUI select = new SelectGUI(lobby, title.getText(), true);
-    	select.start();
+    	select.open();
     	dispose();
     }                                          
 
@@ -119,7 +119,7 @@ public class RoomSettingGUI extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public void start() {
+    public void open() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

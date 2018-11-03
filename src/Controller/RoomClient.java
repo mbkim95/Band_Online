@@ -72,6 +72,106 @@ public class RoomClient {
 			this.band = band;
 		}
 		
+		public void playMelody(int select, int octave, int sound) {
+			String file = "rsc/sound/";
+			if(select == 0) {
+				file += "dist_guitar/";
+			}else if(select == 1) {
+				file += "clean_guitar/";
+			}else if(select == 2) {
+				file += "bass/";
+			}else if(select == 3) {
+				file += "keyboard/";
+			}
+			
+			if(octave == 1) {
+				file += "high/";
+			}else if(octave == -1) {
+				file += "low/";
+			}
+			
+			switch(sound) {
+			case 0:
+				SoundController.Play(file + "C.wav");
+				break;
+			case 1:
+				SoundController.Play(file + "C#.wav");
+				break;
+			case 2:
+				SoundController.Play(file + "D.wav");
+				break;
+			case 3:
+				SoundController.Play(file + "D#.wav");
+				break;
+			case 4:
+				SoundController.Play(file + "E.wav");
+				break;
+			case 5:
+				SoundController.Play(file + "F.wav");
+				break;
+			case 6:
+				SoundController.Play(file + "F#.wav");
+				break;
+			case 7:
+				SoundController.Play(file + "G.wav");
+				break;
+			case 8:
+				SoundController.Play(file + "G#.wav");
+				break;
+			case 9:
+				SoundController.Play(file + "A.wav");
+				break;
+			case 10:
+				SoundController.Play(file + "A#.wav");
+				break;
+			case 11:
+				SoundController.Play(file + "B.wav");
+				break;
+			case 12:
+				SoundController.Play(file + "C_high.wav");
+				break;
+			}			
+		}
+		
+		public void playDrum(int sound){
+			String file = "rsc/sound/drum/";
+			
+			switch(sound) {
+			case 0:
+				SoundController.Play(file + "kick.wav");
+				break;
+			case 2:
+				SoundController.Play(file + "snare.wav");
+				break;
+			case 4:
+				SoundController.Play(file + "hihat_closed.wav");
+				break;
+			case 5:
+				SoundController.Play(file + "hihat_opened.wav");
+				break;
+			case 7:
+				SoundController.Play(file + "sidestick.wav");
+				break;
+			case 9:
+				SoundController.Play(file + "crash.wav");
+				break;
+			case 11:
+				SoundController.Play(file + "ride.wav");
+				break;
+			case 12:
+				SoundController.Play(file + "tom.wav");
+				break;
+			}
+		}
+		
+		public void playInstruments(int select, int octave, int sound) {
+			if(select < 4) {
+				playMelody(select, octave, sound);
+			}else {
+				playDrum(sound);
+			}
+		}
+		
 		public void checkCmd(String cmd) {								// 서버로부터 받은 명령 체크
 			int chk = Integer.parseInt(cmd.substring(0, 1));			
 			String msg;
@@ -105,6 +205,12 @@ public class RoomClient {
 			case 3:														// 로비에서 방 삭제
 				String title = cmd.substring(2, cmd.length());
 				band.deleteRoom();
+				break;
+			case 4:
+				int select = Integer.parseInt(cmd.substring(2, cmd.indexOf("###")));
+				int octave = Integer.parseInt(cmd.substring(cmd.indexOf("###")+3, cmd.indexOf("***")));
+				int sound = Integer.parseInt(cmd.substring(cmd.indexOf("***")+3, cmd.length()));
+				playInstruments(select, octave, sound);
 				break;
 			}				
 		}

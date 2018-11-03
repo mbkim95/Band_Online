@@ -35,6 +35,7 @@ public class BandGUI extends javax.swing.JFrame {
 	private String title;
 	private int select;
 	private int port;
+	private PlayGUI play;
 	
     public BandGUI() {
         initComponents();
@@ -59,6 +60,9 @@ public class BandGUI extends javax.swing.JFrame {
     	chat = new RoomChatClient(port);
     	chat.connect(this, nickname);
     	room.sendMessage("2 "+select);
+    	play = new PlayGUI(room, select);
+    	play.open();
+    	play.setVisible(false);
     }
     
     public void changeImage(int img) {
@@ -172,6 +176,7 @@ public class BandGUI extends javax.swing.JFrame {
         playerlistPanel = new javax.swing.JScrollPane();
         player_list = new javax.swing.JTextArea();
         exit_btn = new javax.swing.JButton();
+        play_btn = new javax.swing.JButton();
         list = new javax.swing.JLabel();
         instruments_Panel = new javax.swing.JPanel();
         guitar1 = new javax.swing.JLabel();
@@ -267,6 +272,13 @@ public class BandGUI extends javax.swing.JFrame {
                                 .addComponent(bass)))))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
+        
+        play_btn.setText("연주하기");
+        play_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                play_btnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -290,13 +302,17 @@ public class BandGUI extends javax.swing.JFrame {
                                 .addComponent(exit_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(45, 45, 45))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(list)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(play_btn)
+                                    .addComponent(list))
                                 .addGap(42, 42, 42))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(117, 117, 117)
+                .addGap(53, 53, 53)
+                .addComponent(play_btn)
+                .addGap(37, 37, 37)
                 .addComponent(list)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(playerlistPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -330,13 +346,19 @@ public class BandGUI extends javax.swing.JFrame {
 //    	chat = null;
 //    	room = null;
     	lobby.setVisible(true);
+    	play.dispose();
     	dispose();
-    }                                        
+    }
+    
+    private void play_btnActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+    	play.setVisible(true);
+    }  
 
     /**
      * @param args the command line arguments
      */
-    public void start(){
+    public void open() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -380,6 +402,7 @@ public class BandGUI extends javax.swing.JFrame {
     private javax.swing.JPanel instruments_Panel;
     private javax.swing.JLabel keyboard;
     private javax.swing.JLabel list;
+    private javax.swing.JButton play_btn;
     private javax.swing.JTextArea player_list;
     private javax.swing.JScrollPane playerlistPanel;
     // End of variables declaration                   

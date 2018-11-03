@@ -135,6 +135,8 @@ public class RoomServer extends Thread{
 				}
 				removeClient(nickname);
 				break;
+			case "4":									// æ«±‚ ø¨¡÷
+				sendCmd(msg);
 			}			
 		}
 

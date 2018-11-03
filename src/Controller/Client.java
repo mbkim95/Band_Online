@@ -6,6 +6,6 @@ import View.*;
 public class Client {	
 	public static void main(String[] args) {
 		LoginGUI login = new LoginGUI();
- 		login.start();
+ 		login.open();
 	}
-}
+} 
