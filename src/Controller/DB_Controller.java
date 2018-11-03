@@ -13,9 +13,10 @@ public class DB_Controller {
 	static Connection con = null;
 	static Statement stmt = null; // 데이터를 전송하는 객체
 	
-	static String ID = "root";
-	static String PW = "alsqja5932985@";
-	static String url = "jdbc:mysql://127.0.0.1:3306/band?serverTimezone=UTC&useSSL=false";
+	static String ID = "tester";
+	static String PW = "1q2w3e4r!";
+	static String ip = "127.0.0.1";				// DB서버 ip주소
+	static String url = "jdbc:mysql://" + ip + ":3306/band?serverTimezone=UTC&useSSL=false";
 	
 	public static void Connect() {
 		try {		
