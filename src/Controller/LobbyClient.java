@@ -15,9 +15,9 @@ public class LobbyClient {
 	private LobbyGUI gui;
 	private Receiver receiver;
 	
-	public void connect(LobbyGUI gui, String nickname) {
+	public void connect(String ip, LobbyGUI gui, String nickname) {
 		try {
-			socket = new Socket("127.0.0.1", 7001);
+			socket = new Socket(ip, 7001);
 			System.out.println("로비 서버 연결됨");
 			this.nickname = nickname;
 			out = new DataOutputStream(socket.getOutputStream());		

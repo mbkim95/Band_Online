@@ -21,9 +21,9 @@ public class RoomChatClient{
 		this.num = num;
 	}
 	
-	public void connect(BandGUI gui, String nickname) {
+	public void connect(String ip, BandGUI gui, String nickname) {
 		try {
-			socket = new Socket("127.0.0.1", 8777+num);
+			socket = new Socket(ip, 8777+num);
 			System.out.println("합주실 채팅 서버 연결됨 (포트 : " + (8777+num) + ")");
 			this.nickname = nickname;
 			out = new DataOutputStream(socket.getOutputStream());		

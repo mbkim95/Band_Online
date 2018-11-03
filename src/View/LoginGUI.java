@@ -17,10 +17,12 @@ public class LoginGUI extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-	DB_Controller db_cont;
+	private DB_Controller db_cont;
+	private String ip;
 	
-    public LoginGUI() {
+    public LoginGUI(String ip) {
         initComponents();
+        this.ip = ip;
         db_cont = new DB_Controller();
     }
 
@@ -154,7 +156,7 @@ public class LoginGUI extends javax.swing.JFrame {
     		System.out.println("Game Start");
         	setVisible(false);
         	UserData user = db_cont.getUser(id_input.getText());        	
-            LobbyGUI lobby = new LobbyGUI(user.getNickname());                 
+            LobbyGUI lobby = new LobbyGUI(ip, user.getNickname());                 
             lobby.open();
     	}else {
     		error_Msg.setForeground(new java.awt.Color(255, 51, 51));
@@ -171,7 +173,7 @@ public class LoginGUI extends javax.swing.JFrame {
     		System.out.println("Game Start");
         	setVisible(false);
         	UserData user = db_cont.getUser(id_input.getText());        	
-            LobbyGUI lobby = new LobbyGUI(user.getNickname());                 
+            LobbyGUI lobby = new LobbyGUI(ip, user.getNickname());                 
             lobby.open();
     	}else {
     		error_Msg.setForeground(new java.awt.Color(255, 51, 51));
@@ -218,7 +220,7 @@ public class LoginGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoginGUI().setVisible(true);
+                new LoginGUI(ip).setVisible(true);
             }
         });
     }

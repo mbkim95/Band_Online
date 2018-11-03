@@ -46,7 +46,7 @@ public class BandGUI extends javax.swing.JFrame {
     	initComponents();
     }
     
-    public BandGUI(LobbyGUI lobby, LobbyClient l_client, int port, String title, String nickname, int select) {
+    public BandGUI(String ip, LobbyGUI lobby, LobbyClient l_client, int port, String title, String nickname, int select) {
     	this.lobby = lobby;
     	this.l_client = l_client;
     	this.port = port;
@@ -56,9 +56,9 @@ public class BandGUI extends javax.swing.JFrame {
     	initComponents();
     	changeImage(select);
     	room = new RoomClient(port);
-    	room.connect(this, nickname);
+    	room.connect(ip, this, nickname);
     	chat = new RoomChatClient(port);
-    	chat.connect(this, nickname);
+    	chat.connect(ip, this, nickname);
     	room.sendMessage("2 "+select);
     	play = new PlayGUI(room, select);
     	play.open();

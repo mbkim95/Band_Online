@@ -21,9 +21,9 @@ public class RoomClient {
 		this.port = port;
 	}
 	
-	public void connect(BandGUI gui, String nickname) {
+	public void connect(String ip, BandGUI gui, String nickname) {
 		try {
-			socket = new Socket("127.0.0.1", 7777 + port);
+			socket = new Socket(ip, 7777 + port);
 			System.out.println("합주실 서버 연결됨 (포트 : " + (7777 + port) + ")");
 			this.nickname = nickname;
 			out = new DataOutputStream(socket.getOutputStream());		

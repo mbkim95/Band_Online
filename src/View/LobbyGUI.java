@@ -30,18 +30,20 @@ public class LobbyGUI extends javax.swing.JFrame {
 	private ArrayList<String> roomList = new ArrayList<String>();		// 게임방 목록 저장 배열
 	private int idx = 0;												// 게임방 목록을 위한 인덱스
 	private BandGUI band;
+	private String ip;
 	
     public LobbyGUI() {
         initComponents();
     }
     
-    public LobbyGUI(String nickname) {
+    public LobbyGUI(String ip, String nickname) {
+    	this.ip = ip;
     	NICKNAME = nickname;    	
     	initComponents();
     	chat = new LobbyChatClient();
-    	chat.connect(this, NICKNAME);
+    	chat.connect(ip, this, NICKNAME);
     	lobby = new LobbyClient();
-    	lobby.connect(this, NICKNAME);
+    	lobby.connect(ip, this, NICKNAME);
     	id.setText(NICKNAME);
     }    
     
@@ -105,12 +107,12 @@ public class LobbyGUI extends javax.swing.JFrame {
     	lobby.sendMessage("1 "+ NICKNAME + "###" + title);
     	setVisible(false);
     	System.out.println(roomList.size()-1);
-    	band = new BandGUI(this, lobby, roomList.size()-1, title, NICKNAME, select);
+    	band = new BandGUI(ip, this, lobby, roomList.size()-1, title, NICKNAME, select);
     	band.open();
     }
     
     public void enterRoom(String title, int room, int select) {
-    	band = new BandGUI(this, lobby, room, title, NICKNAME, select);
+    	band = new BandGUI(ip, this, lobby, room, title, NICKNAME, select);
     	band.open();
     }
     
