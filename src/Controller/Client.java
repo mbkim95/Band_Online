@@ -8,4 +8,4 @@ public class Client {
 		LoginGUI login = new LoginGUI("127.0.0.1");					//  접속할 서버 ip 입력
  		login.open();
 	}
-} 
+}

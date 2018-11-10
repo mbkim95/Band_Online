@@ -37,13 +37,6 @@ public class PlayGUI extends javax.swing.JFrame {
     	this.room = room;
     	this.select = select;
     	octave = 0;
-    	/*if(select == 0) {
-        	file = "rsc/sound/dist_guitar/";
-        }else if(select == 1){
-        	file = "rsc/sound/clean_guitar/";
-        }else {
-        	file = "rsc/sound/base/";
-        }        */
     	initComponents();
     }
 
@@ -112,7 +105,7 @@ public class PlayGUI extends javax.swing.JFrame {
         
         addKeyListener(new KeyListener() { // List에 액션리스너를 달음.
 			public void keyTyped(KeyEvent e) {
-				System.out.println(e.getKeyChar() + " keyTyped key");
+				/*System.out.println(e.getKeyChar() + " keyTyped key");
 
 				// shift가 같이 눌렸는지 확인하는 방법
 				if ((e.getModifiers() & 1) != 0) { // 1은 shift, 2는 Ctrl키 입니다.
@@ -120,7 +113,7 @@ public class PlayGUI extends javax.swing.JFrame {
 					System.out.printf("shift를 눌렀습니다.\n");
 				} else {
 					System.out.printf("shift를 누르지 않았습니다.\n");
-				}
+				}*/
 			}
 
 			@Override
@@ -199,7 +192,7 @@ public class PlayGUI extends javax.swing.JFrame {
 					}
 					break;
 				}
-				System.out.println(e.getKeyChar());
+//				System.out.println(e.getKeyChar());
 			}
 		});
         //</editor-fold>

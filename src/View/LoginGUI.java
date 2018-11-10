@@ -5,6 +5,11 @@
  */
 package View;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+
+import javax.swing.ImageIcon;
+
 import Controller.DB_Controller;
 import Model.UserData;
 
@@ -23,7 +28,7 @@ public class LoginGUI extends javax.swing.JFrame {
     public LoginGUI(String ip) {
         initComponents();
         this.ip = ip;
-        db_cont = new DB_Controller();
+        db_cont = new DB_Controller(ip);
     }
 
     /**
@@ -37,117 +42,144 @@ public class LoginGUI extends javax.swing.JFrame {
 
         id_input = new javax.swing.JTextField();
         pw_input = new javax.swing.JPasswordField();
-        id_label = new javax.swing.JLabel();
-        pw_label = new javax.swing.JLabel();
         login_btn = new javax.swing.JButton();
         reg_btn = new javax.swing.JButton();
         error_Msg = new javax.swing.JLabel();
+        background = new javax.swing.JLabel();
+        
+        Image i;
+        ImageIcon icon;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("로그인");
+        setTitle("Login");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setLocation(new java.awt.Point(750, 400));
+        setLocation(new java.awt.Point(780, 300));
+        setMinimumSize(new java.awt.Dimension(320, 423));
         setResizable(false);
 
-        id_input.setText("");
-        id_input.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                id_inputActionPerformed(evt);
+        id_input.setBackground(new java.awt.Color(231, 230, 230));
+        id_input.setFont(new java.awt.Font("맑은 고딕", 0, 24)); // NOI18N
+        id_input.setForeground(new java.awt.Color(102, 102, 102));
+        id_input.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        id_input.setText("username");
+        id_input.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                id_inputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                id_inputFocusLost(evt);
             }
         });
 
-        pw_input.setText("");
+        pw_input.setBackground(new java.awt.Color(231, 230, 230));
+        pw_input.setFont(new java.awt.Font("맑은 고딕", 0, 20)); // NOI18N
+        pw_input.setForeground(new java.awt.Color(102, 102, 102));
+        pw_input.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        pw_input.setText("password");
+        pw_input.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                pw_inputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                pw_inputFocusLost(evt);
+            }
+        });
         pw_input.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pw_inputActionPerformed(evt);
             }
         });
-
-        id_label.setFont(new java.awt.Font("Perpetua Titling MT", 1, 24)); // NOI18N
-        id_label.setText(" ID :");
-        id_label.setToolTipText("");
-
-        pw_label.setFont(new java.awt.Font("Perpetua Titling MT", 1, 24)); // NOI18N
-        pw_label.setText(" PW :");
-        pw_label.setToolTipText("");
-
-        login_btn.setFont(new java.awt.Font("굴림", 1, 24)); // NOI18N
-        login_btn.setText("Login");
-        login_btn.setToolTipText("");
         
-        // 로그인 버튼 눌렀을 때 실행되는 부분
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/Login/enter_btn.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        login_btn.setIcon(icon); // NOI18N
+        login_btn.setToolTipText("");
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/Login/enter_clicked.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        login_btn.setPressedIcon(icon); // NOI18N
         login_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                login_btnActionPerformed(evt);                
+                login_btnActionPerformed(evt);
             }
         });
 
-        reg_btn.setFont(new java.awt.Font("굴림", 1, 24)); // NOI18N
-        reg_btn.setText("Register");
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/Login/register_btn.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        reg_btn.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/Login/register_clicked.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        reg_btn.setPressedIcon(icon); // NOI18N
         reg_btn.addActionListener(new java.awt.event.ActionListener() {
-        	
-        	// 회원가입 버튼을 눌렀을 때 실행되는 부분
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 reg_btnActionPerformed(evt);
             }
-        });        
-        
+        });
+
+        error_Msg.setFont(new java.awt.Font("맑은 고딕", 0, 18)); // NOI18N
+        error_Msg.setForeground(new java.awt.Color(255, 51, 51));
         error_Msg.setText(" ");
+
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/Login/login_bg.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        background.setIcon(icon); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(pw_label)
-                            .addComponent(id_label))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(id_input, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(pw_input, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(error_Msg, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(reg_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(login_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addGap(70, 70, 70)
+                .addComponent(id_input, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(70, 70, 70)
+                .addComponent(login_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(70, 70, 70)
+                .addComponent(reg_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(90, 90, 90)
+                .addComponent(error_Msg, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(70, 70, 70)
+                .addComponent(pw_input, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(background)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(139, 139, 139)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(id_input, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(id_label, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(pw_input, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pw_label, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(error_Msg))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(login_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(reg_btn)))
-                .addGap(0, 25, Short.MAX_VALUE))
+                .addGap(150, 150, 150)
+                .addComponent(id_input, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
+                .addComponent(login_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(reg_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(error_Msg))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(200, 200, 200)
+                .addComponent(pw_input, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(background)
         );
+        
+        login_btn.requestFocus();        
 
         pack();
-    }// </editor-fold>                        
-
-    private void id_inputActionPerformed(java.awt.event.ActionEvent evt) {                                         
+    }// </editor-fold>     
+    
+    private void id_inputFocusGained(java.awt.event.FocusEvent evt) {                                     
         // TODO add your handling code here:
-    }                                        
+    	if(id_input.getText().equals("")) {
+    		id_input.setText("user ID");
+    	}else {
+    		id_input.setText("");
+    	}
+    }                                    
+
+    private void id_inputFocusLost(java.awt.event.FocusEvent evt) {                                   
+        // TODO add your handling code here:
+    	if(id_input.getText().equals(""))
+    		id_input.setText("user ID");   
+    }
 
     private void pw_inputActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
@@ -162,12 +194,28 @@ public class LoginGUI extends javax.swing.JFrame {
     		error_Msg.setForeground(new java.awt.Color(255, 51, 51));
             error_Msg.setText("다시 확인해주세요");
             db_cont.Disconnect();
-    	}    	
-    }                                        
+    	}  
+    }
     
-    // 로그인 버튼 누르면 진행되는 부분 -> db 연동하여 가입정보 확인하고 서버에 연결해야함.
+    private void pw_inputFocusGained(java.awt.event.FocusEvent evt) {                                     
+        // TODO add your handling code here:
+    	if(new String(pw_input.getPassword()).equals("")) {
+    		pw_input.setText("password");
+    	}else {
+    		pw_input.setText("");
+    	}
+    }                                    
+
+    private void pw_inputFocusLost(java.awt.event.FocusEvent evt) {                                   
+        // TODO add your handling code here:
+    	if(new String(pw_input.getPassword()).equals("")) {
+    		pw_input.setText("password");
+    		
+    	}
+    }
+
     private void login_btnActionPerformed(java.awt.event.ActionEvent evt) {                                          
-        // TODO add your handling code here:    	
+        // TODO add your handling code here:
     	db_cont.Connect();
     	if(db_cont.Password_Chk(id_input.getText(), new String(pw_input.getPassword()))) {
     		System.out.println("Game Start");
@@ -179,20 +227,19 @@ public class LoginGUI extends javax.swing.JFrame {
     		error_Msg.setForeground(new java.awt.Color(255, 51, 51));
             error_Msg.setText("다시 확인해주세요");
             db_cont.Disconnect();
-    	}    		
+    	}
     }                                         
-    
-    // 가입 버튼 누르면 진행되는 부분
-    private void reg_btnActionPerformed(java.awt.event.ActionEvent evt) {    	
-    	RegGUI reg = new RegGUI();
-    	reg.open();    	
+
+    private void reg_btnActionPerformed(java.awt.event.ActionEvent evt) {                                        
         // TODO add your handling code here:
-    }                                       
+    	RegGUI reg = new RegGUI(ip);
+    	reg.open();
+    }                               
 
     /**
      * @param args the command line arguments
      */
-    public void open() {
+    public void open(){
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -216,7 +263,21 @@ public class LoginGUI extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-        
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -225,13 +286,12 @@ public class LoginGUI extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify
+    // Variables declaration - do not modify                     
+    private javax.swing.JLabel background;
     private javax.swing.JLabel error_Msg;
     private javax.swing.JTextField id_input;
-    private javax.swing.JLabel id_label;
     private javax.swing.JButton login_btn;
     private javax.swing.JPasswordField pw_input;
-    private javax.swing.JLabel pw_label;
     private javax.swing.JButton reg_btn;
     // End of variables declaration                   
 }

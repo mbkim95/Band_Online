@@ -130,6 +130,7 @@ public class LobbyServer extends Thread{
 		System.out.println("delete " + title);
 		roomList.remove(title);
 		serverMap.remove(title);
+		roomNum--;
 	}
 	
 	class Receiver extends Thread {

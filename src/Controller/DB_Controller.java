@@ -10,13 +10,20 @@ import java.sql.Statement;;
 
 public class DB_Controller {
 	
-	static Connection con = null;
-	static Statement stmt = null; // 데이터를 전송하는 객체
+	private static Connection con = null;
+	private static Statement stmt = null; // 데이터를 전송하는 객체
 	
-	static String ID = "tester";
-	static String PW = "1q2w3e4r!";
-	static String ip = "127.0.0.1";				// DB서버 ip주소
-	static String url = "jdbc:mysql://" + ip + ":3306/band?serverTimezone=UTC&useSSL=false";
+	private static String ID;
+	private static String PW;
+	private static String ip;				// DB서버 ip주소
+	private static String url;
+	
+	public DB_Controller(String ip) {
+		ID = "tester";
+		PW = "1q2w3e4r!";
+		this.ip = ip;
+		url = "jdbc:mysql://" + ip + ":3306/band?serverTimezone=UTC&useSSL=false";
+	}
 	
 	public static void Connect() {
 		try {		
@@ -108,7 +115,7 @@ public class DB_Controller {
             	search = false;
             }
             //if(rs.getString("id").equals(id) && rs.getString("password").equals(password))
-            	//search = true;
+           	//search = true;
         } catch (Exception e) {
             e.printStackTrace();
         }

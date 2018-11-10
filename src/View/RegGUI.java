@@ -5,6 +5,11 @@
  */
 package View;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+
+import javax.swing.ImageIcon;
+
 import Controller.DB_Controller;
 import Controller.Reg_Controller;
 import Model.UserData;
@@ -18,16 +23,18 @@ public class RegGUI extends javax.swing.JFrame {
     /**
      * Creates new form regGUI
      */
-	DB_Controller db_cont;
-	Reg_Controller reg_cont;
-	UserData user;
+	private DB_Controller db_cont;
+	private Reg_Controller reg_cont;
+	private UserData user;
+	private String ip;
 	
-    public RegGUI() {
-        initComponents();
-        db_cont = new DB_Controller();
+    public RegGUI(String ip) {
+    	this.ip = ip;
+    	initComponents();
+        db_cont = new DB_Controller(ip);
         db_cont.Connect();
         reg_cont = new Reg_Controller();
-        user = new UserData();        
+        user = new UserData();  
     }
 
     /**
@@ -39,189 +46,190 @@ public class RegGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
-        title = new javax.swing.JLabel();
-        id_label = new javax.swing.JLabel();
         id_in = new javax.swing.JTextField();
         chk_btn = new javax.swing.JButton();
-        pw_label = new javax.swing.JLabel();
-        pw_label2 = new javax.swing.JLabel();
         error_Msg1 = new javax.swing.JLabel();
         pw_in = new javax.swing.JPasswordField();
         pw_in2 = new javax.swing.JPasswordField();
         error_Msg2 = new javax.swing.JLabel();
         accept_btn = new javax.swing.JButton();
         cancel_btn = new javax.swing.JButton();
-        nick_label = new javax.swing.JLabel();
-        nick_in = new javax.swing.JTextField();
+        nick_in = new javax.swing.JPasswordField();
         chk_btn2 = new javax.swing.JButton();
         error_Msg3 = new javax.swing.JLabel();
+        bg = new javax.swing.JLabel();
         
-        setTitle("회원가입");
-        setLocation(new java.awt.Point(800, 400));
+        Image i;
+        ImageIcon icon;
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Register");
+        setLocation(new java.awt.Point(620, 200));
         setResizable(false);
 
-        title.setFont(new java.awt.Font("굴림", 1, 24)); // NOI18N
-        title.setText("회원가입");
-
-        id_label.setFont(new java.awt.Font("굴림", 1, 18)); // NOI18N
-        id_label.setText("ID");
-
-        id_in.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                id_inActionPerformed(evt);
-            }
-        });
-
-        chk_btn.setText("중복확인");
+        id_in.setBackground(new java.awt.Color(231, 230, 230));
+        id_in.setFont(new java.awt.Font("맑은 고딕", 0, 24)); // NOI18N
+        id_in.setForeground(new java.awt.Color(102, 102, 102));
+        
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/Register/check_btn.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        chk_btn.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/Register/check_clicked.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        chk_btn.setPressedIcon(icon); // NOI18N
         chk_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chk_btnActionPerformed(evt);
             }
         });
 
-        pw_label.setFont(new java.awt.Font("굴림", 1, 18)); // NOI18N
-        pw_label.setText("비밀번호");
-
-        pw_label2.setFont(new java.awt.Font("굴림", 1, 12)); // NOI18N
-        pw_label2.setText("비밀번호 확인");
-        
+        error_Msg1.setFont(new java.awt.Font("맑은 고딕", 0, 16)); // NOI18N
+        error_Msg1.setForeground(new java.awt.Color(255, 0, 0));
         error_Msg1.setText(" ");
 
-        error_Msg2.setForeground(new java.awt.Color(255, 0, 0));
-        //error_Msg2.setText("비밀번호가 일치하지 않습니다.");
-        error_Msg2.setText(" ");
-        
+        pw_in.setBackground(new java.awt.Color(231, 230, 230));
+        pw_in.setFont(new java.awt.Font("맑은 고딕", 0, 24)); // NOI18N
+        pw_in.setForeground(new java.awt.Color(102, 102, 102));
+
+        pw_in2.setBackground(new java.awt.Color(231, 230, 230));
+        pw_in2.setFont(new java.awt.Font("맑은 고딕", 0, 24)); // NOI18N
+        pw_in2.setForeground(new java.awt.Color(102, 102, 102));
         pw_in2.addKeyListener(new java.awt.event.KeyAdapter() {
-        	public void keyReleased(java.awt.event.KeyEvent evt) {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
                 pw_in2KeyReleased(evt);
             }
-        });       
+        });
 
-        accept_btn.setText("가입");
+        error_Msg2.setFont(new java.awt.Font("맑은 고딕", 0, 16)); // NOI18N
+        error_Msg2.setForeground(new java.awt.Color(255, 0, 0));
+        error_Msg2.setText(" ");
+        
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/Register/register_btn.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        accept_btn.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/Register/register_clicekd.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        accept_btn.setPressedIcon(icon); // NOI18N
         accept_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 accept_btnActionPerformed(evt);
             }
         });
 
-        cancel_btn.setText("취소");
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/Register/cancel_btn.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        cancel_btn.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/Register/cancel_clicked.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        cancel_btn.setPressedIcon(icon); // NOI18N
         cancel_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancel_btnActionPerformed(evt);
             }
         });
 
-        nick_label.setFont(new java.awt.Font("굴림", 1, 18)); // NOI18N
-        nick_label.setText("닉네임");
+        nick_in.setBackground(new java.awt.Color(231, 230, 230));
+        nick_in.setFont(new java.awt.Font("맑은 고딕", 0, 24)); // NOI18N
+        nick_in.setForeground(new java.awt.Color(102, 102, 102));
 
-        chk_btn2.setText("중복확인");
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/Register/check_btn.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        chk_btn2.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/Register/check_clicked.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        chk_btn2.setPressedIcon(icon); // NOI18N
         chk_btn2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chk_btn2ActionPerformed(evt);
             }
-        });        
+        });
 
+        error_Msg3.setFont(new java.awt.Font("맑은 고딕", 0, 16)); // NOI18N
         error_Msg3.setForeground(new java.awt.Color(255, 0, 0));
         error_Msg3.setText(" ");
-        //error_Msg3.setText("중복된 닉네임이 있습니다.");
+
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/Register/register_bg.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        bg.setIcon(icon); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(44, 44, 44)
-                                .addComponent(id_label, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(pw_label))
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(error_Msg1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(id_in, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(chk_btn))
-                            .addComponent(pw_in, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(pw_label2)
-                            .addComponent(nick_label))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(pw_in2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(error_Msg2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(accept_btn)
-                                        .addGap(30, 30, 30)
-                                        .addComponent(cancel_btn))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addComponent(error_Msg3))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(nick_in, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(chk_btn2)))))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addGap(180, 180, 180)
+                .addComponent(id_in, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(200, 200, 200)
+                .addComponent(error_Msg1))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(180, 180, 180)
+                .addComponent(pw_in2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(180, 180, 180)
+                .addComponent(nick_in, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addComponent(accept_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(390, 390, 390)
+                .addComponent(chk_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(180, 180, 180)
+                .addComponent(error_Msg3))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(170, 170, 170)
+                .addComponent(error_Msg2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(300, 300, 300)
+                .addComponent(cancel_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(180, 180, 180)
+                .addComponent(pw_in, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(390, 390, 390)
+                .addComponent(chk_btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(bg)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chk_btn)
-                    .addComponent(id_in, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(id_label))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(150, 150, 150)
+                .addComponent(id_in, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
                 .addComponent(error_Msg1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(pw_label)
-                    .addComponent(pw_in, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(pw_in2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pw_label2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addComponent(error_Msg2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nick_in, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nick_label)
-                    .addComponent(chk_btn2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(error_Msg3)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(accept_btn)
-                    .addComponent(cancel_btn))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(73, 73, 73)
+                .addComponent(pw_in2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55)
+                .addComponent(nick_in, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
+                .addComponent(accept_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(150, 150, 150)
+                .addComponent(chk_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(440, 440, 440)
+                .addComponent(error_Msg3))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(340, 340, 340)
+                .addComponent(error_Msg2))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(490, 490, 490)
+                .addComponent(cancel_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(240, 240, 240)
+                .addComponent(pw_in, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(390, 390, 390)
+                .addComponent(chk_btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(bg)
         );
 
         pack();
     }// </editor-fold>                        
 
-    private void id_inActionPerformed(java.awt.event.ActionEvent evt) {                                      
-        // TODO add your handling code here:
-    }                                     
-
     private void chk_btnActionPerformed(java.awt.event.ActionEvent evt) {                                        
-        // TODO add your handling code here:    	
+        // TODO add your handling code here:
     	if(db_cont.searchID(id_in.getText())) {
     		error_Msg1.setForeground(new java.awt.Color(255, 0, 0));	
     		error_Msg1.setText("중복되는 ID가 있습니다");
@@ -265,8 +273,8 @@ public class RegGUI extends javax.swing.JFrame {
     		user.setnickName(nick_in.getText());
     		reg_cont.nick_chk = true;
     	}
-    }
-    
+    }                                        
+
     private void pw_in2KeyReleased(java.awt.event.KeyEvent evt) {                                   
         // TODO add your handling code here:
     	if(new String(pw_in.getPassword()).equals(new String(pw_in2.getPassword()))) {    		
@@ -279,8 +287,8 @@ public class RegGUI extends javax.swing.JFrame {
     		error_Msg2.setText("비밀번호가 일치하지 않습니다");
     		reg_cont.pw_chk = false;    		
     	}
-    } 
-    
+    }                                  
+
     /**
      * @param args the command line arguments
      */
@@ -289,9 +297,7 @@ public class RegGUI extends javax.swing.JFrame {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */    	
-    	
-    	
+         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -309,9 +315,12 @@ public class RegGUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(RegGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         setVisible(true);
-        /* Create and display the form 	
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        /* Create and display the form */
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new RegGUI().setVisible(true);
             }
@@ -320,6 +329,7 @@ public class RegGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton accept_btn;
+    private javax.swing.JLabel bg;
     private javax.swing.JButton cancel_btn;
     private javax.swing.JButton chk_btn;
     private javax.swing.JButton chk_btn2;
@@ -327,13 +337,8 @@ public class RegGUI extends javax.swing.JFrame {
     private javax.swing.JLabel error_Msg2;
     private javax.swing.JLabel error_Msg3;
     private javax.swing.JTextField id_in;
-    private javax.swing.JLabel id_label;
     private javax.swing.JTextField nick_in;
-    private javax.swing.JLabel nick_label;
     private javax.swing.JPasswordField pw_in;
     private javax.swing.JPasswordField pw_in2;
-    private javax.swing.JLabel pw_label;
-    private javax.swing.JLabel pw_label2;
-    private javax.swing.JLabel title;
     // End of variables declaration                   
 }

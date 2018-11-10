@@ -5,6 +5,11 @@
  */
 package View;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author K
@@ -35,66 +40,86 @@ public class RoomSettingGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         title = new javax.swing.JTextField();
-        room_Title = new javax.swing.JLabel();
         accept_btn = new javax.swing.JButton();
         cancel_btn = new javax.swing.JButton();
+        RoomSetting_bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("방 만들기");
         setLocation(new java.awt.Point(750, 400));
         setResizable(false);
 
+        title.setBackground(new java.awt.Color(231, 230, 230));
+        title.setFont(new java.awt.Font("맑은 고딕", 0, 18)); // NOI18N
+        title.setForeground(new java.awt.Color(102, 102, 102));
+        title.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        title.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                titleFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                titleFocusLost(evt);
+            }
+        });
         title.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 titleActionPerformed(evt);
             }
         });
-
-        room_Title.setText("방 제목");
-
-        accept_btn.setText("확인");
+        Image i;
+        ImageIcon icon;
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/roomSetting/create_btn.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        accept_btn.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/roomSetting/create_clicked.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        accept_btn.setPressedIcon(icon); // NOI18N
         accept_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 accept_btnActionPerformed(evt);
             }
         });
-
-        cancel_btn.setText("취소");
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/roomSetting/cancel_btn.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        cancel_btn.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/roomSetting/cancel_clicked.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        cancel_btn.setPressedIcon(icon); // NOI18N
         cancel_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancel_btnActionPerformed(evt);
             }
         });
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/roomSetting/roomSetting_bg.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        RoomSetting_bg.setIcon(icon); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addComponent(room_Title)
-                .addGap(18, 18, 18)
-                .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(65, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(accept_btn)
-                .addGap(53, 53, 53)
-                .addComponent(cancel_btn)
-                .addGap(109, 109, 109))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(accept_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(cancel_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(RoomSetting_bg)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(room_Title))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancel_btn)
-                    .addComponent(accept_btn))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(170, 170, 170)
+                .addComponent(accept_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(170, 170, 170)
+                .addComponent(cancel_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(90, 90, 90)
+                .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(RoomSetting_bg)
         );
 
         pack();
@@ -102,10 +127,13 @@ public class RoomSettingGUI extends javax.swing.JFrame {
 
     private void titleActionPerformed(java.awt.event.ActionEvent evt) {                                      
         // TODO add your handling code here:
+    	SelectGUI select = new SelectGUI(lobby, title.getText(), true);
+    	select.open();
+    	dispose();
     }                                     
 
     private void accept_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:    
+        // TODO add your handling code here:
     	SelectGUI select = new SelectGUI(lobby, title.getText(), true);
     	select.open();
     	dispose();
@@ -115,6 +143,14 @@ public class RoomSettingGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     	dispose();
     }                                          
+
+    private void titleFocusGained(java.awt.event.FocusEvent evt) {                                  
+        // TODO add your handling code here:
+    }                                 
+
+    private void titleFocusLost(java.awt.event.FocusEvent evt) {                                
+        // TODO add your handling code here:
+    }                               
 
     /**
      * @param args the command line arguments
@@ -142,9 +178,10 @@ public class RoomSettingGUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(RoomSettingGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
         setVisible(true);
         /* Create and display the form */
-      /*  java.awt.EventQueue.invokeLater(new Runnable() {
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new RoomSettingGUI().setVisible(true);
             }
@@ -152,9 +189,9 @@ public class RoomSettingGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify                     
+    private javax.swing.JLabel RoomSetting_bg;
     private javax.swing.JButton accept_btn;
     private javax.swing.JButton cancel_btn;
-    private javax.swing.JLabel room_Title;
     private javax.swing.JTextField title;
     // End of variables declaration                   
 }
