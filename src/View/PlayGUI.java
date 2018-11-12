@@ -33,11 +33,14 @@ public class PlayGUI extends javax.swing.JFrame {
         initComponents();
     }
     
-    public PlayGUI(RoomClient room, int select) {
+    public PlayGUI(RoomClient room) {
     	this.room = room;
-    	this.select = select;
     	octave = 0;
     	initComponents();
+    }
+    
+    public void setSelect(int select) {
+    	this.select = select;
     }
 
     /**
@@ -88,7 +91,7 @@ public class PlayGUI extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -128,54 +131,41 @@ public class PlayGUI extends javax.swing.JFrame {
 				switch (e.getKeyCode()) {
 				case KeyEvent.VK_Q:
 					room.sendMessage("4 " + select +"###" + octave + "***" + 0);
-//					SoundController.Play(file + "C.wav");
 					break;
 				case KeyEvent.VK_2:
-//					SoundController.Play(file + "C#.wav");
 					room.sendMessage("4 " + select +"###" + octave + "***" + 1);
 					break;
 				case KeyEvent.VK_W:
-//					SoundController.Play(file + "D.wav");
 					room.sendMessage("4 " + select +"###" + octave + "***" + 2);
 					break;
 				case KeyEvent.VK_3:
-//					SoundController.Play(file + "D#.wav");
 					room.sendMessage("4 " + select +"###" + octave + "***" + 3);
 					break;
 				case KeyEvent.VK_E:
-//					SoundController.Play(file + "E.wav");
 					room.sendMessage("4 " + select +"###" + octave + "***" + 4);
 					break;
 				case KeyEvent.VK_R:
-//					SoundController.Play(file + "F.wav");
 					room.sendMessage("4 " + select +"###" + octave + "***" + 5);
 					break;
 				case KeyEvent.VK_5:
-//					SoundController.Play(file + "F#.wav");
 					room.sendMessage("4 " + select +"###" + octave + "***" + 6);
 					break;
 				case KeyEvent.VK_T:
-//					SoundController.Play(file + "G.wav");
 					room.sendMessage("4 " + select +"###" + octave + "***" + 7);
 					break;
 				case KeyEvent.VK_6:
-//					SoundController.Play(file + "G#.wav");
 					room.sendMessage("4 " + select +"###" + octave + "***" + 8);
 					break;
 				case KeyEvent.VK_Y:
-//					SoundController.Play(file + "A.wav");
 					room.sendMessage("4 " + select +"###" + octave + "***" + 9);
 					break;
 				case KeyEvent.VK_7:
-//					SoundController.Play(file + "A#.wav");
 					room.sendMessage("4 " + select +"###" + octave + "***" + 10);
 					break;
 				case KeyEvent.VK_U:
-//					SoundController.Play(file + "B.wav");
 					room.sendMessage("4 " + select +"###" + octave + "***" + 11);
 					break;
 				case KeyEvent.VK_I:
-//					SoundController.Play(file + "C_high.wav");
 					room.sendMessage("4 " + select +"###" + octave + "***" + 12);
 					break;
 				case KeyEvent.VK_UP:

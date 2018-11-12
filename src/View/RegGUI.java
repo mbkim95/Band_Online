@@ -54,7 +54,7 @@ public class RegGUI extends javax.swing.JFrame {
         error_Msg2 = new javax.swing.JLabel();
         accept_btn = new javax.swing.JButton();
         cancel_btn = new javax.swing.JButton();
-        nick_in = new javax.swing.JPasswordField();
+        nick_in = new javax.swing.JTextField();
         chk_btn2 = new javax.swing.JButton();
         error_Msg3 = new javax.swing.JLabel();
         bg = new javax.swing.JLabel();
@@ -300,7 +300,7 @@ public class RegGUI extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

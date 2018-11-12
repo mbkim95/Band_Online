@@ -45,22 +45,14 @@ public class RoomSettingGUI extends javax.swing.JFrame {
         RoomSetting_bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("¹æ ¸¸µé±â");
+        setTitle("Create Room");
         setLocation(new java.awt.Point(750, 400));
         setResizable(false);
 
         title.setBackground(new java.awt.Color(231, 230, 230));
         title.setFont(new java.awt.Font("¸¼Àº °íµñ", 0, 18)); // NOI18N
         title.setForeground(new java.awt.Color(102, 102, 102));
-        title.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        title.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                titleFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                titleFocusLost(evt);
-            }
-        });
+        title.setHorizontalAlignment(javax.swing.JTextField.CENTER);        
         title.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 titleActionPerformed(evt);
@@ -127,30 +119,24 @@ public class RoomSettingGUI extends javax.swing.JFrame {
 
     private void titleActionPerformed(java.awt.event.ActionEvent evt) {                                      
         // TODO add your handling code here:
-    	SelectGUI select = new SelectGUI(lobby, title.getText(), true);
-    	select.open();
+//    	SelectGUI select = new SelectGUI(lobby, title.getText(), true);
+//    	select.open();
+    	lobby.sendRoomInfo(title.getText());
     	dispose();
     }                                     
 
     private void accept_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
-    	SelectGUI select = new SelectGUI(lobby, title.getText(), true);
-    	select.open();
+//    	SelectGUI select = new SelectGUI(lobby, title.getText(), true);
+//    	select.open();
+    	lobby.sendRoomInfo(title.getText());
     	dispose();
     }                                          
 
     private void cancel_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
     	dispose();
-    }                                          
-
-    private void titleFocusGained(java.awt.event.FocusEvent evt) {                                  
-        // TODO add your handling code here:
-    }                                 
-
-    private void titleFocusLost(java.awt.event.FocusEvent evt) {                                
-        // TODO add your handling code here:
-    }                               
+    }                                                                    
 
     /**
      * @param args the command line arguments
@@ -163,7 +149,7 @@ public class RoomSettingGUI extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

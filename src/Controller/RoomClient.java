@@ -175,7 +175,6 @@ public class RoomClient {
 		public void checkCmd(String cmd) {								// 서버로부터 받은 명령 체크
 			int chk = Integer.parseInt(cmd.substring(0, 1));			
 			String msg;
-			System.out.println(nickname + "'s cmd : " + cmd);
 			
 			switch(chk) {
 			case 1:														// 유저 목록 업데이트

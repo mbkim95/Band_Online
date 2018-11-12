@@ -7,6 +7,7 @@ package View;
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.text.BadLocationException;
@@ -36,6 +37,7 @@ public class BandGUI extends javax.swing.JFrame {
 	private int select;
 	private int port;
 	private PlayGUI play;
+	private boolean check = false;
 	
     public BandGUI() {
         initComponents();
@@ -46,24 +48,38 @@ public class BandGUI extends javax.swing.JFrame {
     	initComponents();
     }
     
-    public BandGUI(String ip, LobbyGUI lobby, LobbyClient l_client, int port, String title, String nickname, int select) {
+    public BandGUI(String ip, LobbyGUI lobby, LobbyClient l_client, int port, String title, String nickname) {
     	this.lobby = lobby;
     	this.l_client = l_client;
     	this.port = port;
     	this.title = title;
     	this.nickname = nickname;
-    	this.select = select;
     	initComponents();
-    	changeImage(select);
     	room = new RoomClient(port);
     	room.connect(ip, this, nickname);
     	chat = new RoomChatClient(port);
     	chat.connect(ip, this, nickname);
-    	room.sendMessage("2 "+select);
-    	play = new PlayGUI(room, select);
+//    	room.sendMessage("2 "+select);
+    	play = new PlayGUI(room);
     	play.open();
     	play.setVisible(false);
     	setTitle(title);
+    }
+    
+    public void setCheck(boolean check) {
+    	this.check = check;
+    }
+    
+    public void setSelect(int select) {
+    	if(check) {
+    		room.sendMessage("5 "+ this.select + "###" + select);
+    		chat.sendMessage("4 " + nickname + "###" + this.select + "***" + select);
+    	}else {
+    		room.sendMessage("2 "+select);
+    		chat.sendMessage("3 " + nickname + "###" + select);
+    	}
+    	this.select = select;
+    	play.setSelect(select);
     }
     
     public void changeImage(int img) {
@@ -155,8 +171,6 @@ public class BandGUI extends javax.swing.JFrame {
     }
     
     public void deleteRoom() {
-    	System.out.println("delete room!!!");
-    	System.out.println(title);
     	lobby.removeRoom(title);
     	//dispose();
     	//lobby.setVisible(true);
@@ -187,7 +201,7 @@ public class BandGUI extends javax.swing.JFrame {
         keyboard = new javax.swing.JLabel();
         band_bg = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("гуаж╫г");
         setLocation(new java.awt.Point(500, 200));
         setResizable(false);
@@ -376,11 +390,14 @@ public class BandGUI extends javax.swing.JFrame {
 
     private void play_btnActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-    	play.setVisible(true);
+    	if(check)
+    		play.setVisible(true);
     }                                        
 
     private void select_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
+    	SelectGUI select = new SelectGUI(this);
+    	select.open();
     }                                          
 
     /**
@@ -394,7 +411,7 @@ public class BandGUI extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

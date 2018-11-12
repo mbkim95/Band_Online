@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.sound.midi.Instrument;
 
@@ -28,7 +29,7 @@ public class RoomServer extends Thread{
 
 	public void setting() throws IOException {
 		Collections.synchronizedMap(clientsMap);
-		int portNum = 7777 + num;
+		int portNum = 7777 + num;	
 		serverSocket = new ServerSocket(portNum);
 		while (true) {
 			System.out.println("합주실 서버 대기중... (포트 : " + portNum + ")");
@@ -36,7 +37,20 @@ public class RoomServer extends Thread{
 			System.out.println(socket.getInetAddress() + "에서 합주실서버에 접속했습니다.");
 			Receiver receiver = new Receiver(socket);
 			receiver.start();
-		}
+		}			
+	}
+	
+	public void closeServer() {
+		try {
+			if(socket != null) {
+				socket.close();
+			}
+			if(serverSocket != null) {
+				serverSocket.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
 	}
 
 	@Override
@@ -44,7 +58,7 @@ public class RoomServer extends Thread{
 		try {
 			setting();
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("합주실 서버 종료 (포트 : " + (7777 + num) + ")");
 		}
 	}
 
@@ -54,7 +68,6 @@ public class RoomServer extends Thread{
 	}
 
 	public void removeClient(String nick) {		
-		System.out.println("nick : " + nick);
 		clientsMap.remove(nick);
 		sendUserList();				
 	}
@@ -106,13 +119,13 @@ public class RoomServer extends Thread{
 		
 		public void checkMsg(String msg) {
 			String cmd = msg.substring(0, 1);
-			String nickname, title;
+			String nickname, title, n;
 			switch(cmd) {
 			case "1":										// 방 생성
 				nickname = msg.substring(2, msg.indexOf("###"));
 				title = msg.substring(msg.indexOf("###")+3, msg.length());				
 				break;
-			case "2":										// 악기 이미지 변경
+			case "2":										// 처음 악기 설정
 				instruments.add(msg.substring(2, msg.length()));
 				sendCmd("2 " + instruments.size());
 				for(int i=0; i<instruments.size(); i++) {
@@ -122,7 +135,7 @@ public class RoomServer extends Thread{
 			case "3":										// 방 나가기
 				nickname = msg.substring(2, msg.indexOf("###"));
 				title = msg.substring(msg.indexOf("###")+3, msg.indexOf("***"));
-				String n = msg.substring(msg.indexOf("***")+3, msg.length());
+				n = msg.substring(msg.indexOf("***")+3, msg.length());
 				instruments.remove(n);
 				sendCmd("2 " + (instruments.size()+1));
 				int tmp = Integer.parseInt(n) + 5;
@@ -130,13 +143,27 @@ public class RoomServer extends Thread{
 				for(int i=0; i<instruments.size(); i++) {
 					sendCmd(instruments.get(i));
 				}
-				if(instruments.size() == 0) {
+				System.out.println("clients : " +instruments.size());
+				if(clientsMap.size() == 1) {
 					sendCmd("3 " + title);					
 				}
 				removeClient(nickname);
 				break;
 			case "4":									// 악기 연주
 				sendCmd(msg);
+				break;
+			case "5":									// 악기 변경
+				n = msg.substring(2, msg.indexOf("###"));
+				String n2 = msg.substring(msg.indexOf("###")+3, msg.length());
+				instruments.remove(n);
+				instruments.add(n2);
+				sendCmd("2 " + (instruments.size()+1));
+				int tmp2 = Integer.parseInt(n) + 5;
+				sendCmd(Integer.toString(tmp2));
+				for(int i=0; i<instruments.size(); i++) {
+					sendCmd(instruments.get(i));
+				}
+				
 			}			
 		}
 

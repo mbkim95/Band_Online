@@ -19,6 +19,7 @@ public class LobbyServer extends Thread{
 	private int roomNum = 0;
 	private Map<String, DataOutputStream> clientsMap = new HashMap<String, DataOutputStream>();		// 클라이언트 저장용 맵
 	private Map<String, RoomServer> serverMap = new HashMap<String, RoomServer>();
+	private Map<String, String> portMap = new HashMap<String, String>(); 
 	private ArrayList<String> roomList = new ArrayList<String>();
 
 	public void setting() throws IOException {
@@ -108,7 +109,6 @@ public class LobbyServer extends Thread{
 			try {				
 				clientsMap.get(key).writeUTF("2 " + len);
 				for(int i=0; i<roomList.size(); i++) {
-					System.out.println("send to " + key + " " + roomList.get(i));
 					clientsMap.get(key).writeUTF(roomList.get(i));
 				}
 			} catch (IOException e) {
@@ -117,20 +117,28 @@ public class LobbyServer extends Thread{
 		}
 	}
 	
-	public void addRoom(String title) {
-		RoomServer room = new RoomServer(roomNum);
-		RoomChatServer roomChat = new RoomChatServer(roomNum++);
-		room.start();
-		roomChat.start();
-		serverMap.put(title, room);
-		roomList.add(title);
+	public void addRoom(String title, String nickname) {
+		try {
+			RoomServer room = new RoomServer(roomNum);
+			RoomChatServer roomChat = new RoomChatServer(roomNum);
+			room.start();
+			roomChat.start();
+			serverMap.put(title, room);
+			portMap.put(title, Integer.toString(roomNum));
+			System.out.println(title + " : " + roomNum);
+			clientsMap.get(nickname).writeUTF("4 " + title + "###" + roomNum);
+			roomNum++;
+			roomList.add(title);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void deleteRoom(String title) {
-		System.out.println("delete " + title);
 		roomList.remove(title);
+		serverMap.get(title).closeServer();
 		serverMap.remove(title);
-		roomNum--;
+//		roomNum--;
 	}
 	
 	class Receiver extends Thread {
@@ -152,15 +160,24 @@ public class LobbyServer extends Thread{
 			case "1":										// 방 생성
 				nickname = msg.substring(2, msg.indexOf("###"));
 				title = msg.substring(msg.indexOf("###")+3, msg.length());
-				addRoom(title);
+				addRoom(title, nickname);
 				sendRoomList();
 				break;
 			case "2":										// 방 제거
 				title = msg.substring(2, msg.length());
-				System.out.println("server title : " + title);
 				deleteRoom(title);
 				sendRoomList();
-				System.out.println("deltetetete!!!");
+				break;
+			case "3":										// 방 입장
+				try {
+					title = msg.substring(2, msg.indexOf("###"));
+					nickname = msg.substring(msg.indexOf("###") + 3, msg.length());
+					int port = Integer.parseInt(portMap.get(title));
+					System.out.println(title + " : " + port);
+					clientsMap.get(nickname).writeUTF("3 " + title + "###" + port);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				break;
 			}
 		}

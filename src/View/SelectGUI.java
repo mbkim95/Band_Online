@@ -5,6 +5,11 @@
  */
 package View;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author K
@@ -14,28 +19,13 @@ public class SelectGUI extends javax.swing.JFrame {
     /**
      * Creates new form selectGUI
      */
+	private BandGUI band;
+	private int select;
+	private boolean chk = false;
 	
-	private LobbyGUI lobby;
-	private String title;
-	private int idx;
-	private boolean make = false;
-	
-    public SelectGUI() {
+    public SelectGUI(BandGUI band) {
+    	this.band = band;
         initComponents();
-    }
-    
-    public SelectGUI(LobbyGUI lobby, String title, int idx) {
-    	this.lobby = lobby;
-    	this.title = title;
-    	this.idx = idx;
-    	initComponents();
-    }
-    
-    public SelectGUI(LobbyGUI lobby, String title, boolean make) {
-    	this.lobby = lobby;
-    	this.title = title;
-    	this.make = make;
-    	initComponents();
     }
 
     /**
@@ -49,53 +39,156 @@ public class SelectGUI extends javax.swing.JFrame {
 
         enter_btn = new javax.swing.JButton();
         cancel_btn = new javax.swing.JButton();
-        select_list = new javax.swing.JComboBox<>();
+        guitar1 = new javax.swing.JToggleButton();
+        guitar2 = new javax.swing.JToggleButton();
+        drum = new javax.swing.JToggleButton();
+        bass = new javax.swing.JToggleButton();
+        keyboard = new javax.swing.JToggleButton();
+        bg = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setLocation(new java.awt.Point(800, 400));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setLocation(new java.awt.Point(550, 250));
 
-        enter_btn.setText("»Æ¿Œ");
+        enter_btn.setFont(new java.awt.Font("∏º¿∫ ∞ÌµÒ", 0, 15)); // NOI18N
+        Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/select/play_btn.png");
+        ImageIcon icon = new ImageIcon(i);
+        enter_btn.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/select/play_clicked.png");
+        icon = new ImageIcon(i);
+        enter_btn.setPressedIcon(icon); // NOI18N
         enter_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 enter_btnActionPerformed(evt);
             }
         });
 
-        cancel_btn.setText("√Îº“");
+        cancel_btn.setFont(new java.awt.Font("∏º¿∫ ∞ÌµÒ", 0, 15)); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/select/cancel_btn.png");
+        icon = new ImageIcon(i);
+        cancel_btn.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/select/cancel_clicked.png");
+        icon = new ImageIcon(i);
+        cancel_btn.setPressedIcon(icon); // NOI18N
         cancel_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancel_btnActionPerformed(evt);
             }
         });
 
-        select_list.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Guitar 1", "Guitar 2", "Bass", "Keyboard", "Drum" }));
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/select/guitar1_btn.png");
+        icon = new ImageIcon(i);
+        guitar1.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/select/guitar1_clicked.png");
+        icon = new ImageIcon(i);
+        guitar1.setSelectedIcon(icon); // NOI18N
+        guitar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guitar1ActionPerformed(evt);
+            }
+        });
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/select/guitar2_btn.png");
+        icon = new ImageIcon(i);
+        guitar2.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/select/guitar2_clicked.png");
+        icon = new ImageIcon(i);
+        guitar2.setSelectedIcon(icon); // NOI18N
+        guitar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guitar2ActionPerformed(evt);
+            }
+        });
+
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/select/drum_btn.png");
+        icon = new ImageIcon(i);
+        drum.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/select/drum_clicked.png");
+        icon = new ImageIcon(i);
+        drum.setSelectedIcon(icon); // NOI18N
+        drum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                drumActionPerformed(evt);
+            }
+        });
+
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/select/bass_btn.png");
+        icon = new ImageIcon(i);
+        bass.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/select/bass_clicked.png");
+        icon = new ImageIcon(i);
+        bass.setSelectedIcon(icon); // NOI18N
+        bass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bassActionPerformed(evt);
+            }
+        });
+        
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/select/keyboard_btn.png");
+        icon = new ImageIcon(i);
+        keyboard.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/select/keyboard_clicked.png");
+        icon = new ImageIcon(i);
+        keyboard.setSelectedIcon(icon); // NOI18N
+        keyboard.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                keyboardActionPerformed(evt);
+            }
+        });
+
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/select/select_bg.png");
+        icon = new ImageIcon(i);
+        bg.setIcon(icon); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addComponent(enter_btn)
-                        .addGap(30, 30, 30)
-                        .addComponent(cancel_btn))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(85, 85, 85)
-                        .addComponent(select_list, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addGap(197, 197, 197)
+                .addComponent(enter_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(428, 428, 428)
+                .addComponent(cancel_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(624, 624, 624)
+                .addComponent(keyboard, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(170, 170, 170)
+                .addComponent(guitar2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(473, 473, 473)
+                .addComponent(bass, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(guitar1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(322, 322, 322)
+                .addComponent(drum, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(bg)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(64, Short.MAX_VALUE)
-                .addComponent(select_list, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(enter_btn)
-                    .addComponent(cancel_btn))
-                .addGap(21, 21, 21))
+                .addGap(476, 476, 476)
+                .addComponent(enter_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(476, 476, 476)
+                .addComponent(cancel_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(113, 113, 113)
+                .addComponent(keyboard, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(113, 113, 113)
+                .addComponent(guitar2, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(113, 113, 113)
+                .addComponent(bass, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(113, 113, 113)
+                .addComponent(guitar1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(113, 113, 113)
+                .addComponent(drum, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(bg)
         );
 
         pack();
@@ -103,19 +196,73 @@ public class SelectGUI extends javax.swing.JFrame {
 
     private void enter_btnActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
-//    	BandGUI band = new BandGUI(lobby, title, select_list.getSelectedIndex());
-//    	band.start();
-    	if(make)
-    		lobby.sendRoomInfo(title, select_list.getSelectedIndex());
-    	else 
-    		lobby.enterRoom(title, idx, select_list.getSelectedIndex());    	
-    	dispose();    	
+    	if(chk) {
+    		band.setSelect(select);
+    		band.setCheck(true);
+    		dispose();
+    	}
     }                                         
 
     private void cancel_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
+    	dispose();
     }                                          
 
+    private void guitar1ActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        // TODO add your handling code here:
+            guitar1.setSelected(true);
+            guitar2.setSelected(false);
+            bass.setSelected(false);
+            keyboard.setSelected(false);
+            drum.setSelected(false);
+            select = 0;
+            chk = true;
+    }                                       
+
+    private void guitar2ActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        // TODO add your handling code here:
+            guitar1.setSelected(false);
+            guitar2.setSelected(true);
+            bass.setSelected(false);
+            keyboard.setSelected(false);
+            drum.setSelected(false);
+            select = 1;
+            chk = true;
+    }                                       
+
+    private void bassActionPerformed(java.awt.event.ActionEvent evt) {                                     
+        // TODO add your handling code here:
+            guitar1.setSelected(false);
+            guitar2.setSelected(false);
+            bass.setSelected(true);
+            keyboard.setSelected(false);
+            drum.setSelected(false);
+            select = 2;
+            chk = true;
+    }                                    
+
+    private void keyboardActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+            guitar1.setSelected(false);
+            guitar2.setSelected(false);
+            bass.setSelected(false);
+            keyboard.setSelected(true);
+            drum.setSelected(false);
+            select = 3;
+            chk = true;
+    }                                      
+
+    private void drumActionPerformed(java.awt.event.ActionEvent evt) {                                     
+    	// TODO add your handling code here:
+    	guitar1.setSelected(false);
+    	guitar2.setSelected(false);
+    	bass.setSelected(false);
+    	keyboard.setSelected(false);
+    	drum.setSelected(true);
+    	select = 4;
+    	chk = true;
+    }         
+    
     /**
      * @param args the command line arguments
      */
@@ -127,7 +274,7 @@ public class SelectGUI extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -153,8 +300,13 @@ public class SelectGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify                     
+    private javax.swing.JToggleButton bass;
+    private javax.swing.JLabel bg;
     private javax.swing.JButton cancel_btn;
+    private javax.swing.JToggleButton drum;
     private javax.swing.JButton enter_btn;
-    private javax.swing.JComboBox<String> select_list;
+    private javax.swing.JToggleButton guitar1;
+    private javax.swing.JToggleButton guitar2;
+    private javax.swing.JToggleButton keyboard;
     // End of variables declaration                   
 }

@@ -40,13 +40,26 @@ public class RoomChatServer extends Thread{
 			receiver.start();			
 		}
 	}
+	
+	public void closeServer() {
+		try {
+			if(socket != null) {
+				socket.close();
+			}
+			if(serverSocket != null) {
+				serverSocket.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}
 
 	@Override
 	public void run() {
 		try {
 			setting();
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("합주실 채팅 서버 종료 (포트 : " + (8777 + num) + ")");
 		}
 	}
 
@@ -95,6 +108,68 @@ public class RoomChatServer extends Thread{
 			}
 		}
 	}
+	
+	public void setInstruments(String nickname, int n) {
+		String inst = "";
+		switch(n) {
+		case 0:
+			inst += "기타1을";
+			break;
+		case 1:
+			inst += "기타2를";
+			break;
+		case 2:
+			inst += "베이스를";
+			break;
+		case 3:
+			inst += "키보드를";
+			break;
+		case 4:
+			inst += "드럼을";
+			break;			
+		}
+		sendCmd("2 [" + nickname + "]님이 " + inst + " 선택하였습니다\n");
+	}
+	
+	public void changeInstruments(String nickname, int n1, int n2) {
+		String inst1 = "", inst2 = "";
+		switch(n1) {
+		case 0:
+			inst1 += "기타1에서 ";
+			break;
+		case 1:
+			inst1 += "기타2에서 ";
+			break;
+		case 2:
+			inst1 += "베이스에서 ";
+			break;
+		case 3:
+			inst1 += "키보드에서 ";
+			break;
+		case 4:
+			inst1 += "드럼에서 ";
+			break;			
+		}
+		
+		switch(n2) {
+		case 0:
+			inst2 += "기타1로";
+			break;
+		case 1:
+			inst2 += "기타2로";
+			break;
+		case 2:
+			inst2 += "베이스로";
+			break;
+		case 3:
+			inst2 += "키보드로";
+			break;
+		case 4:
+			inst2 += "드럼으로";
+			break;			
+		}
+		sendCmd("2 [" + nickname + "]님이 " + inst1 + inst2 + " 변경하였습니다\n");
+	}
 
 	class Receiver extends Thread {
 		private DataInputStream in;
@@ -110,15 +185,30 @@ public class RoomChatServer extends Thread{
 		
 		public void checkMsg(String msg) {
 			String cmd = msg.substring(0, 1);
-			String message; 
+			String message, nickname;
+			int n1, n2;
 			switch(cmd) {
 			case "1":										// 방에서 나가기
-				String nickname = msg.substring(2, msg.length());
+				nickname = msg.substring(2, msg.length());
 				removeClient(nickname);
+				if(clientsMap.size() == 0) {
+					closeServer();
+				}
 				break;
 			case "2":										// 채팅
 				message = msg.substring(2, msg.length());
 				sendMessage(message);
+				break;
+			case "3":										// 악기 설정
+				nickname = msg.substring(2, msg.indexOf("###"));
+				n1 = Integer.parseInt(msg.substring(msg.indexOf("###") + 3, msg.length()));
+				setInstruments(nickname, n1);
+				break;
+			case "4":										// 악기 변경
+				nickname = msg.substring(2, msg.indexOf("###"));
+				n1 = Integer.parseInt(msg.substring(msg.indexOf("###") + 3, msg.indexOf("***")));
+				n2 = Integer.parseInt(msg.substring(msg.indexOf("***") + 3, msg.length()));
+				changeInstruments(nickname, n1, n2);
 				break;
 			}
 		}

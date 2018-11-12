@@ -68,7 +68,7 @@ public class LobbyClient {
 		
 		public void checkCmd(String cmd) {								// 서버로부터 받은 명령 체크
 			int chk = Integer.parseInt(cmd.substring(0, 1));			
-			String msg;
+			String msg, title;
 			
 			switch(chk) {
 			case 1:														// 유저 목록 업데이트
@@ -87,15 +87,23 @@ public class LobbyClient {
 				try {
 					lobby.clearGameRoom();
 					int n = Integer.parseInt(cmd.substring(2, cmd.length()));
-					System.out.println("clients n : " + n);
 					for(int i=0; i<n; i++) {
 						msg = in.readUTF();
-						System.out.println("received " + msg);
 						lobby.addGameRoom(msg);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();					
 				}
+				break;
+			case 3:													// 방 입장
+				title = cmd.substring(2,  cmd.indexOf("###"));
+				int port = Integer.parseInt(cmd.substring(cmd.indexOf("###") + 3, cmd.length()));
+				lobby.enterRoom(title, port);
+				break;
+			case 4:													// 방 생성
+				title = cmd.substring(2, cmd.indexOf("###"));
+				int num = Integer.parseInt(cmd.substring(cmd.indexOf("###") + 3, cmd.length()));
+				lobby.makeRoom(title, num);
 				break;
 			}				
 		}
