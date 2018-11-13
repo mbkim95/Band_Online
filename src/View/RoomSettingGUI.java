@@ -40,13 +40,15 @@ public class RoomSettingGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         title = new javax.swing.JTextField();
+        password = new javax.swing.JTextField();
+        use_btn = new javax.swing.JToggleButton();
         accept_btn = new javax.swing.JButton();
         cancel_btn = new javax.swing.JButton();
         RoomSetting_bg = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Create Room");
-        setLocation(new java.awt.Point(750, 400));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("방 만들기");
+        setLocation(new java.awt.Point(680, 320));
         setResizable(false);
 
         title.setBackground(new java.awt.Color(231, 230, 230));
@@ -58,8 +60,25 @@ public class RoomSettingGUI extends javax.swing.JFrame {
                 titleActionPerformed(evt);
             }
         });
-        Image i;
-        ImageIcon icon;
+
+        password.setBackground(new java.awt.Color(231, 230, 230));
+        password.setFont(new java.awt.Font("맑은 고딕", 0, 18)); // NOI18N
+        password.setForeground(new java.awt.Color(102, 102, 102));
+        password.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        password.setEnabled(false);
+        
+        Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/roomSetting/use_btn.png");
+		ImageIcon icon = new ImageIcon(i);  //이미지 넣기
+        use_btn.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/roomSetting/use_clicked.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        use_btn.setSelectedIcon(icon); // NOI18N
+        use_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                use_btnActionPerformed(evt);
+            }
+        });
+
         i = Toolkit.getDefaultToolkit().getImage("rsc/images/roomSetting/create_btn.png");
 		icon = new ImageIcon(i);  //이미지 넣기
         accept_btn.setIcon(icon); // NOI18N
@@ -71,6 +90,7 @@ public class RoomSettingGUI extends javax.swing.JFrame {
                 accept_btnActionPerformed(evt);
             }
         });
+
         i = Toolkit.getDefaultToolkit().getImage("rsc/images/roomSetting/cancel_btn.png");
 		icon = new ImageIcon(i);  //이미지 넣기
         cancel_btn.setIcon(icon); // NOI18N
@@ -82,6 +102,7 @@ public class RoomSettingGUI extends javax.swing.JFrame {
                 cancel_btnActionPerformed(evt);
             }
         });
+
         i = Toolkit.getDefaultToolkit().getImage("rsc/images/roomSetting/roomSetting_bg.png");
 		icon = new ImageIcon(i);  //이미지 넣기
         RoomSetting_bg.setIcon(icon); // NOI18N
@@ -91,26 +112,33 @@ public class RoomSettingGUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(accept_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(cancel_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(186, 186, 186)
+                .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(186, 186, 186)
+                .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addComponent(use_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(79, 79, 79)
+                .addComponent(accept_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
+                .addComponent(cancel_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(RoomSetting_bg)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(170, 170, 170)
-                .addComponent(accept_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(170, 170, 170)
-                .addComponent(cancel_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(97, 97, 97)
+                .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(use_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(accept_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancel_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addComponent(RoomSetting_bg)
         );
 
@@ -119,24 +147,38 @@ public class RoomSettingGUI extends javax.swing.JFrame {
 
     private void titleActionPerformed(java.awt.event.ActionEvent evt) {                                      
         // TODO add your handling code here:
-//    	SelectGUI select = new SelectGUI(lobby, title.getText(), true);
-//    	select.open();
-    	lobby.sendRoomInfo(title.getText());
+    	if(use_btn.isSelected()) {
+    		lobby.sendRoomInfo(title.getText(), password.getText());
+    	}else {
+    		lobby.sendRoomInfo(title.getText());
+    	}
     	dispose();
     }                                     
 
     private void accept_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
-//    	SelectGUI select = new SelectGUI(lobby, title.getText(), true);
-//    	select.open();
-    	lobby.sendRoomInfo(title.getText());
+    	if(use_btn.isSelected()) {
+    		lobby.sendRoomInfo(title.getText(), password.getText());
+    	}else {
+    		lobby.sendRoomInfo(title.getText());
+    	}
     	dispose();
     }                                          
 
     private void cancel_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
     	dispose();
-    }                                                                    
+    }                                          
+
+    private void use_btnActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        // TODO add your handling code here:
+        if(use_btn.isSelected()){
+            password.setEnabled(true);
+        }else{
+            password.setText("");
+            password.setEnabled(false);
+        }
+    }                                       
 
     /**
      * @param args the command line arguments
@@ -178,6 +220,8 @@ public class RoomSettingGUI extends javax.swing.JFrame {
     private javax.swing.JLabel RoomSetting_bg;
     private javax.swing.JButton accept_btn;
     private javax.swing.JButton cancel_btn;
+    private javax.swing.JTextField password;
     private javax.swing.JTextField title;
+    private javax.swing.JToggleButton use_btn;
     // End of variables declaration                   
 }

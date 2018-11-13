@@ -69,6 +69,7 @@ public class LobbyClient {
 		public void checkCmd(String cmd) {								// 서버로부터 받은 명령 체크
 			int chk = Integer.parseInt(cmd.substring(0, 1));			
 			String msg, title;
+			int port;
 			
 			switch(chk) {
 			case 1:														// 유저 목록 업데이트
@@ -97,12 +98,17 @@ public class LobbyClient {
 				break;
 			case 3:													// 방 입장
 				title = cmd.substring(2,  cmd.indexOf("###"));
-				int port = Integer.parseInt(cmd.substring(cmd.indexOf("###") + 3, cmd.length()));
+				port = Integer.parseInt(cmd.substring(cmd.indexOf("###")+3, cmd.length()));
 				lobby.enterRoom(title, port);
 				break;
-			case 4:													// 방 생성
+			case 4:													// 비밀 방 입장
 				title = cmd.substring(2, cmd.indexOf("###"));
-				int num = Integer.parseInt(cmd.substring(cmd.indexOf("###") + 3, cmd.length()));
+				port = Integer.parseInt(cmd.substring(cmd.indexOf("###")+3, cmd.length()));
+				lobby.enterPrivateRoom(title, port);
+				break;
+			case 5:													// 방 생성
+				title = cmd.substring(2, cmd.indexOf("###"));
+				int num = Integer.parseInt(cmd.substring(cmd.indexOf("###")+3, cmd.length()));
 				lobby.makeRoom(title, num);
 				break;
 			}				

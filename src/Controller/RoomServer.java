@@ -22,6 +22,7 @@ public class RoomServer extends Thread{
 	private int num;
 	private Map<String, DataOutputStream> clientsMap = new HashMap<String, DataOutputStream>();		// 클라이언트 저장용 맵
 	private ArrayList<String> instruments = new ArrayList<String>();
+	private boolean password = false;
 	
 	public RoomServer(int num) {
 		this.num = num;
@@ -51,6 +52,14 @@ public class RoomServer extends Thread{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
+	}
+	
+	public boolean hasPassword() {
+		return password;
+	}
+	
+	public void setPassword(boolean password) {
+		this.password = password;
 	}
 
 	@Override

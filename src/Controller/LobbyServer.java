@@ -18,9 +18,10 @@ public class LobbyServer extends Thread{
 	private String msg;
 	private int roomNum = 0;
 	private Map<String, DataOutputStream> clientsMap = new HashMap<String, DataOutputStream>();		// 클라이언트 저장용 맵
-	private Map<String, RoomServer> serverMap = new HashMap<String, RoomServer>();
-	private Map<String, String> portMap = new HashMap<String, String>(); 
-	private ArrayList<String> roomList = new ArrayList<String>();
+	private Map<String, RoomServer> roomMap = new HashMap<String, RoomServer>();					// 서버 관리 맵
+	private Map<String, String> portMap = new HashMap<String, String>(); 							// 방마다 포트번호 다르게 설정해주기위한 맵
+	private Map<String, String> passwdMap = new HashMap<String, String>();							// 비밀번호 저장 맵
+	private ArrayList<String> roomList = new ArrayList<String>();									// 방 이름 저장용 맵
 
 	public void setting() throws IOException {
 		Collections.synchronizedMap(clientsMap);
@@ -123,10 +124,29 @@ public class LobbyServer extends Thread{
 			RoomChatServer roomChat = new RoomChatServer(roomNum);
 			room.start();
 			roomChat.start();
-			serverMap.put(title, room);
+			roomMap.put(title, room);
 			portMap.put(title, Integer.toString(roomNum));
 			System.out.println(title + " : " + roomNum);
-			clientsMap.get(nickname).writeUTF("4 " + title + "###" + roomNum);
+			clientsMap.get(nickname).writeUTF("5 " + title + "###" + roomNum);
+			roomNum++;
+			roomList.add(title);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void addRoom(String title, String nickname, String password) {
+		try {
+			RoomServer room = new RoomServer(roomNum);
+			RoomChatServer roomChat = new RoomChatServer(roomNum);
+			room.start();
+			room.setPassword(true);
+			roomChat.start();
+			roomMap.put(title, room);
+			portMap.put(title, Integer.toString(roomNum));
+			passwdMap.put(title, password);
+			System.out.println(title + " : " + roomNum);
+			clientsMap.get(nickname).writeUTF("5 " + title + "###" + roomNum);
 			roomNum++;
 			roomList.add(title);
 		} catch (IOException e) {
@@ -136,8 +156,8 @@ public class LobbyServer extends Thread{
 	
 	public void deleteRoom(String title) {
 		roomList.remove(title);
-		serverMap.get(title).closeServer();
-		serverMap.remove(title);
+		roomMap.get(title).closeServer();
+		roomMap.remove(title);
 //		roomNum--;
 	}
 	
@@ -155,12 +175,21 @@ public class LobbyServer extends Thread{
 		
 		public void checkMsg(String msg) {
 			String cmd = msg.substring(0, 1);
-			String nickname, title;
+			String nickname, title, password;
+			int port;
+			
 			switch(cmd) {
-			case "1":										// 방 생성
+			case "0":										// 방 생성
 				nickname = msg.substring(2, msg.indexOf("###"));
 				title = msg.substring(msg.indexOf("###")+3, msg.length());
 				addRoom(title, nickname);
+				sendRoomList();
+				break;
+			case "1":										// 비밀방 생성
+				nickname = msg.substring(2, msg.indexOf("###"));
+				title = msg.substring(msg.indexOf("###") + 3, msg.indexOf("***"));
+				password = msg.substring(msg.indexOf("***")+3, msg.length());
+				addRoom(title, nickname, password);
 				sendRoomList();
 				break;
 			case "2":										// 방 제거
@@ -172,9 +201,26 @@ public class LobbyServer extends Thread{
 				try {
 					title = msg.substring(2, msg.indexOf("###"));
 					nickname = msg.substring(msg.indexOf("###") + 3, msg.length());
-					int port = Integer.parseInt(portMap.get(title));
+					port = Integer.parseInt(portMap.get(title));
 					System.out.println(title + " : " + port);
-					clientsMap.get(nickname).writeUTF("3 " + title + "###" + port);
+					if(roomMap.get(title).hasPassword()) {
+						clientsMap.get(nickname).writeUTF("4 " + title + "###" + port);
+					}else {
+						clientsMap.get(nickname).writeUTF("3 " + title + "###" + port);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				break;
+			case "4":										// 비밀방 비밀번호 확인
+				try {
+					title = msg.substring(2, msg.indexOf("###"));
+					nickname = msg.substring(msg.indexOf("###") +3, msg.indexOf("***"));
+					password = msg.substring(msg.indexOf("***")+3, msg.indexOf("&&&"));
+					port = Integer.parseInt(msg.substring(msg.indexOf("&&&")+3, msg.length()));					
+					if(passwdMap.get(title).equals(password)) {
+						clientsMap.get(nickname).writeUTF("3 " + title + "###" + port);
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

@@ -107,7 +107,11 @@ public class LobbyGUI extends javax.swing.JFrame {
     }
     
     public void sendRoomInfo(String title) {
-    	lobby.sendMessage("1 "+ NICKNAME + "###" + title);    	    	
+    	lobby.sendMessage("0 "+ NICKNAME + "###" + title);    	    	
+    }
+    
+    public void sendRoomInfo(String title, String password) {
+    	lobby.sendMessage("1 "+ NICKNAME + "###" + title + "***" + password);    	    	
     }
     
     public void makeRoom(String title, int room) {
@@ -116,10 +120,14 @@ public class LobbyGUI extends javax.swing.JFrame {
     	band.open();
     }
     
-    
     public void enterRoom(String title, int room) {
     	band = new BandGUI(ip, this, lobby, room, title, NICKNAME);
     	band.open();
+    }
+    
+    public void enterPrivateRoom(String title, int room) {
+    	EnterRoomGUI enterRoom = new EnterRoomGUI(this, lobby, title, room, NICKNAME);
+    	enterRoom.open();
     }
     
     public void removeRoom(String title) {
