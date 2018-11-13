@@ -155,6 +155,7 @@ public class EnterRoomGUI extends javax.swing.JFrame {
     private void enter_btnActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
     	client.sendMessage("4 " + title + "###" + nickname + "***" + password.getText() + "&&&" + room);
+    	dispose();
     }                                         
 
     private void cancel_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           
