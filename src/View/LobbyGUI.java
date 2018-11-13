@@ -9,7 +9,9 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.ListModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -34,6 +36,7 @@ public class LobbyGUI extends javax.swing.JFrame {
 	private int idx = 0;												// ∞‘¿”πÊ ∏Ò∑œ¿ª ¿ß«— ¿Œµ¶Ω∫
 	private BandGUI band;
 	private String ip;
+	private RecvMsgGUI recvMsg;
 	
     public LobbyGUI() {
         initComponents();
@@ -48,7 +51,21 @@ public class LobbyGUI extends javax.swing.JFrame {
     	lobby = new LobbyClient();
     	lobby.connect(ip, this, NICKNAME);
     	id.setText(NICKNAME);
-    }    
+    }
+    
+    public void receiveLetter(String nickname) {
+    	recvMsg = new RecvMsgGUI(lobby, nickname, NICKNAME);
+    	recvMsg.open();
+    	recvMsg.setVisible(false);
+    }
+    
+    public void appendLetter(String msg) {
+    	recvMsg.appendLetter(msg);
+    }
+    
+    public void showMessage() {
+    	recvMsg.setVisible(true);
+    }
     
     public void appendMsg(String msg) {
     	try {
@@ -74,11 +91,20 @@ public class LobbyGUI extends javax.swing.JFrame {
     }
     
     public void clearUserList() {
-    	userList.setText("");    	
+    	String str[] = {""};
+    	userList.setListData(str);
+//    	userList.setText("");    	
     }
     
     public void appendUserList(String nickname) {    	
-    	userList.append(nickname + "\n");
+    	ListModel<String> list = userList.getModel();
+    	DefaultListModel<String> dList = new DefaultListModel<String>();
+    	
+    	for(int i=0; i<list.getSize(); i++) {
+    		dList.addElement(list.getElementAt(i));
+    	}
+    	dList.addElement(nickname);    	
+    	userList.setModel(dList);
     }    
     
     public void clearGameRoom() {
@@ -121,6 +147,7 @@ public class LobbyGUI extends javax.swing.JFrame {
     }
     
     public void enterRoom(String title, int room) {
+    	setVisible(false);
     	band = new BandGUI(ip, this, lobby, room, title, NICKNAME);
     	band.open();
     }
@@ -156,10 +183,10 @@ public class LobbyGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
-        listPanel = new javax.swing.JScrollPane();
-        userList = new javax.swing.JTextArea();
         chatScroll = new javax.swing.JScrollPane();
         textPane = new javax.swing.JTextPane();
+        listPanel = new javax.swing.JScrollPane();
+        userList = new javax.swing.JList<>();
         chatField = new javax.swing.JTextField();
         id = new javax.swing.JLabel();
         title1 = new javax.swing.JLabel();
@@ -176,24 +203,31 @@ public class LobbyGUI extends javax.swing.JFrame {
         exit_btn = new javax.swing.JToggleButton();
         bg = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Lobby");
         setLocation(new java.awt.Point(450, 200));
         setResizable(false);
-
-        userList.setEditable(false);
-        userList.setBackground(new java.awt.Color(231, 230, 230));
-        userList.setColumns(20);
-        userList.setFont(new java.awt.Font("∏º¿∫ ∞ÌµÒ", 0, 15)); // NOI18N
-        userList.setForeground(new java.awt.Color(102, 102, 102));
-        userList.setRows(3);
-        userList.setRequestFocusEnabled(false);
-        listPanel.setViewportView(userList);
 
         textPane.setEditable(false);
         textPane.setFont(new java.awt.Font("∏º¿∫ ∞ÌµÒ", 0, 18)); // NOI18N
         textPane.setForeground(new java.awt.Color(102, 102, 102));
         chatScroll.setViewportView(textPane);
+
+        userList.setBackground(new java.awt.Color(231, 230, 230));
+        userList.setFont(new java.awt.Font("∏º¿∫ ∞ÌµÒ", 0, 18)); // NOI18N
+        userList.setForeground(new java.awt.Color(102, 102, 102));
+        userList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "user1", "user2", "user3" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        userList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        userList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                userListMouseClicked(evt);
+            }
+        });
+        listPanel.setViewportView(userList);
 
         chatField.setBackground(new java.awt.Color(231, 230, 230));
         chatField.setFont(new java.awt.Font("∏º¿∫ ∞ÌµÒ", 0, 18)); // NOI18N
@@ -219,10 +253,8 @@ public class LobbyGUI extends javax.swing.JFrame {
         title4.setFont(new java.awt.Font("∏º¿∫ ∞ÌµÒ", 0, 24)); // NOI18N
         title4.setText("TITLE4");
 
-        Image i;
-        ImageIcon icon;
-        i = Toolkit.getDefaultToolkit().getImage("rsc/images/lobby/room_enter_btn.png");
-		icon = new ImageIcon(i);  //¿ÃπÃ¡ˆ ≥÷±‚
+        Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/lobby/room_enter_btn.png");
+		ImageIcon icon = new ImageIcon(i);  //¿ÃπÃ¡ˆ ≥÷±‚
         enter_btn1.setIcon(icon); // NOI18N
         i = Toolkit.getDefaultToolkit().getImage("rsc/images/lobby/room_enter_clicked.png");
 		icon = new ImageIcon(i);  //¿ÃπÃ¡ˆ ≥÷±‚
@@ -326,104 +358,95 @@ public class LobbyGUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(380, 380, 380)
-                .addComponent(next_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(80, 80, 80)
+                .addComponent(title1)
+                .addGap(251, 251, 251)
+                .addComponent(title2))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(250, 250, 250)
+                .addComponent(enter_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(250, 250, 250)
+                .addComponent(enter_btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(200, 200, 200)
+                .addComponent(id))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(title3))
+                    .addComponent(make_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(60, 60, 60)
+                .addComponent(prev_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(title4))
+                    .addComponent(next_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(111, 111, 111)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(enter_btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(exit_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(60, 60, 60)
+                .addComponent(listPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(chatScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 990, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(make_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addComponent(title3))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addComponent(title1))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(400, 400, 400)
-                .addComponent(title2))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(290, 290, 290)
-                .addComponent(prev_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(730, 730, 730)
-                .addComponent(listPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(590, 590, 590)
-                .addComponent(exit_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(chatField, javax.swing.GroupLayout.PREFERRED_SIZE, 990, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(580, 580, 580)
-                .addComponent(enter_btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(400, 400, 400)
-                .addComponent(title4))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(250, 250, 250)
                 .addComponent(enter_btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(860, 860, 860)
-                .addComponent(id))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(250, 250, 250)
-                .addComponent(enter_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(580, 580, 580)
-                .addComponent(enter_btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addComponent(chatField, javax.swing.GroupLayout.PREFERRED_SIZE, 990, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(bg)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(340, 340, 340)
-                .addComponent(next_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(title1)
+                    .addComponent(title2))
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(id)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(enter_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(enter_btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(title3)
+                        .addGap(107, 107, 107)
+                        .addComponent(make_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(140, 140, 140)
+                        .addComponent(prev_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(title4)
+                        .addGap(107, 107, 107)
+                        .addComponent(next_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(enter_btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40)
+                        .addComponent(exit_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(listPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(30, 30, 30)
                 .addComponent(chatScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(340, 340, 340)
-                .addComponent(make_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(200, 200, 200)
-                .addComponent(title3))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(title1))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(title2))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(340, 340, 340)
-                .addComponent(prev_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(230, 230, 230)
-                .addComponent(listPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(340, 340, 340)
-                .addComponent(exit_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(570, 570, 570)
-                .addComponent(chatField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(110, 110, 110)
-                .addComponent(enter_btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(200, 200, 200)
-                .addComponent(title4))
             .addGroup(layout.createSequentialGroup()
                 .addGap(260, 260, 260)
                 .addComponent(enter_btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(id))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(110, 110, 110)
-                .addComponent(enter_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(260, 260, 260)
-                .addComponent(enter_btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(570, 570, 570)
+                .addComponent(chatField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(bg)
         );
 
@@ -434,26 +457,22 @@ public class LobbyGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
 //    	enterRoom(title1.getText(), idx);
     	lobby.sendMessage("3 " + title1.getText() + "###" + NICKNAME);
-    	setVisible(false);
     }                                          
 
     private void enter_btn2ActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
 //    	enterRoom(title2.getText(), idx+1);
     	lobby.sendMessage("3 " + title2.getText() + "###" + NICKNAME);
-    	setVisible(false);
     }                                          
 
     private void enter_btn3ActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
     	lobby.sendMessage("3 " + title3.getText() + "###" + NICKNAME);
-    	setVisible(false);
     }                                          
 
     private void enter_btn4ActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
     	lobby.sendMessage("3 " + title4.getText() + "###" + NICKNAME);
-    	setVisible(false);
     }                                          
 
     private void make_btnActionPerformed(java.awt.event.ActionEvent evt) {                                         
@@ -527,6 +546,13 @@ public class LobbyGUI extends javax.swing.JFrame {
     	chatField.setText("");
     }                                         
 
+    private void userListMouseClicked(java.awt.event.MouseEvent evt) {                                      
+        // TODO add your handling code here:
+    	String receiver = userList.getSelectedValue();
+    	SendMsgGUI sendMsg = new SendMsgGUI(lobby, receiver, NICKNAME);
+    	sendMsg.open();
+    }                                     
+
     /**
      * @param args the command line arguments
      */
@@ -582,6 +608,6 @@ public class LobbyGUI extends javax.swing.JFrame {
     private javax.swing.JLabel title2;
     private javax.swing.JLabel title3;
     private javax.swing.JLabel title4;
-    private javax.swing.JTextArea userList;
+    private javax.swing.JList<String> userList;
     // End of variables declaration                   
 }

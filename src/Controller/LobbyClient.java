@@ -111,6 +111,20 @@ public class LobbyClient {
 				int num = Integer.parseInt(cmd.substring(cmd.indexOf("###")+3, cmd.length()));
 				lobby.makeRoom(title, num);
 				break;
+			case 6:													// 쪽지 받기
+				try {
+					nickname = cmd.substring(2, cmd.indexOf("###"));
+					lobby.receiveLetter(nickname);
+					int cnt = Integer.parseInt(cmd.substring(cmd.indexOf("###")+3, cmd.length()));
+					for(int i=0; i<cnt; i++) {
+						String contents = in.readUTF();
+						lobby.appendLetter(contents);
+					}
+					lobby.showMessage();
+				}catch(IOException e) {
+					e.printStackTrace();
+				}
+				break;
 			}				
 		}
 

@@ -203,7 +203,7 @@ public class LobbyServer extends Thread{
 					nickname = msg.substring(msg.indexOf("###") + 3, msg.length());
 					port = Integer.parseInt(portMap.get(title));
 					System.out.println(title + " : " + port);
-					if(roomMap.get(title).hasPassword()) {
+					if(roomMap.get(title).hasPassword()) {					// 비밀번호있는지 확인
 						clientsMap.get(nickname).writeUTF("4 " + title + "###" + port);
 					}else {
 						clientsMap.get(nickname).writeUTF("3 " + title + "###" + port);
@@ -224,6 +224,21 @@ public class LobbyServer extends Thread{
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				break;
+			case "5":										// 메시지 받기
+				try {
+					nickname = msg.substring(2, msg.indexOf("###"));
+					String sender = msg.substring(msg.indexOf("###")+3, msg.indexOf("***"));
+					int cnt = Integer.parseInt(msg.substring(msg.indexOf("***")+3, msg.length()));
+					clientsMap.get(nickname).writeUTF("6 " + sender + "###" + cnt);
+					for(int i=0; i<cnt; i++) {
+						String contents = in.readUTF();
+						System.out.println("Letter : " + contents);
+						clientsMap.get(nickname).writeUTF(contents);
+					}
+				}catch (IOException e) {
+					e.printStackTrace();
+				}			
 				break;
 			}
 		}
