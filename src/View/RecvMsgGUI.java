@@ -139,7 +139,7 @@ public class RecvMsgGUI extends javax.swing.JFrame {
     
     private void reply_btnActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
-    	SendMsgGUI sendMsg = new SendMsgGUI(lobby, receiver, sender);
+    	SendMsgGUI sendMsg = new SendMsgGUI(lobby, sender, receiver);
     	sendMsg.open();
     	dispose();
     }                                         

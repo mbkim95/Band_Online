@@ -549,8 +549,10 @@ public class LobbyGUI extends javax.swing.JFrame {
     private void userListMouseClicked(java.awt.event.MouseEvent evt) {                                      
         // TODO add your handling code here:
     	String receiver = userList.getSelectedValue();
-    	SendMsgGUI sendMsg = new SendMsgGUI(lobby, receiver, NICKNAME);
-    	sendMsg.open();
+    	if(!receiver.equals(NICKNAME)) {
+    		SendMsgGUI sendMsg = new SendMsgGUI(lobby, receiver, NICKNAME);
+    		sendMsg.open();
+    	}
     }                                     
 
     /**

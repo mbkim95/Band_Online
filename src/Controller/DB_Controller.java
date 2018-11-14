@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Sha256;
 import Model.UserData;
 
 import java.sql.Connection;
@@ -56,7 +57,7 @@ public class DB_Controller {
 		try {			
 			 // 한글처리를 위해  이클립스와 데이터베이스 설치시 한글처리를 미리 해주면 코드에서 한글처리 안해도 됩니다.			 
 			sql += "('" + new String(id) + "','"
-					+ new String(passwd) + "','"
+					+ Sha256.encrypt(new String(passwd)) + "','"
 					//+ new String(nickname.getBytes(), "ISO-8859-1") + "', 0, 0);";					
 					+ new String(nickname) + "');";
 			stmt.executeUpdate(sql);
@@ -107,7 +108,7 @@ public class DB_Controller {
             ResultSet rs = stmt.executeQuery(sql);
             if(rs.next()) {									// id가 있을 때
             //System.out.println(rs.getString("id"));
-            	if(password.equals(rs.getString("password")))		// 비밀번호 일치
+            	if(Sha256.encrypt(password).equals(rs.getString("password")))		// 비밀번호 일치
             		search = true;
             	else
             		search = false;            	
