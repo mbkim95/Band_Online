@@ -26,7 +26,8 @@ public class LobbyChatClient{
 			receiver = new Receiver(socket, gui);
 			receiver.start();			
 		}catch(IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("LobbyChatClient connect Error");
 		}
 	}
 	
@@ -41,7 +42,8 @@ public class LobbyChatClient{
 			if(socket != null)
 				socket.close();
 		}catch(IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("LobbyChatClient disconnect Error");
 		}
 	}
 	
@@ -49,7 +51,8 @@ public class LobbyChatClient{
 		try {
 			out.writeUTF(msg);
 		}catch(IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("LobbyChatClient sendMessage Error");
 		}
 	}
 	

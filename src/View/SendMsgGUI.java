@@ -57,6 +57,7 @@ public class SendMsgGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setLocation(new java.awt.Point(620, 200));
+        setResizable(false);
 
         user.setFont(new java.awt.Font("¸¼Àº °íµñ", 0, 24)); // NOI18N
         user.setText("User 1");

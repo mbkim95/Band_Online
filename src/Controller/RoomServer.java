@@ -74,6 +74,7 @@ public class RoomServer extends Thread{
 	public void addClient(String nick, DataOutputStream out) throws IOException {
 		clientsMap.put(nick, out);		
 		sendUserList();
+		sendInstrumentsImage();
 	}
 
 	public void removeClient(String nick) {		
@@ -114,6 +115,13 @@ public class RoomServer extends Thread{
 		}
 	}
 	
+	public void sendInstrumentsImage() {
+		sendCmd("2 " + instruments.size());
+		for(int i=0; i<instruments.size(); i++) {
+			sendCmd(instruments.get(i));
+		}
+	}
+	
 	class Receiver extends Thread {
 		private DataInputStream in;
 		private DataOutputStream out;
@@ -136,10 +144,7 @@ public class RoomServer extends Thread{
 				break;
 			case "2":										// 처음 악기 설정
 				instruments.add(msg.substring(2, msg.length()));
-				sendCmd("2 " + instruments.size());
-				for(int i=0; i<instruments.size(); i++) {
-					sendCmd(instruments.get(i));
-				}
+				sendInstrumentsImage();
 				break;				
 			case "3":										// 방 나가기
 				nickname = msg.substring(2, msg.indexOf("###"));

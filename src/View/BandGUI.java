@@ -143,9 +143,13 @@ public class BandGUI extends javax.swing.JFrame {
     	try {
     		StyledDocument document = (StyledDocument) chatPane.getDocument();    		
     		document.insertString(document.getLength(), msg, null);        	
-    		chatPanel.getVerticalScrollBar().setValue(chatPanel.getVerticalScrollBar().getMaximum());		// 채팅창 자동 스크롤
     	} catch (BadLocationException e) {
-    		e.printStackTrace();
+
+    	}
+    	try {
+    		chatPanel.getVerticalScrollBar().setValue(chatPanel.getVerticalScrollBar().getMaximum());		// 채팅창 자동 스크롤
+    	}catch(ArrayIndexOutOfBoundsException | NullPointerException e) {
+    		
     	}
     }
     
@@ -156,10 +160,15 @@ public class BandGUI extends javax.swing.JFrame {
     		StyleConstants.setForeground(styleSet, new java.awt.Color(0, 204, 51));
     		StyleConstants.setItalic(styleSet, true);
         	document.insertString(document.getLength(), msg, styleSet);    		
-    		chatPanel.getVerticalScrollBar().setValue(chatPanel.getVerticalScrollBar().getMaximum());		// 채팅창 자동 스크롤
     	} catch (BadLocationException e) {
     		e.printStackTrace();
     	}
+    	try {
+    		chatPanel.getVerticalScrollBar().setValue(chatPanel.getVerticalScrollBar().getMaximum());		// 채팅창 자동 스크롤
+    	}catch(ArrayIndexOutOfBoundsException | NullPointerException e) {
+    		
+    	}
+    	
     }
     
     public void clearUserList() {
@@ -372,9 +381,11 @@ public class BandGUI extends javax.swing.JFrame {
 
     private void chatFieldActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
-    	String msg = "2 [" + nickname + "] : " + chatField.getText() + "\n";
-    	chat.sendMessage(msg);
-    	chatField.setText("");
+    	if(!chatField.getText().equals("")) {
+    		String msg = "2 [" + nickname + "] : " + chatField.getText() + "\n";
+    		chat.sendMessage(msg);
+    		chatField.setText("");
+    	}
     }                                         
 
     private void exit_btnActionPerformed(java.awt.event.ActionEvent evt) {                                         

@@ -55,6 +55,7 @@ public class PlayGUI extends javax.swing.JFrame {
         buttonInfo = new javax.swing.JLabel();
         
         setLocation(new java.awt.Point(400, 300));
+        setResizable(false);
         
         Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/key.png");
 		ImageIcon icon = new ImageIcon(i);  //이미지 넣기

@@ -41,7 +41,8 @@ public class LobbyChatServer extends Thread{
 		try {
 			setting();
 		} catch (IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("LobbyChatServer setting Error");
 		}
 	}
 
@@ -73,7 +74,8 @@ public class LobbyChatServer extends Thread{
 			try {
 				clientsMap.get(key).writeUTF(msg);				
 			} catch (IOException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
+				System.out.println("LobbyChatServer sendCmd Error");
 			}
 		}
 	}	
@@ -86,7 +88,8 @@ public class LobbyChatServer extends Thread{
 			try {
 				clientsMap.get(key).writeUTF("1 " + msg);
 			} catch (IOException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
+				System.out.println("LobbyChatServer sendMessage Error");
 			}
 		}
 	}

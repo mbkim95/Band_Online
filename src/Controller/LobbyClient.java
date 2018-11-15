@@ -26,7 +26,8 @@ public class LobbyClient {
 			receiver = new Receiver(socket, gui);
 			receiver.start();			
 		}catch(IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("LobbyClient connect Error");
 		}
 	}
 	
@@ -41,7 +42,8 @@ public class LobbyClient {
 			if(socket != null)
 				socket.close();
 		}catch(IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("LobbyClient disconnect Error");
 		}
 	}
 	
@@ -49,7 +51,8 @@ public class LobbyClient {
 		try {
 			out.writeUTF(msg);
 		}catch(IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("LobbyClient sendMessage Error");
 		}
 	}
 	
@@ -66,7 +69,7 @@ public class LobbyClient {
 			this.lobby = lobby;
 		}
 		
-		public void checkCmd(String cmd) {								// 서버로부터 받은 명령 체크
+		public void checkCmd(String cmd) {								// 서버로부터 받은 명령 체크			
 			int chk = Integer.parseInt(cmd.substring(0, 1));			
 			String msg, title;
 			int port;
@@ -81,7 +84,8 @@ public class LobbyClient {
 						lobby.appendUserList(msg);
 					}
 				}catch(IOException e) {
-					e.printStackTrace();
+//					e.printStackTrace();
+					System.out.println("LobbyClient checkCmd case 1 Error");
 				}
 				break;
 			case 2:														// 방 목록 업데이트
@@ -93,7 +97,8 @@ public class LobbyClient {
 						lobby.addGameRoom(msg);
 					}
 				} catch (IOException e) {
-					e.printStackTrace();					
+//					e.printStackTrace();			
+					System.out.println("LobbyClient checkCmd case 2 Error");
 				}
 				break;
 			case 3:													// 방 입장
@@ -122,10 +127,14 @@ public class LobbyClient {
 					}
 					lobby.showMessage();
 				}catch(IOException e) {
-					e.printStackTrace();
+//					e.printStackTrace();
+					System.out.println("LobbyClient checkCmd case 6 Error");
 				}
 				break;
-			}				
+			case 7:													// password 틀린 경우
+				lobby.passwordError();
+				break;
+			}					
 		}
 
 		public void run() {

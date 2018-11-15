@@ -48,6 +48,7 @@ public class SelectGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setLocation(new java.awt.Point(550, 250));
+        setResizable(false);
 
         enter_btn.setFont(new java.awt.Font("¸¼Àº °íµñ", 0, 15)); // NOI18N
         Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/select/play_btn.png");

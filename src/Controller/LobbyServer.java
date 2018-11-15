@@ -40,7 +40,8 @@ public class LobbyServer extends Thread{
 		try {
 			setting();
 		} catch (IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("LobbyServer setting Error");
 		}
 	}
 
@@ -64,7 +65,8 @@ public class LobbyServer extends Thread{
 			try {
 				clientsMap.get(key).writeUTF(msg);				
 			} catch (IOException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
+				System.out.println("LobbyServer sendCmd Error");
 			}
 		}
 	}
@@ -83,7 +85,8 @@ public class LobbyServer extends Thread{
 					clientsMap.get(key).writeUTF((String) entry.getKey());
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
+				System.out.println("LobbyServer sendUserList Error");
 			}
 		}
 	}
@@ -96,7 +99,8 @@ public class LobbyServer extends Thread{
 			try {
 				clientsMap.get(key).writeUTF("2 " + msg);
 			} catch (IOException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
+				System.out.println("LobbyServer sendMessage Error");
 			}
 		}
 	}
@@ -113,7 +117,8 @@ public class LobbyServer extends Thread{
 					clientsMap.get(key).writeUTF(roomList.get(i));
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
+				System.out.println("LobbyServer sendRoomList Error");
 			}
 		}
 	}
@@ -131,7 +136,8 @@ public class LobbyServer extends Thread{
 			roomNum++;
 			roomList.add(title);
 		} catch (IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("LobbyServer addRoom Error");
 		}
 	}
 	
@@ -150,7 +156,8 @@ public class LobbyServer extends Thread{
 			roomNum++;
 			roomList.add(title);
 		} catch (IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("LobbyServer addPasswordRooom Error");
 		}
 	}
 	
@@ -209,7 +216,8 @@ public class LobbyServer extends Thread{
 						clientsMap.get(nickname).writeUTF("3 " + title + "###" + port);
 					}
 				} catch (IOException e) {
-					e.printStackTrace();
+//					e.printStackTrace();
+					System.out.println("LobbyServer checkMsg case 3 Error");
 				}
 				break;
 			case "4":										// 비밀방 비밀번호 확인
@@ -220,9 +228,12 @@ public class LobbyServer extends Thread{
 					port = Integer.parseInt(msg.substring(msg.indexOf("&&&")+3, msg.length()));					
 					if(passwdMap.get(title).equals(password)) {
 						clientsMap.get(nickname).writeUTF("3 " + title + "###" + port);
+					}else {
+						clientsMap.get(nickname).writeUTF("7");
 					}
 				} catch (IOException e) {
-					e.printStackTrace();
+//					e.printStackTrace();
+					System.out.println("LobbyServer checkMsg case 4 Error");
 				}
 				break;
 			case "5":										// 메시지 받기
@@ -237,7 +248,8 @@ public class LobbyServer extends Thread{
 						clientsMap.get(nickname).writeUTF(contents);
 					}
 				}catch (IOException e) {
-					e.printStackTrace();
+//					e.printStackTrace();
+					System.out.println("LobbyServer checkMsg case 5 Error");
 				}			
 				break;
 			}

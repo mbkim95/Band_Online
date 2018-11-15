@@ -47,6 +47,7 @@ public class ExitGUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 //        setTitle("프로그램 종료");
         setLocation(new java.awt.Point(800, 450));
+        setResizable(false);
 
         Image i;
         ImageIcon icon;

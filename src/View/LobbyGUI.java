@@ -67,13 +67,18 @@ public class LobbyGUI extends javax.swing.JFrame {
     	recvMsg.setVisible(true);
     }
     
-    public void appendMsg(String msg) {
+    public void appendMsg(String msg) {    	
+    	StyledDocument document = (StyledDocument) textPane.getDocument();    		
     	try {
-    		StyledDocument document = (StyledDocument) textPane.getDocument();    		
-    		document.insertString(document.getLength(), msg, null);        	
+			document.insertString(document.getLength(), msg, null);
+		} catch (BadLocationException e1) {
+			e1.printStackTrace();
+		}    			
+    
+    	try {
     		chatScroll.getVerticalScrollBar().setValue(chatScroll.getVerticalScrollBar().getMaximum());		// 채팅창 자동 스크롤
-    	} catch (BadLocationException e) {
-    		e.printStackTrace();
+    	} catch(ArrayIndexOutOfBoundsException | NullPointerException e) {
+    		
     	}
     }
     
@@ -84,9 +89,14 @@ public class LobbyGUI extends javax.swing.JFrame {
     		StyleConstants.setForeground(styleSet, new java.awt.Color(0, 204, 51));
     		StyleConstants.setItalic(styleSet, true);
         	document.insertString(document.getLength(), msg, styleSet);    		
-    		chatScroll.getVerticalScrollBar().setValue(chatScroll.getVerticalScrollBar().getMaximum());		// 채팅창 자동 스크롤
     	} catch (BadLocationException e) {
-    		e.printStackTrace();
+//    		e.printStackTrace();
+    		System.out.println("LobbyGUI appendSystemMsg Error");
+    	}
+    	try {
+    		chatScroll.getVerticalScrollBar().setValue(chatScroll.getVerticalScrollBar().getMaximum( ));		// 채팅창 자동 스크롤
+    	} catch(ArrayIndexOutOfBoundsException | NullPointerException e) {
+    		
     	}
     }
     
@@ -172,6 +182,11 @@ public class LobbyGUI extends javax.swing.JFrame {
         enter_btn4.setEnabled(false);
         prev_btn.setEnabled(false);
         next_btn.setEnabled(false);
+    }
+    
+    public void passwordError() {
+    	ErrorGUI error = new ErrorGUI();
+    	error.open();
     }
 
     /**
@@ -541,9 +556,11 @@ public class LobbyGUI extends javax.swing.JFrame {
 
     private void chatFieldActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
-    	String msg = "[" + NICKNAME + "] : " + chatField.getText() + "\n";
-    	chat.sendMessage("1 " + msg);    	
-    	chatField.setText("");
+    	if(!chatField.getText().equals("")) {
+    		String msg = "[" + NICKNAME + "] : " + chatField.getText() + "\n";
+    		chat.sendMessage("1 " + msg);    	
+    		chatField.setText("");
+    	}
     }                                         
 
     private void userListMouseClicked(java.awt.event.MouseEvent evt) {                                      
@@ -572,13 +589,17 @@ public class LobbyGUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LobbyGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        	System.out.println("class not found");
+//            java.util.logging.Logger.getLogger(LobbyGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LobbyGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        	System.out.println("instantiationException");
+//            java.util.logging.Logger.getLogger(LobbyGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LobbyGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        	System.out.println("IllegalAccessException");
+//            java.util.logging.Logger.getLogger(LobbyGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LobbyGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        	System.out.println("UpsupportedLookAndFeelException");
+//            java.util.logging.Logger.getLogger(LobbyGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
