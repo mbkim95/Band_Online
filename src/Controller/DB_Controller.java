@@ -53,19 +53,33 @@ public class DB_Controller {
 		String id = user.getId();
 		String passwd = user.getPassword();		
 		String nickname = user.getNickname();		
-		String sql = "INSERT INTO user(id, password, nickname) VALUES";
+		String sql = "INSERT INTO user(id, password, nickname, notification, online) VALUES";
 		try {			
 			 // 한글처리를 위해  이클립스와 데이터베이스 설치시 한글처리를 미리 해주면 코드에서 한글처리 안해도 됩니다.			 
 			sql += "('" + new String(id) + "','"
 					+ Sha256.encrypt(new String(passwd)) + "','"
 					//+ new String(nickname.getBytes(), "ISO-8859-1") + "', 0, 0);";					
-					+ new String(nickname) + "');";
+					+ new String(nickname) + "', 0, 0);";
 			stmt.executeUpdate(sql);
 			success = true;
 		} catch (Exception e) {
 			System.out.println(e);
 			success = false;
 		} 
+		return success;
+	}
+	
+	public static boolean change(String nick, String password) {
+		String sql = "UPDATE user SET password='";
+		boolean success = false;
+		try {					 
+			sql += Sha256.encrypt(new String(password)) + "' where nickname='" + nick + "';";
+			stmt.executeUpdate(sql);
+			success = true;
+		} catch (Exception e) {
+			System.out.println(e);
+			success = false;
+		}
 		return success;
 	}
 	
@@ -107,7 +121,6 @@ public class DB_Controller {
         	sql += (id + "';");               
             ResultSet rs = stmt.executeQuery(sql);
             if(rs.next()) {									// id가 있을 때
-            //System.out.println(rs.getString("id"));
             	if(Sha256.encrypt(password).equals(rs.getString("password")))		// 비밀번호 일치
             		search = true;
             	else
@@ -115,12 +128,27 @@ public class DB_Controller {
             }else {											// id가 없을 때
             	search = false;
             }
-            //if(rs.getString("id").equals(id) && rs.getString("password").equals(password))
-           	//search = true;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return search;
+	}
+	
+	public static String getID(String nickname) {
+		String id = null;		
+		String sql = "select id from user where nickname='";
+		
+        try {
+        	sql += (nickname + "';");               
+            ResultSet rs = stmt.executeQuery(sql);
+            if(rs.next()) {
+            	id = rs.getString("id");
+            	return id;
+            }                  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id;
 	}
 	
 	public static UserData getUser(String id) {
@@ -137,11 +165,77 @@ public class DB_Controller {
             }else {
             	return null;
             }
-            //if(rs.getString("id").equals(id) && rs.getString("password").equals(password))
-            	//search = true;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
 	}	
+	
+	public static void setOnline(String nick) {
+		String sql = "UPDATE user SET online='1' where nickname='";
+		try {					 
+			sql += nick + "';";
+			stmt.executeUpdate(sql);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	public static void setOffline(String nick) {
+		String sql = "UPDATE user SET online='0' where nickname='";
+		try {					 
+			sql += nick + "';";
+			stmt.executeUpdate(sql);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	public static boolean isOnline(String nick) {
+		boolean result = false;		
+		String sql = "select online from user where nickname = '";
+		
+        try {
+        	sql += (nick + "';");               
+            ResultSet rs = stmt.executeQuery(sql);
+            if(rs.next()) {									// nickname이 있을 때
+            	if(rs.getString("online").equals("1")) 		// 접속 중
+            		result = true;
+            	else
+            		result = false;            	
+            }else {											// nickname이 없을 때
+            	result = false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+	}
+	
+	public static boolean addFriend(String nick1, String nick2) {
+		boolean result = false;
+		String sql = "insert into relation (user1, user2) values ('";		
+        try {
+        	sql += nick1 + "', '" + nick2 + "');";               
+            ResultSet rs = stmt.executeQuery(sql);           
+           result = true;           
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return result;
+	}
+	
+	public static ResultSet getFriend(String nick) {
+		boolean result = false;
+		ResultSet rs = null;
+		String sql = "select * from relation where user1 = '";	
+        try {
+        	sql += nick + "');";               
+            rs = stmt.executeQuery(sql);                      
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return rs;
+		
+	}
 }

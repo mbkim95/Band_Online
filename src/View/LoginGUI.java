@@ -29,6 +29,7 @@ public class LoginGUI extends javax.swing.JFrame {
         initComponents();
         this.ip = ip;
         db_cont = new DB_Controller(ip);
+    	db_cont.Connect();
     }
 
     /**
@@ -183,17 +184,15 @@ public class LoginGUI extends javax.swing.JFrame {
 
     private void pw_inputActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-    	db_cont.Connect();
     	if(db_cont.Password_Chk(id_input.getText(), new String(pw_input.getPassword()))) {
     		System.out.println("Game Start");
         	setVisible(false);
         	UserData user = db_cont.getUser(id_input.getText());        	
-            LobbyGUI lobby = new LobbyGUI(ip, user.getNickname());                 
+            LobbyGUI lobby = new LobbyGUI(ip, db_cont, user.getNickname());                 
             lobby.open();
     	}else {
     		error_Msg.setForeground(new java.awt.Color(255, 51, 51));
             error_Msg.setText("다시 확인해주세요");
-            db_cont.Disconnect();
     	}  
     }
     
@@ -216,23 +215,26 @@ public class LoginGUI extends javax.swing.JFrame {
 
     private void login_btnActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
-    	db_cont.Connect();
     	if(db_cont.Password_Chk(id_input.getText(), new String(pw_input.getPassword()))) {
-    		System.out.println("Game Start");
-        	setVisible(false);
-        	UserData user = db_cont.getUser(id_input.getText());        	
-            LobbyGUI lobby = new LobbyGUI(ip, user.getNickname());                 
-            lobby.open();
+    		if(db_cont.isOnline(db_cont.getUser(id_input.getText()).getNickname())) {
+    			error_Msg.setForeground(new java.awt.Color(255, 51, 51));
+                error_Msg.setText("접속중인 ID입니다");
+    		}else {
+    			System.out.println("Game Start");
+    			setVisible(false);
+    			UserData user = db_cont.getUser(id_input.getText());        	
+    			LobbyGUI lobby = new LobbyGUI(ip, db_cont, user.getNickname());                 
+    			lobby.open();
+    		}
     	}else {
     		error_Msg.setForeground(new java.awt.Color(255, 51, 51));
             error_Msg.setText("다시 확인해주세요");
-            db_cont.Disconnect();
     	}
     }                                         
 
     private void reg_btnActionPerformed(java.awt.event.ActionEvent evt) {                                        
         // TODO add your handling code here:
-    	RegGUI reg = new RegGUI(ip);
+    	RegGUI reg = new RegGUI(ip, db_cont);
     	reg.open();
     }                               
 
@@ -277,13 +279,13 @@ public class LoginGUI extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-
+        setVisible(true);
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        /*ava.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new LoginGUI(ip).setVisible(true);
             }
-        });
+        });*/
     }
 
     // Variables declaration - do not modify                     

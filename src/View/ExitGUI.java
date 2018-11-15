@@ -10,6 +10,7 @@ import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 
+import Controller.DB_Controller;
 import Controller.LobbyChatClient;
 import Controller.LobbyClient;
 
@@ -24,10 +25,14 @@ public class ExitGUI extends javax.swing.JFrame {
      */
 	private LobbyClient lobby;
 	private LobbyChatClient chat;
+	private DB_Controller db_cont;
+	private String nickname;
 	
-    public ExitGUI(LobbyClient lobby, LobbyChatClient chat) {
+    public ExitGUI(LobbyClient lobby, LobbyChatClient chat, DB_Controller db_cont, String nickname) {
     	this.lobby = lobby;
     	this.chat = chat;
+    	this.db_cont = db_cont;
+    	this.nickname = nickname;
         initComponents();
     }
 
@@ -108,6 +113,8 @@ public class ExitGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     	lobby.disconnect();
     	chat.disconnect();
+    	db_cont.setOffline(nickname);
+    	db_cont.Disconnect();
     }                                        
 
     private void cancel_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           

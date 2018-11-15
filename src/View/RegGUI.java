@@ -28,11 +28,10 @@ public class RegGUI extends javax.swing.JFrame {
 	private UserData user;
 	private String ip;
 	
-    public RegGUI(String ip) {
+    public RegGUI(String ip, DB_Controller db_cont) {
     	this.ip = ip;
     	initComponents();
-        db_cont = new DB_Controller(ip);
-        db_cont.Connect();
+        this.db_cont = db_cont;
         reg_cont = new Reg_Controller();
         user = new UserData();  
     }
@@ -246,7 +245,9 @@ public class RegGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     	if(reg_cont.is_OK()) {
     		try {
-				db_cont.create(user);				
+				db_cont.create(user);
+				user = null;
+		    	reg_cont = null;
 				dispose();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -257,7 +258,8 @@ public class RegGUI extends javax.swing.JFrame {
 
     private void cancel_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
-    	db_cont.Disconnect();
+    	user = null;
+    	reg_cont = null;
     	dispose();
     }                                          
 

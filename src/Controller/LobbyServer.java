@@ -46,7 +46,7 @@ public class LobbyServer extends Thread{
 	}
 
 	public void addClient(String nick, DataOutputStream out) throws IOException {
-		clientsMap.put(nick, out);		
+		clientsMap.put(nick, out);
 		sendUserList();
 		sendRoomList();
 	}
