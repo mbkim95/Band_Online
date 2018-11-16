@@ -241,7 +241,6 @@ public class DB_Controller {
 	}
 	
 	public static ResultSet getFriend(String nick) {
-		boolean result = false;
 		ResultSet rs = null;
 		String sql = "select * from relation where user1='";	
         try {
@@ -269,5 +268,60 @@ public class DB_Controller {
 			e.printStackTrace();
 		}
 		return search;
+	}
+	
+	public static void saveMessage(String receiver, String sender, String date, String time, String contents) {
+		boolean success = false;
+		String text = contents.replace("\'", "\''").replace("\"", "\\\"");		
+		String sql = "insert into message(receiver, sender, date, time, contents, chk) values";
+		try {			
+			 // 한글처리를 위해  이클립스와 데이터베이스 설치시 한글처리를 미리 해주면 코드에서 한글처리 안해도 됩니다.			 
+			sql += "('" + receiver + "','"
+					+ sender + "','"										
+					+ date + "','"
+					+ time + "','"
+					+ text + "', 0);";
+			stmt.executeUpdate(sql);
+		} catch (Exception e) {
+			System.out.println(e);
+		} 
+	}
+	
+	public static ResultSet getMessage(String receiver) {
+		boolean result = false;
+		ResultSet rs = null;
+		String sql = "select * from message where receiver='";	
+        try {
+        	sql += receiver+ "';";               
+            rs = stmt.executeQuery(sql);            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return rs;
+	}
+	
+	public void setCheck(String receiver, String sender, String date, String time) {
+		String sql = "update message set chk=1 where receiver='";
+		try {					 
+			sql += receiver + "' and sender='" + sender + "' and date='" + date + "' and time='" + time + "';";
+			stmt.executeUpdate(sql);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	public int getMail(String receiver) {
+		int cnt = 0;
+		String sql = "select receiver from message where receiver='";
+		try {					 
+			sql += receiver + "' and chk=0;";
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				cnt++;
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return cnt;
 	}
 }

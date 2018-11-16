@@ -10,6 +10,7 @@ import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 
+import Controller.DB_Controller;
 import Controller.LobbyClient;
 
 /**
@@ -21,23 +22,38 @@ public class RecvMsgGUI extends javax.swing.JFrame {
     /**
      * Creates new form sendMsgGUI
      */
+	
 	private LobbyClient lobby;
 	private String sender;
 	private String receiver;
+	private DB_Controller db_cont;
 	
     public RecvMsgGUI() {
         initComponents();
     }   
     
-    public RecvMsgGUI(LobbyClient lobby, String sender, String receiver) {
+    public RecvMsgGUI(DB_Controller db_cont, LobbyClient lobby, String sender, String receiver, String date, String time) {
     	initComponents();
     	this.lobby = lobby;
     	this.sender = sender;
     	this.receiver = receiver;
+    	this.date.setText(date);
+    	this.time.setText(time);
     	user.setText(sender);
     }
     
-    public void appendLetter(String msg) {
+    public RecvMsgGUI(DB_Controller db_cont, LobbyClient lobby, String sender, String receiver, String date, String time, String contents) {
+    	initComponents();
+    	this.lobby = lobby;
+    	this.sender = sender;
+    	this.receiver = receiver;
+    	this.date.setText(date);
+    	this.time.setText(time);
+    	user.setText(sender);
+    	contentsArea.setText(contents);
+    }
+
+	public void appendLetter(String msg) {
     	contentsArea.append(msg);
     }
 
@@ -51,12 +67,12 @@ public class RecvMsgGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         user = new javax.swing.JLabel();
+        date = new javax.swing.JLabel();
+        time = new javax.swing.JLabel();
         contentsPane = new javax.swing.JScrollPane();
         contentsArea = new javax.swing.JTextArea();
         reply_btn = new javax.swing.JButton();
         close_btn = new javax.swing.JButton();
-        date = new javax.swing.JLabel();
-        time = new javax.swing.JLabel();
         bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -65,6 +81,11 @@ public class RecvMsgGUI extends javax.swing.JFrame {
         user.setFont(new java.awt.Font("¸¼Àº °íµñ", 0, 24)); // NOI18N
         user.setText("User 1");
 
+        date.setText("currentDate");
+
+        time.setText("currentTime");
+
+        contentsArea.setEditable(false);
         contentsArea.setBackground(new java.awt.Color(231, 230, 230));
         contentsArea.setColumns(20);
         contentsArea.setFont(new java.awt.Font("¸¼Àº °íµñ", 0, 18)); // NOI18N
@@ -95,10 +116,6 @@ public class RecvMsgGUI extends javax.swing.JFrame {
             }
         });
 
-        date.setText("currentDate");
-
-        time.setText("currentTime");
-
         i = Toolkit.getDefaultToolkit().getImage("rsc/images/recvMsg/recvMsg_bg.png");
         icon = new ImageIcon(i);
         bg.setIcon(icon); // NOI18N
@@ -108,46 +125,44 @@ public class RecvMsgGUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(155, 155, 155)
+                .addComponent(user)
+                .addGap(256, 256, 256)
+                .addComponent(date))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(480, 480, 480)
+                .addComponent(time))
+            .addGroup(layout.createSequentialGroup()
                 .addGap(351, 351, 351)
                 .addComponent(close_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(85, 85, 85)
-                .addComponent(reply_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(61, 61, 61)
                 .addComponent(contentsPane, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(480, 480, 480)
-                .addComponent(time))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(480, 480, 480)
-                .addComponent(date))
+                .addGap(85, 85, 85)
+                .addComponent(reply_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(bg)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(155, 155, 155)
-                .addComponent(user))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(528, 528, 528)
+                .addGap(93, 93, 93)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(user)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(date)))
+                .addGap(22, 22, 22)
+                .addComponent(time)
+                .addGap(360, 360, 360)
                 .addComponent(close_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(528, 528, 528)
-                .addComponent(reply_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(194, 194, 194)
                 .addComponent(contentsPane, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(150, 150, 150)
-                .addComponent(time))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(110, 110, 110)
-                .addComponent(date))
+                .addGap(528, 528, 528)
+                .addComponent(reply_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(bg)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(93, 93, 93)
-                .addComponent(user))
         );
 
         pack();
@@ -155,7 +170,8 @@ public class RecvMsgGUI extends javax.swing.JFrame {
 
     private void reply_btnActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
-    	SendMsgGUI sendMsg = new SendMsgGUI(lobby, sender, receiver);
+    	boolean online = db_cont.isOnline(sender);
+    	SendMsgGUI sendMsg = new SendMsgGUI(db_cont, lobby, sender, receiver, online);
     	sendMsg.open();
     	dispose();
     }                                         
@@ -163,7 +179,7 @@ public class RecvMsgGUI extends javax.swing.JFrame {
     private void close_btnActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
     	dispose();
-    }                                         
+    }                                       
 
     /**
      * @param args the command line arguments

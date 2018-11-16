@@ -119,8 +119,10 @@ public class LobbyClient {
 			case 6:													// 쪽지 받기
 				try {
 					nickname = cmd.substring(2, cmd.indexOf("###"));
-					lobby.receiveLetter(nickname);
-					int cnt = Integer.parseInt(cmd.substring(cmd.indexOf("###")+3, cmd.length()));
+					int cnt = Integer.parseInt(cmd.substring(cmd.indexOf("###")+3, cmd.indexOf("***")));					
+					String date = cmd.substring(cmd.indexOf("***")+3, cmd.indexOf("&&&"));
+					String time = cmd.substring(cmd.indexOf("&&&")+3, cmd.length());
+					lobby.receiveLetter(nickname, date, time);
 					for(int i=0; i<cnt; i++) {
 						String contents = in.readUTF();
 						lobby.appendLetter(contents);

@@ -13,8 +13,8 @@ public class CurrentTime {
 	
 	public static String currentTime() {
 		Date today = new Date();
-		SimpleDateFormat date = new SimpleDateFormat("a h:mm:ss");
+		SimpleDateFormat date = new SimpleDateFormat("a hΩ√ m∫– s√ ");
 		String ret = date.format(today);
 		return ret;
-	} 
+	}
 }

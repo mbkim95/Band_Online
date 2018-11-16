@@ -45,18 +45,33 @@ public class LobbyGUI extends javax.swing.JFrame {
     }
     
     public LobbyGUI(String ip, DB_Controller db_cont, String nickname) {
-    	this.ip = ip;
-    	this.nickname = nickname;    	
     	initComponents();
+    	this.ip = ip;
+    	this.db_cont = db_cont;
+    	this.nickname = nickname;    	
     	chat = new LobbyChatClient();
     	chat.connect(ip, this, nickname);
     	lobby = new LobbyClient();
     	lobby.connect(ip, this, nickname);
     	db_cont.setOnline(nickname);
+    	setNotificationBtn();
     }
     
-    public void receiveLetter(String nickname) {
-    	recvMsg = new RecvMsgGUI(lobby, nickname, this.nickname);
+    public void setNotificationBtn() {
+    	int cnt = db_cont.getMail(nickname);
+    	if(cnt != 0) {
+    		Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/lobby/notification_btn2.png");
+    		ImageIcon icon = new ImageIcon(i);
+    		notification_btn.setIcon(icon);
+    	}else {
+    		Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/lobby/notification_btn.png");
+    		ImageIcon icon = new ImageIcon(i);
+    		notification_btn.setIcon(icon);
+    	}
+    }
+    
+    public void receiveLetter(String nickname, String date, String time) {
+    	recvMsg = new RecvMsgGUI(db_cont, lobby, nickname, this.nickname, date, time);
     	recvMsg.open();
     	recvMsg.setVisible(false);
     }
@@ -73,8 +88,8 @@ public class LobbyGUI extends javax.swing.JFrame {
     	StyledDocument document = (StyledDocument) textPane.getDocument();    		
     	try {
 			document.insertString(document.getLength(), msg, null);
-		} catch (BadLocationException e1) {
-			e1.printStackTrace();
+		} catch (BadLocationException e) {
+			e.printStackTrace();
 		}    			
     
     	try {
@@ -154,13 +169,13 @@ public class LobbyGUI extends javax.swing.JFrame {
     
     public void makeRoom(String title, int room) {
     	setVisible(false);
-    	band = new BandGUI(ip, this, lobby, room, title, nickname);
+    	band = new BandGUI(ip, this, lobby, db_cont, room, title, nickname);
     	band.open();
     }
     
     public void enterRoom(String title, int room) {
     	setVisible(false);
-    	band = new BandGUI(ip, this, lobby, room, title, nickname);
+    	band = new BandGUI(ip, this, lobby, db_cont, room, title, nickname);
     	band.open();
     }
     
@@ -209,6 +224,9 @@ public class LobbyGUI extends javax.swing.JFrame {
         title2 = new javax.swing.JLabel();
         title3 = new javax.swing.JLabel();
         title4 = new javax.swing.JLabel();
+        user_btn = new javax.swing.JButton();
+        friend_btn = new javax.swing.JButton();
+        notification_btn = new javax.swing.JButton();
         enter_btn1 = new javax.swing.JToggleButton();
         enter_btn2 = new javax.swing.JToggleButton();
         enter_btn3 = new javax.swing.JToggleButton();
@@ -217,9 +235,6 @@ public class LobbyGUI extends javax.swing.JFrame {
         prev_btn = new javax.swing.JToggleButton();
         next_btn = new javax.swing.JToggleButton();
         exit_btn = new javax.swing.JToggleButton();
-        user_btn = new javax.swing.JButton();
-        friend_btn = new javax.swing.JButton();
-        notification_btn = new javax.swing.JButton();
         bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -269,8 +284,38 @@ public class LobbyGUI extends javax.swing.JFrame {
         title4.setFont(new java.awt.Font("맑은 고딕", 0, 24)); // NOI18N
         title4.setText("TITLE4");
 
-        Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/lobby/room_enter_btn.png");
+        Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/lobby/user_btn.png");
 		ImageIcon icon = new ImageIcon(i);  //이미지 넣기
+        user_btn.setIcon(icon); // NOI18N
+        user_btn.setContentAreaFilled(false);
+        user_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                user_btnActionPerformed(evt);
+            }
+        });
+
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/lobby/friends_btn.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        friend_btn.setIcon(icon); // NOI18N
+        friend_btn.setContentAreaFilled(false);
+        friend_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                friend_btnActionPerformed(evt);
+            }
+        });
+
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/lobby/notification_btn.png");
+		icon = new ImageIcon(i);  //이미지 넣기
+        notification_btn.setIcon(icon); // NOI18N
+        notification_btn.setContentAreaFilled(false);
+        notification_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                notification_btnActionPerformed(evt);
+            }
+        });
+
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/lobby/room_enter_btn.png");
+		icon = new ImageIcon(i);  //이미지 넣기
         enter_btn1.setIcon(icon); // NOI18N
         i = Toolkit.getDefaultToolkit().getImage("rsc/images/lobby/room_enter_clicked.png");
 		icon = new ImageIcon(i);  //이미지 넣기
@@ -365,27 +410,6 @@ public class LobbyGUI extends javax.swing.JFrame {
             }
         });
 
-        user_btn.setText("user");
-        user_btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                user_btnActionPerformed(evt);
-            }
-        });
-
-        friend_btn.setText("friend");
-        friend_btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                friend_btnActionPerformed(evt);
-            }
-        });
-
-        notification_btn.setText("noti");
-        notification_btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                notification_btnActionPerformed(evt);
-            }
-        });
-
         i = Toolkit.getDefaultToolkit().getImage("rsc/images/lobby/lobby_bg.png");
 		icon = new ImageIcon(i);  //이미지 넣기
         bg.setIcon(icon); // NOI18N
@@ -395,116 +419,102 @@ public class LobbyGUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(940, 940, 940)
-                .addComponent(notification_btn))
+                .addGap(80, 80, 80)
+                .addComponent(title1)
+                .addGap(101, 101, 101)
+                .addComponent(enter_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(250, 250, 250)
+                .addComponent(enter_btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(118, 118, 118)
+                .addComponent(user_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
+                .addComponent(friend_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22)
+                .addComponent(notification_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(80, 80, 80)
-                .addComponent(title3))
+                .addComponent(title3)
+                .addGap(251, 251, 251)
+                .addComponent(title4))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(250, 250, 250)
+                .addComponent(enter_btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(250, 250, 250)
+                .addComponent(enter_btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addComponent(make_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(360, 360, 360)
+                .addComponent(exit_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(chatScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 990, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(290, 290, 290)
-                .addComponent(prev_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(make_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addComponent(title1))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(380, 380, 380)
-                .addComponent(next_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(chatField, javax.swing.GroupLayout.PREFERRED_SIZE, 990, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(250, 250, 250)
-                .addComponent(enter_btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(740, 740, 740)
-                .addComponent(user_btn))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(580, 580, 580)
-                .addComponent(enter_btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(840, 840, 840)
-                .addComponent(friend_btn))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(580, 580, 580)
-                .addComponent(enter_btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(590, 590, 590)
-                .addComponent(exit_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(400, 400, 400)
-                .addComponent(title4))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(250, 250, 250)
-                .addComponent(enter_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(400, 400, 400)
                 .addComponent(title2))
             .addGroup(layout.createSequentialGroup()
                 .addGap(730, 730, 730)
                 .addComponent(listPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(290, 290, 290)
+                .addComponent(prev_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(380, 380, 380)
+                .addComponent(next_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(bg)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addComponent(notification_btn)
-                .addGap(73, 73, 73)
-                .addComponent(title3))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(410, 410, 410)
-                .addComponent(chatScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(340, 340, 340)
-                .addComponent(prev_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(340, 340, 340)
-                .addComponent(make_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(50, 50, 50)
-                .addComponent(title1))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(340, 340, 340)
-                .addComponent(next_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(570, 570, 570)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(title1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(enter_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(enter_btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(user_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(friend_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(notification_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(title3)
+                    .addComponent(title4))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(enter_btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(enter_btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(make_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exit_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addComponent(chatScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
                 .addComponent(chatField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(260, 260, 260)
-                .addComponent(enter_btn3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addComponent(user_btn))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(260, 260, 260)
-                .addComponent(enter_btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addComponent(friend_btn))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(110, 110, 110)
-                .addComponent(enter_btn2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(340, 340, 340)
-                .addComponent(exit_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(200, 200, 200)
-                .addComponent(title4))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(110, 110, 110)
-                .addComponent(enter_btn1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(title2))
             .addGroup(layout.createSequentialGroup()
                 .addGap(230, 230, 230)
                 .addComponent(listPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(340, 340, 340)
+                .addComponent(prev_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(340, 340, 340)
+                .addComponent(next_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(bg)
         );
 
@@ -610,7 +620,7 @@ public class LobbyGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     	String receiver = userList.getSelectedValue();
     	if((receiver != null) && (!receiver.equals(nickname))) {
-    		SendMsgGUI sendMsg = new SendMsgGUI(lobby, receiver, nickname);
+    		SendMsgGUI sendMsg = new SendMsgGUI(db_cont, lobby, receiver, nickname, true);
     		sendMsg.open();
     	}
     }                                     
@@ -629,8 +639,9 @@ public class LobbyGUI extends javax.swing.JFrame {
 
     private void notification_btnActionPerformed(java.awt.event.ActionEvent evt) {                                                 
         // TODO add your handling code here:
-    	System.out.println("notification!!");
-    }                                                
+    	MsgBoxGUI msgBox = new MsgBoxGUI(lobby, db_cont, this, null, nickname, true);
+    	msgBox.open();
+    }                                               
 
     /**
      * @param args the command line arguments
@@ -657,6 +668,20 @@ public class LobbyGUI extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(LobbyGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         setVisible(true);

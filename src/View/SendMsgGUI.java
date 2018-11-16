@@ -11,7 +11,9 @@ import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.text.BadLocationException;
 
+import Controller.DB_Controller;
 import Controller.LobbyClient;
+import Model.CurrentTime;
 
 /**
  *
@@ -26,16 +28,20 @@ public class SendMsgGUI extends javax.swing.JFrame {
 	private LobbyClient lobby;
 	private String receiver;
 	private String sender;
+	private boolean online;
+	private DB_Controller db_cont;
 	
     public SendMsgGUI() {
         initComponents();
     }    
 
-    public SendMsgGUI(LobbyClient lobby, String receiver, String sender) {
+    public SendMsgGUI(DB_Controller db_cont, LobbyClient lobby, String receiver, String sender, boolean online) {
     	initComponents();
+    	this.db_cont = db_cont;
     	this.lobby = lobby;
     	this.receiver = receiver;
     	this.sender = sender;
+    	this.online = online;
     	user.setText(receiver);
 	}
 
@@ -135,34 +141,32 @@ public class SendMsgGUI extends javax.swing.JFrame {
     
     private void send_btnActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-    	try {
-    		int offset = 0;
-    		int len = contentsArea.getText().length();
-    		int cnt = (len / 15) + 1;
-    		if(lobby == null) {
-    			System.out.println("lobby null");
-    		}
-    		if(receiver == null) {
-    			System.out.println("receiver null");
-    		}
-    		if(sender == null) {
-    			System.out.println("sender null");
-    		}    		
-    		lobby.sendMessage("5 " + receiver + "###" + sender + "***" + cnt);
-    		while(offset < len) {
-    			if(offset+15 > len) {
-    				String sender = contentsArea.getText(offset, len - offset);
-    				lobby.sendMessage(sender);
-    			}else {
-    				String sender = contentsArea.getText(offset, 15);
-    				lobby.sendMessage(sender);
+    	String date = CurrentTime.currentDate();
+    	String time = CurrentTime.currentTime();
+    	if(online) {
+    		try {
+    			int offset = 0;
+    			int len = contentsArea.getText().length();
+    			int cnt = (len / 15) + 1;    		    		
+    			lobby.sendMessage("5 " + receiver + "###" + sender + "***" + cnt + "&&&" + date + "$$$" + time);
+    			while(offset < len) {
+    				if(offset+15 > len) {
+    					String sender = contentsArea.getText(offset, len - offset);
+    					lobby.sendMessage(sender);
+    				}else {
+    					String sender = contentsArea.getText(offset, 15);
+    					lobby.sendMessage(sender);
+    				}
+    				offset += 15;
     			}
-    			offset += 15;
+    		} catch (BadLocationException e) {
+    			e.printStackTrace();
     		}
-    	} catch (BadLocationException e) {
-			e.printStackTrace();
-		}
-    	dispose();
+    		dispose();
+    	}else {
+    		db_cont.saveMessage(receiver, sender, date, time, contentsArea.getText());
+    		dispose();
+    	}
     }                                        
 
     private void cancel_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           

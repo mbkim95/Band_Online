@@ -58,7 +58,7 @@ public class UserGUI extends javax.swing.JFrame {
         errorMsg2 = new javax.swing.JLabel();
         errorMsg4 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setLocation(new java.awt.Point(700, 300));
         setResizable(false);
 

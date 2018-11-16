@@ -240,8 +240,10 @@ public class LobbyServer extends Thread{
 				try {
 					nickname = msg.substring(2, msg.indexOf("###"));
 					String sender = msg.substring(msg.indexOf("###")+3, msg.indexOf("***"));
-					int cnt = Integer.parseInt(msg.substring(msg.indexOf("***")+3, msg.length()));
-					clientsMap.get(nickname).writeUTF("6 " + sender + "###" + cnt);
+					int cnt = Integer.parseInt(msg.substring(msg.indexOf("***")+3, msg.indexOf("&&&")));
+					String date = msg.substring(msg.indexOf("&&&")+3, msg.indexOf("$$$"));
+					String time = msg.substring(msg.indexOf("$$$")+3, msg.length());
+					clientsMap.get(nickname).writeUTF("6 " + sender + "###" + cnt + "***" + date + "&&&" + time);
 					for(int i=0; i<cnt; i++) {
 						String contents = in.readUTF();
 						System.out.println("Letter : " + contents);

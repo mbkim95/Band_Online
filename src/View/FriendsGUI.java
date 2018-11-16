@@ -97,11 +97,11 @@ public class FriendsGUI extends javax.swing.JFrame {
         delete_btn = new javax.swing.JButton();
         refresh_btn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setLocation(new java.awt.Point(1000, 300));
         setResizable(false);
 
-        user_nick.setText("jLabel1");
+        user_nick.setText("Friend List");
 
         friendList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -188,10 +188,16 @@ public class FriendsGUI extends javax.swing.JFrame {
 
     private void friendListMouseClicked(java.awt.event.MouseEvent evt) {                                        
         // TODO add your handling code here:
-    	String friend = friendList.getSelectedValue();    	
+    	String friend = friendList.getSelectedValue();
     	if((friend != null) && !(friend.equals(nickname))) {
-    		SendMsgGUI sendMsg = new SendMsgGUI(lobby, friend, nickname);
-    		sendMsg.open();
+    		if((friend.contains(" - 立加吝"))) {
+    			friend = friend.substring(0, friend.indexOf(" - 立加吝"));    		
+    			SendMsgGUI sendMsg = new SendMsgGUI(db_cont, lobby, friend, nickname, true);
+    			sendMsg.open();
+    		}else {
+    			SendMsgGUI sendMsg = new SendMsgGUI(db_cont, lobby, friend, nickname, false);
+    			sendMsg.open();
+    		}
     	}
     }                                       
 
@@ -204,7 +210,7 @@ public class FriendsGUI extends javax.swing.JFrame {
     private void refresh_btnActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
     	getFriends();
-    }                                           
+    } 
 
     /**
      * @param args the command line arguments
