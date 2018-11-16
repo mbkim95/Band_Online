@@ -6,6 +6,7 @@ import Model.UserData;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;;
 
@@ -53,7 +54,7 @@ public class DB_Controller {
 		String id = user.getId();
 		String passwd = user.getPassword();		
 		String nickname = user.getNickname();		
-		String sql = "INSERT INTO user(id, password, nickname, notification, online) VALUES";
+		String sql = "insert into user(id, password, nickname, notification, online) values";
 		try {			
 			 // 한글처리를 위해  이클립스와 데이터베이스 설치시 한글처리를 미리 해주면 코드에서 한글처리 안해도 됩니다.			 
 			sql += "('" + new String(id) + "','"
@@ -70,7 +71,7 @@ public class DB_Controller {
 	}
 	
 	public static boolean change(String nick, String password) {
-		String sql = "UPDATE user SET password='";
+		String sql = "update user set password='";
 		boolean success = false;
 		try {					 
 			sql += Sha256.encrypt(new String(password)) + "' where nickname='" + nick + "';";
@@ -172,7 +173,7 @@ public class DB_Controller {
 	}	
 	
 	public static void setOnline(String nick) {
-		String sql = "UPDATE user SET online='1' where nickname='";
+		String sql = "update user set online=1 where nickname='";
 		try {					 
 			sql += nick + "';";
 			stmt.executeUpdate(sql);
@@ -182,7 +183,7 @@ public class DB_Controller {
 	}
 	
 	public static void setOffline(String nick) {
-		String sql = "UPDATE user SET online='0' where nickname='";
+		String sql = "update user set online=0 where nickname='";
 		try {					 
 			sql += nick + "';";
 			stmt.executeUpdate(sql);
@@ -199,9 +200,10 @@ public class DB_Controller {
         	sql += (nick + "';");               
             ResultSet rs = stmt.executeQuery(sql);
             if(rs.next()) {									// nickname이 있을 때
-            	if(rs.getString("online").equals("1")) 		// 접속 중
+            	if(rs.getString("online").equals("1")) { 		// 접속 중
+            		System.out.println(nick + " 접속중!!!");
             		result = true;
-            	else
+            	}else
             		result = false;            	
             }else {											// nickname이 없을 때
             	result = false;
@@ -217,7 +219,20 @@ public class DB_Controller {
 		String sql = "insert into relation (user1, user2) values ('";		
         try {
         	sql += nick1 + "', '" + nick2 + "');";               
-            ResultSet rs = stmt.executeQuery(sql);           
+            stmt.executeUpdate(sql);           
+           result = true;           
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return result;
+	}
+	
+	public static boolean deleteFriend(String nick1, String nick2) {
+		boolean result = false;
+		String sql = "delete from relation where (user1='";		
+        try {
+        	sql += (nick1 + "' and user2='" + nick2 + "');");               
+            stmt.executeUpdate(sql);           
            result = true;           
         } catch (Exception e) {
             e.printStackTrace();
@@ -228,14 +243,31 @@ public class DB_Controller {
 	public static ResultSet getFriend(String nick) {
 		boolean result = false;
 		ResultSet rs = null;
-		String sql = "select * from relation where user1 = '";	
+		String sql = "select * from relation where user1='";	
         try {
-        	sql += nick + "');";               
-            rs = stmt.executeQuery(sql);                      
+        	sql += nick + "';";               
+            rs = stmt.executeQuery(sql);            
         } catch (Exception e) {
             e.printStackTrace();
         }
 		return rs;
-		
+	}
+	
+	public static boolean searchFriend(String nick1, String nick2) {
+		boolean search = false;
+		ResultSet rs = getFriend(nick1);
+		String friend;
+		try {
+			while(rs.next()) {
+				friend = rs.getString("user2");
+				if(friend.equals(nick2)) {
+					search = true;
+					return search;
+				}
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return search;
 	}
 }

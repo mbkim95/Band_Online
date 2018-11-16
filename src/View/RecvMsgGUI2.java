@@ -16,20 +16,21 @@ import Controller.LobbyClient;
  *
  * @author K
  */
-public class RecvMsgGUI extends javax.swing.JFrame {
+public class RecvMsgGUI2 extends javax.swing.JFrame {
 
     /**
      * Creates new form sendMsgGUI
      */
+	
 	private LobbyClient lobby;
 	private String sender;
 	private String receiver;
 	
-    public RecvMsgGUI() {
+    public RecvMsgGUI2() {
         initComponents();
     }   
     
-    public RecvMsgGUI(LobbyClient lobby, String sender, String receiver) {
+    public RecvMsgGUI2(LobbyClient lobby, String sender, String receiver) {
     	initComponents();
     	this.lobby = lobby;
     	this.sender = sender;
@@ -55,12 +56,11 @@ public class RecvMsgGUI extends javax.swing.JFrame {
         contentsArea = new javax.swing.JTextArea();
         reply_btn = new javax.swing.JButton();
         close_btn = new javax.swing.JButton();
-        date = new javax.swing.JLabel();
-        time = new javax.swing.JLabel();
         bg = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setLocation(new java.awt.Point(620, 200));
+        setResizable(false);
 
         user.setFont(new java.awt.Font("¸¼Àº °íµñ", 0, 24)); // NOI18N
         user.setText("User 1");
@@ -70,7 +70,7 @@ public class RecvMsgGUI extends javax.swing.JFrame {
         contentsArea.setFont(new java.awt.Font("¸¼Àº °íµñ", 0, 18)); // NOI18N
         contentsArea.setRows(5);
         contentsPane.setViewportView(contentsArea);
-
+        
         Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/recvMsg/reply_btn.png");
         ImageIcon icon = new ImageIcon(i);
         reply_btn.setIcon(icon); // NOI18N
@@ -88,16 +88,13 @@ public class RecvMsgGUI extends javax.swing.JFrame {
         close_btn.setIcon(icon); // NOI18N
         i = Toolkit.getDefaultToolkit().getImage("rsc/images/recvMsg/close_clicked.png");
         icon = new ImageIcon(i);
-        close_btn.setPressedIcon(icon); // NOI18N; // NOI18N
+        close_btn.setPressedIcon(icon); // NOI18N
         close_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 close_btnActionPerformed(evt);
             }
         });
-
-        date.setText("currentDate");
-
-        time.setText("currentTime");
+        
 
         i = Toolkit.getDefaultToolkit().getImage("rsc/images/recvMsg/recvMsg_bg.png");
         icon = new ImageIcon(i);
@@ -108,51 +105,39 @@ public class RecvMsgGUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(351, 351, 351)
-                .addComponent(close_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(85, 85, 85)
-                .addComponent(reply_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(155, 155, 155)
+                .addComponent(user))
             .addGroup(layout.createSequentialGroup()
                 .addGap(61, 61, 61)
                 .addComponent(contentsPane, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(480, 480, 480)
-                .addComponent(time))
+                .addGap(85, 85, 85)
+                .addComponent(reply_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(480, 480, 480)
-                .addComponent(date))
+                .addGap(351, 351, 351)
+                .addComponent(close_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(bg)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(155, 155, 155)
-                .addComponent(user))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(528, 528, 528)
-                .addComponent(close_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(528, 528, 528)
-                .addComponent(reply_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(93, 93, 93)
+                .addComponent(user))
             .addGroup(layout.createSequentialGroup()
                 .addGap(194, 194, 194)
                 .addComponent(contentsPane, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(150, 150, 150)
-                .addComponent(time))
+                .addGap(528, 528, 528)
+                .addComponent(reply_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(110, 110, 110)
-                .addComponent(date))
+                .addGap(528, 528, 528)
+                .addComponent(close_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(bg)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(93, 93, 93)
-                .addComponent(user))
         );
 
         pack();
-    }// </editor-fold>                        
-
+    }// </editor-fold>
+    
     private void reply_btnActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
     	SendMsgGUI sendMsg = new SendMsgGUI(lobby, sender, receiver);
@@ -163,7 +148,7 @@ public class RecvMsgGUI extends javax.swing.JFrame {
     private void close_btnActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
     	dispose();
-    }                                         
+    }
 
     /**
      * @param args the command line arguments
@@ -182,23 +167,21 @@ public class RecvMsgGUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RecvMsgGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RecvMsgGUI2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RecvMsgGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RecvMsgGUI2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RecvMsgGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RecvMsgGUI2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RecvMsgGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RecvMsgGUI2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         setVisible(true);
         /* Create and display the form */
         /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RecvMsgGUI().setVisible(true);
+                new rcvMsgGUI().setVisible(true);
             }
         });*/
     }
@@ -208,9 +191,7 @@ public class RecvMsgGUI extends javax.swing.JFrame {
     private javax.swing.JButton close_btn;
     private javax.swing.JTextArea contentsArea;
     private javax.swing.JScrollPane contentsPane;
-    private javax.swing.JLabel date;
     private javax.swing.JButton reply_btn;
-    private javax.swing.JLabel time;
     private javax.swing.JLabel user;
     // End of variables declaration                   
 }

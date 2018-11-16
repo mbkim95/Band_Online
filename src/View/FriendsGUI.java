@@ -5,6 +5,16 @@
  */
 package View;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
+
+import Controller.DB_Controller;
+import Controller.LobbyClient;
+
 /**
  *
  * @author K
@@ -14,8 +24,60 @@ public class FriendsGUI extends javax.swing.JFrame {
     /**
      * Creates new form FriendsGUI
      */
-    public FriendsGUI() {
+	private DB_Controller db_cont; 
+	private String nickname;
+	private LobbyClient lobby;
+	private ArrayList<String> f_list = new ArrayList<String>();
+	private ArrayList<String> online_list = new ArrayList<String>();
+	
+    public FriendsGUI(DB_Controller db_cont, LobbyClient lobby, String nickname) {
         initComponents();
+        this.db_cont = db_cont;
+        this.nickname = nickname;
+        this.lobby = lobby;
+        user_nick.setText(nickname);
+        getFriends();
+    }
+    
+    public void getFriends() {
+    	getDB();
+    	ListModel<String> list = friendList.getModel();
+		DefaultListModel<String> dList = new DefaultListModel<String>();    
+    	int size = f_list.size();
+    	String nickname;
+    	boolean online;
+    	for(int i=0; i<size; i++) {
+    		online = db_cont.isOnline(f_list.get(i));
+    		if(online) {
+    			nickname = f_list.get(i);
+    			dList.addElement(nickname + " - Á¢¼ÓÁß");
+    			online_list.add(nickname);
+    		}else {
+    			nickname = f_list.get(i);
+    			dList.addElement(nickname);
+    		}
+    	}
+		friendList.setModel(dList);
+    }
+    
+    public void getDB() {    	
+    	f_list.clear();
+    	online_list.clear();
+    	try {
+//    		ListModel<String> list = friendList.getModel();
+//    		DefaultListModel<String> dList = new DefaultListModel<String>();    		
+    		ResultSet rs = db_cont.getFriend(nickname);
+    		String friend;
+    		boolean online = false;
+			while(rs.next()) {
+				friend = rs.getString("user2");
+				f_list.add(friend);				
+//				dList.addElement(friend);
+			}
+//			friendList.setModel(dList);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}    	    	
     }
 
     /**
@@ -32,8 +94,10 @@ public class FriendsGUI extends javax.swing.JFrame {
         friendList = new javax.swing.JList<>();
         friend_label = new javax.swing.JLabel();
         add_btn = new javax.swing.JButton();
+        delete_btn = new javax.swing.JButton();
+        refresh_btn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(1000, 300));
         setResizable(false);
 
@@ -61,6 +125,20 @@ public class FriendsGUI extends javax.swing.JFrame {
             }
         });
 
+        delete_btn.setText("delete");
+        delete_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delete_btnActionPerformed(evt);
+            }
+        });
+
+        refresh_btn.setText("refresh");
+        refresh_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refresh_btnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -71,8 +149,12 @@ public class FriendsGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addComponent(friend_label)
-                .addGap(164, 164, 164)
-                .addComponent(add_btn))
+                .addGap(29, 29, 29)
+                .addComponent(refresh_btn)
+                .addGap(18, 18, 18)
+                .addComponent(add_btn)
+                .addGap(13, 13, 13)
+                .addComponent(delete_btn))
             .addGroup(layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -87,7 +169,10 @@ public class FriendsGUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(friend_label))
-                    .addComponent(add_btn))
+                    .addComponent(refresh_btn)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(delete_btn)
+                        .addComponent(add_btn)))
                 .addGap(2, 2, 2)
                 .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -97,11 +182,29 @@ public class FriendsGUI extends javax.swing.JFrame {
 
     private void add_btnActionPerformed(java.awt.event.ActionEvent evt) {                                        
         // TODO add your handling code here:
+    	AddGUI add = new AddGUI(this, db_cont, nickname);
+    	add.open(); 
     }                                       
 
     private void friendListMouseClicked(java.awt.event.MouseEvent evt) {                                        
         // TODO add your handling code here:
+    	String friend = friendList.getSelectedValue();    	
+    	if((friend != null) && !(friend.equals(nickname))) {
+    		SendMsgGUI sendMsg = new SendMsgGUI(lobby, friend, nickname);
+    		sendMsg.open();
+    	}
     }                                       
+
+    private void delete_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           
+        // TODO add your handling code here:
+    	DeleteGUI del = new DeleteGUI(this, db_cont, nickname);
+    	del.open();
+    }                                          
+
+    private void refresh_btnActionPerformed(java.awt.event.ActionEvent evt) {                                            
+        // TODO add your handling code here:
+    	getFriends();
+    }                                           
 
     /**
      * @param args the command line arguments
@@ -140,8 +243,10 @@ public class FriendsGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton add_btn;
+    private javax.swing.JButton delete_btn;
     private javax.swing.JList<String> friendList;
     private javax.swing.JLabel friend_label;
+    private javax.swing.JButton refresh_btn;
     private javax.swing.JScrollPane scrollPane;
     private javax.swing.JLabel user_nick;
     // End of variables declaration                   

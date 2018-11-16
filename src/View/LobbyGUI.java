@@ -609,7 +609,7 @@ public class LobbyGUI extends javax.swing.JFrame {
     private void userListMouseClicked(java.awt.event.MouseEvent evt) {                                      
         // TODO add your handling code here:
     	String receiver = userList.getSelectedValue();
-    	if(!receiver.equals(nickname)) {
+    	if((receiver != null) && (!receiver.equals(nickname))) {
     		SendMsgGUI sendMsg = new SendMsgGUI(lobby, receiver, nickname);
     		sendMsg.open();
     	}
@@ -623,7 +623,7 @@ public class LobbyGUI extends javax.swing.JFrame {
 
     private void friend_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
-    	FriendsGUI friends = new FriendsGUI();
+    	FriendsGUI friends = new FriendsGUI(db_cont, lobby, nickname);
     	friends.open();
     }                                          
 
