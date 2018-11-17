@@ -22,7 +22,6 @@ public class RecvMsgGUI extends javax.swing.JFrame {
     /**
      * Creates new form sendMsgGUI
      */
-	
 	private LobbyClient lobby;
 	private String sender;
 	private String receiver;
@@ -75,15 +74,18 @@ public class RecvMsgGUI extends javax.swing.JFrame {
         close_btn = new javax.swing.JButton();
         bg = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setLocation(new java.awt.Point(620, 200));
 
         user.setFont(new java.awt.Font("∏º¿∫ ∞ÌµÒ", 0, 24)); // NOI18N
         user.setText("User 1");
+        user.setToolTipText("");
 
-        date.setText("currentDate");
+        date.setFont(new java.awt.Font("∏º¿∫ ∞ÌµÒ", 0, 18)); // NOI18N
+        date.setText("2018/11/11");
 
-        time.setText("currentTime");
+        time.setFont(new java.awt.Font("∏º¿∫ ∞ÌµÒ", 0, 18)); // NOI18N
+        time.setText("ø¿»ƒ 2Ω√ 22∫– 22√ ");
 
         contentsArea.setEditable(false);
         contentsArea.setBackground(new java.awt.Color(231, 230, 230));
@@ -109,7 +111,7 @@ public class RecvMsgGUI extends javax.swing.JFrame {
         close_btn.setIcon(icon); // NOI18N
         i = Toolkit.getDefaultToolkit().getImage("rsc/images/recvMsg/close_clicked.png");
         icon = new ImageIcon(i);
-        close_btn.setPressedIcon(icon); // NOI18N; // NOI18N
+        close_btn.setPressedIcon(icon); // NOI18N
         close_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 close_btnActionPerformed(evt);
@@ -126,42 +128,44 @@ public class RecvMsgGUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(155, 155, 155)
-                .addComponent(user)
-                .addGap(256, 256, 256)
-                .addComponent(date))
+                .addComponent(user, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(480, 480, 480)
+                .addGap(85, 85, 85)
+                .addComponent(reply_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(420, 420, 420)
                 .addComponent(time))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(351, 351, 351)
-                .addComponent(close_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(61, 61, 61)
                 .addComponent(contentsPane, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(85, 85, 85)
-                .addComponent(reply_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(450, 450, 450)
+                .addComponent(date))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(351, 351, 351)
+                .addComponent(close_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(bg)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(93, 93, 93)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(user)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(date)))
-                .addGap(22, 22, 22)
-                .addComponent(time)
-                .addGap(360, 360, 360)
-                .addComponent(close_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(user))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(528, 528, 528)
+                .addComponent(reply_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(137, 137, 137)
+                .addComponent(time))
             .addGroup(layout.createSequentialGroup()
                 .addGap(194, 194, 194)
                 .addComponent(contentsPane, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
+                .addGap(99, 99, 99)
+                .addComponent(date))
+            .addGroup(layout.createSequentialGroup()
                 .addGap(528, 528, 528)
-                .addComponent(reply_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(close_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(bg)
         );
 

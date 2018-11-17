@@ -324,4 +324,14 @@ public class DB_Controller {
 		}
 		return cnt;
 	}
+	
+	public void deleteMail(String receiver, String sender, String date, String time) {
+		String sql = "delete from message where receiver='";
+		try {					 
+			sql += receiver + "' and sender='" + sender + "' and date='" + date + "' and time='" + time + "';";
+			stmt.executeUpdate(sql);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
 }

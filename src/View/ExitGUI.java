@@ -49,9 +49,10 @@ public class ExitGUI extends javax.swing.JFrame {
         exit_btn = new javax.swing.JButton();
         bg = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 //        setTitle("프로그램 종료");
         setLocation(new java.awt.Point(800, 450));
+        setPreferredSize(new java.awt.Dimension(327, 154));
         setResizable(false);
 
         Image i;

@@ -55,7 +55,7 @@ public class EnterRoomGUI extends javax.swing.JFrame {
         cancel_btn = new javax.swing.JButton();
         bg = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setLocation(new java.awt.Point(750, 380));
         setResizable(false);
 

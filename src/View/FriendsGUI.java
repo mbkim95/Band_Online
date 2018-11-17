@@ -5,11 +5,14 @@
  */
 package View;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.ListModel;
 
 import Controller.DB_Controller;
@@ -92,17 +95,24 @@ public class FriendsGUI extends javax.swing.JFrame {
         user_nick = new javax.swing.JLabel();
         scrollPane = new javax.swing.JScrollPane();
         friendList = new javax.swing.JList<>();
-        friend_label = new javax.swing.JLabel();
         add_btn = new javax.swing.JButton();
         delete_btn = new javax.swing.JButton();
         refresh_btn = new javax.swing.JButton();
+        bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setLocation(new java.awt.Point(1000, 300));
+        setTitle("Friends List");
+        setLocation(new java.awt.Point(1200, 200));        
+        setPreferredSize(new java.awt.Dimension(379, 630));
         setResizable(false);
 
-        user_nick.setText("Friend List");
+        user_nick.setFont(new java.awt.Font("¸¼Àº °íµñ", 0, 28)); // NOI18N
+        user_nick.setText("User 1");
 
+        scrollPane.setBorder(null);
+
+        friendList.setBackground(new java.awt.Color(231, 230, 230));
+        friendList.setFont(new java.awt.Font("¸¼Àº °íµñ", 0, 18)); // NOI18N
         friendList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -115,66 +125,79 @@ public class FriendsGUI extends javax.swing.JFrame {
             }
         });
         scrollPane.setViewportView(friendList);
-
-        friend_label.setText("jLabel1");
-
-        add_btn.setText("add");
+        
+        Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/friends/add_btn.png");
+        ImageIcon icon = new ImageIcon(i);
+        add_btn.setIcon(icon); // NOI18N
+        add_btn.setContentAreaFilled(false);
         add_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 add_btnActionPerformed(evt);
             }
         });
 
-        delete_btn.setText("delete");
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/friends/delete_btn.png");
+        icon = new ImageIcon(i);
+        delete_btn.setIcon(icon); // NOI18N
+        delete_btn.setContentAreaFilled(false);
         delete_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 delete_btnActionPerformed(evt);
             }
         });
 
-        refresh_btn.setText("refresh");
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/friends/refresh_btn.png");
+        icon = new ImageIcon(i);
+        refresh_btn.setIcon(icon); // NOI18N
+        refresh_btn.setContentAreaFilled(false);
         refresh_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 refresh_btnActionPerformed(evt);
             }
         });
 
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/friends/friends_bg.png");
+        icon = new ImageIcon(i);
+        bg.setIcon(icon); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
+                .addGap(40, 40, 40)
                 .addComponent(user_nick))
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(friend_label)
-                .addGap(29, 29, 29)
-                .addComponent(refresh_btn)
-                .addGap(18, 18, 18)
-                .addComponent(add_btn)
-                .addGap(13, 13, 13)
-                .addComponent(delete_btn))
+                .addGap(295, 295, 295)
+                .addComponent(delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(206, 206, 206)
+                .addComponent(refresh_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(249, 249, 249)
+                .addComponent(add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(bg, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(30, 30, 30)
                 .addComponent(user_nick)
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(friend_label))
-                    .addComponent(refresh_btn)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(delete_btn)
-                        .addComponent(add_btn)))
-                .addGap(2, 2, 2)
-                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
+                .addComponent(delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(102, 102, 102)
+                .addComponent(refresh_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(102, 102, 102)
+                .addComponent(add_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(147, 147, 147)
+                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(bg, javax.swing.GroupLayout.PREFERRED_SIZE, 595, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -210,7 +233,7 @@ public class FriendsGUI extends javax.swing.JFrame {
     private void refresh_btnActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
     	getFriends();
-    } 
+    }                                           
 
     /**
      * @param args the command line arguments
@@ -249,9 +272,9 @@ public class FriendsGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton add_btn;
+    private javax.swing.JLabel bg;
     private javax.swing.JButton delete_btn;
     private javax.swing.JList<String> friendList;
-    private javax.swing.JLabel friend_label;
     private javax.swing.JButton refresh_btn;
     private javax.swing.JScrollPane scrollPane;
     private javax.swing.JLabel user_nick;

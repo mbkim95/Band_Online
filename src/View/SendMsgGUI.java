@@ -61,7 +61,7 @@ public class SendMsgGUI extends javax.swing.JFrame {
         cancel_btn = new javax.swing.JButton();
         bg = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setLocation(new java.awt.Point(620, 200));
         setResizable(false);
 

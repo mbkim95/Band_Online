@@ -35,9 +35,9 @@ public class ErrorGUI extends javax.swing.JFrame {
         close_btn = new javax.swing.JButton();
         bg = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Error Message");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setLocation(new java.awt.Point(770, 450));
+        setPreferredSize(new java.awt.Dimension(327, 194));
         setResizable(false);
 
         Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/enterRoom/close_btn.png");
@@ -92,7 +92,7 @@ public class ErrorGUI extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

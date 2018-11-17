@@ -5,6 +5,11 @@
  */
 package View;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+
+import javax.swing.ImageIcon;
+
 import Controller.DB_Controller;
 
 /**
@@ -16,7 +21,6 @@ public class DeleteGUI extends javax.swing.JFrame {
     /**
      * Creates new form AddGUI
      */
-	
 	private FriendsGUI friends; 
 	private DB_Controller db_cont;
 	private String nickname;
@@ -41,27 +45,46 @@ public class DeleteGUI extends javax.swing.JFrame {
         delete_btn = new javax.swing.JButton();
         cancel_btn = new javax.swing.JButton();
         errorMsg = new javax.swing.JLabel();
+        bg = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setLocation(new java.awt.Point(800, 300));
         setResizable(false);
 
-        delete_btn.setText("delete");
+        nick_in.setBackground(new java.awt.Color(231, 230, 230));
+        nick_in.setFont(new java.awt.Font("¸¼Àº °íµñ", 0, 18)); // NOI18N
+        nick_in.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/delete/delete_btn.png");
+        ImageIcon icon = new ImageIcon(i);
+        delete_btn.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/delete/delete_clicked.png");
+        icon = new ImageIcon(i);
+        delete_btn.setPressedIcon(icon); // NOI18N
         delete_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 delete_btnActionPerformed(evt);
             }
         });
 
-        cancel_btn.setText("cancel");
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/delete/close_btn.png");
+        icon = new ImageIcon(i);
+        cancel_btn.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/delete/close_clicked.png");
+        icon = new ImageIcon(i);
+        cancel_btn.setPressedIcon(icon); // NOI18N
         cancel_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancel_btnActionPerformed(evt);
             }
         });
 
+        errorMsg.setFont(new java.awt.Font("¸¼Àº °íµñ", 0, 16)); // NOI18N
         errorMsg.setForeground(new java.awt.Color(255, 0, 0));
-        errorMsg.setText(" ");
+
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/delete/delete_bg.png");
+        icon = new ImageIcon(i);
+        bg.setIcon(icon); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -69,31 +92,32 @@ public class DeleteGUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(53, 53, 53)
-                .addComponent(delete_btn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cancel_btn)
-                .addGap(58, 58, 58))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(nick_in, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(126, 126, 126))
+                .addComponent(nick_in, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(70, 70, 70)
-                .addComponent(errorMsg)
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addGap(190, 190, 190)
+                .addComponent(cancel_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addComponent(delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(errorMsg))
+            .addComponent(bg)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(113, 113, 113)
-                .addComponent(nick_in, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(errorMsg)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(delete_btn)
-                    .addComponent(cancel_btn))
-                .addGap(50, 50, 50))
+                .addGap(79, 79, 79)
+                .addComponent(nick_in, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
+                .addComponent(cancel_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(168, 168, 168)
+                .addComponent(delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(134, 134, 134)
+                .addComponent(errorMsg))
+            .addComponent(bg)
         );
 
         pack();
@@ -113,7 +137,7 @@ public class DeleteGUI extends javax.swing.JFrame {
     private void cancel_btnActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
     	dispose();
-    }                                          
+    }                                             
 
     /**
      * @param args the command line arguments
@@ -152,6 +176,7 @@ public class DeleteGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify                     
+    private javax.swing.JLabel bg;
     private javax.swing.JButton cancel_btn;
     private javax.swing.JButton delete_btn;
     private javax.swing.JLabel errorMsg;

@@ -46,7 +46,7 @@ public class RoomSettingGUI extends javax.swing.JFrame {
         cancel_btn = new javax.swing.JButton();
         RoomSetting_bg = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("방 만들기");
         setLocation(new java.awt.Point(680, 320));
         setResizable(false);

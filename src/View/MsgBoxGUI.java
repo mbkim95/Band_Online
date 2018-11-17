@@ -5,10 +5,14 @@
  */
 package View;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import Controller.DB_Controller;
 import Controller.LobbyClient;
@@ -70,27 +74,35 @@ public class MsgBoxGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         user_id = new javax.swing.JLabel();
-        refresh_btn = new javax.swing.JButton();
+        delete_btn = new javax.swing.JButton();
         scrollPane = new javax.swing.JScrollPane();
         msgBox = new javax.swing.JTable();
+        bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Message Storage");
         setLocation(new java.awt.Point(1000, 200));
         setResizable(false);
 
-        user_id.setText("user 1");
+        user_id.setFont(new java.awt.Font("¸¼Àº °íµñ", 0, 28)); // NOI18N
+        user_id.setText("User 1");
 
-        refresh_btn.setText("refresh");
-        refresh_btn.addActionListener(new java.awt.event.ActionListener() {
+        Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/msgBox/delete_btn.png");
+        ImageIcon icon = new ImageIcon(i);
+        delete_btn.setIcon(icon); // NOI18N
+        delete_btn.setContentAreaFilled(false);
+        delete_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refresh_btnActionPerformed(evt);
+                delete_btnActionPerformed(evt);
             }
         });
 
-        msgBox.setBackground(new java.awt.Color(231, 230, 230));
+        msgBox.setAutoCreateRowSorter(true);
+        msgBox.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
+        msgBox.setFont(new java.awt.Font("¸¼Àº °íµñ", 0, 16)); // NOI18N
         msgBox.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null}
+                {"±è¹Î¹ü", "2018/11/18", "¿ÀÀü 8½Ã 23ºÐ 21ÃÊ", "Å×½ºÆ® ¸Þ½ÃÁö"}
             },
             new String [] {
                 "Sender", "Date", "Time", "Contents"
@@ -112,55 +124,58 @@ public class MsgBoxGUI extends javax.swing.JFrame {
             }
         });
         msgBox.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        msgBox.setShowHorizontalLines(false);
+        msgBox.setShowVerticalLines(false);
+        msgBox.getTableHeader().setReorderingAllowed(false);
         msgBox.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 msgBoxMouseClicked(evt);
             }
         });
         scrollPane.setViewportView(msgBox);
-        msgBox.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        if (msgBox.getColumnModel().getColumnCount() > 0) {
-            msgBox.getColumnModel().getColumn(0).setResizable(false);
-            msgBox.getColumnModel().getColumn(1).setResizable(false);
-            msgBox.getColumnModel().getColumn(2).setResizable(false);
-            msgBox.getColumnModel().getColumn(3).setResizable(false);
-        }
+
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/msgBox/msgBox_bg.png");
+        icon = new ImageIcon(i);
+        bg.setIcon(icon); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(364, 364, 364)
-                .addComponent(refresh_btn)
-                .addGap(84, 84, 84))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
-                        .addComponent(user_id))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addGap(40, 40, 40)
+                .addComponent(user_id))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(494, 494, 494)
+                .addComponent(delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(bg)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
+                .addGap(28, 28, 28)
                 .addComponent(user_id)
-                .addGap(10, 10, 10)
-                .addComponent(refresh_btn)
-                .addGap(18, 18, 18)
-                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(39, 39, 39)
+                .addComponent(delete_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3)
+                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(bg)
         );
 
         pack();
     }// </editor-fold>                        
 
-    private void refresh_btnActionPerformed(java.awt.event.ActionEvent evt) {                                            
+    private void delete_btnActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
+    	int row = msgBox.getSelectedRow();
+    	String[] data = new String[3];
+    	for(int i=0; i<3; i++) {
+    		data[i] = (String) msgBox.getValueAt(row, i);
+    	}
+    	db_cont.deleteMail(nickname, data[0], data[1], data[2]);
     	getMessage();
     }                                           
 
@@ -180,7 +195,7 @@ public class MsgBoxGUI extends javax.swing.JFrame {
     		gui.setNotificationBtn();
     		band.setNotificationBtn();
     	}
-    }                                   
+    }                                  
 
     /**
      * @param args the command line arguments
@@ -218,8 +233,9 @@ public class MsgBoxGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify                     
+    private javax.swing.JLabel bg;
     private javax.swing.JTable msgBox;
-    private javax.swing.JButton refresh_btn;
+    private javax.swing.JButton delete_btn;
     private javax.swing.JScrollPane scrollPane;
     private javax.swing.JLabel user_id;
     // End of variables declaration                   

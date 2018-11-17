@@ -47,6 +47,7 @@ public class SelectGUI extends javax.swing.JFrame {
         bg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(798, 576));
         setLocation(new java.awt.Point(550, 250));
         setResizable(false);
 

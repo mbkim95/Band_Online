@@ -5,6 +5,11 @@
  */
 package View;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+
+import javax.swing.ImageIcon;
+
 import Controller.DB_Controller;
 
 /**
@@ -28,6 +33,7 @@ public class UserGUI extends javax.swing.JFrame {
     	this.lobby = lobby;    	
     	this.nickname = nickname;
     	user_id.setText(db_cont.getID(nickname));
+    	System.out.println(user_id.getText());
     	user_nick.setText(nickname);
     }
 
@@ -40,56 +46,61 @@ public class UserGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
-        id_label = new javax.swing.JLabel();
         user_id = new javax.swing.JLabel();
-        nick_label = new javax.swing.JLabel();
         user_nick = new javax.swing.JLabel();
+        errorMsg = new javax.swing.JLabel();
+        errorMsg2 = new javax.swing.JLabel();
+        errorMsg3 = new javax.swing.JLabel();
         pw_in1 = new javax.swing.JPasswordField();
-        pw_label = new javax.swing.JLabel();
         pw_in2 = new javax.swing.JPasswordField();
-        pw_chk_label = new javax.swing.JLabel();
-        pw_label2 = new javax.swing.JLabel();
-        pw_chk_label2 = new javax.swing.JLabel();
         pw_in3 = new javax.swing.JPasswordField();
         pw_in4 = new javax.swing.JPasswordField();
         save_btn = new javax.swing.JButton();
         close_btn = new javax.swing.JButton();
-        errorMsg = new javax.swing.JLabel();
-        errorMsg2 = new javax.swing.JLabel();
-        errorMsg4 = new javax.swing.JLabel();
+        bg = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setLocation(new java.awt.Point(700, 300));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Informtion");
+        setLocation(new java.awt.Point(800, 200));
         setResizable(false);
 
-        id_label.setText("user ID");
+        user_id.setFont(new java.awt.Font("맑은 고딕", 0, 24)); // NOI18N
+        user_id.setText("Admin");
 
-        user_id.setText("user id");
+        user_nick.setFont(new java.awt.Font("맑은 고딕", 0, 24)); // NOI18N
+        user_nick.setText("TESTER");
 
-        nick_label.setText("nickname");
+        errorMsg.setFont(new java.awt.Font("맑은 고딕", 0, 19)); // NOI18N
+        errorMsg.setForeground(new java.awt.Color(255, 0, 0));
+        errorMsg.setText(" ");
 
-        user_nick.setText("jLabel1");
+        errorMsg2.setFont(new java.awt.Font("맑은 고딕", 0, 19)); // NOI18N
+        errorMsg2.setForeground(new java.awt.Color(255, 0, 0));
+        errorMsg2.setText(" ");
 
+        errorMsg3.setFont(new java.awt.Font("맑은 고딕", 0, 19)); // NOI18N
+        errorMsg3.setForeground(new java.awt.Color(255, 0, 0));
+        errorMsg3.setText(" ");
+
+        pw_in1.setBackground(new java.awt.Color(231, 230, 230));
+        pw_in1.setFont(new java.awt.Font("맑은 고딕", 0, 18)); // NOI18N
         pw_in1.setText("password");
 
-        pw_label.setText("password");
-
+        pw_in2.setBackground(new java.awt.Color(231, 230, 230));
+        pw_in2.setFont(new java.awt.Font("맑은 고딕", 0, 18)); // NOI18N
         pw_in2.setText("password");
-        pw_in2.setToolTipText("");
         pw_in2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 pw_in2KeyReleased(evt);
             }
         });
 
-        pw_chk_label.setText("passwd_chk");
-
-        pw_label2.setText("change passwd");
-
-        pw_chk_label2.setText("passwd _chk");
-
+        pw_in3.setBackground(new java.awt.Color(231, 230, 230));
+        pw_in3.setFont(new java.awt.Font("맑은 고딕", 0, 18)); // NOI18N
         pw_in3.setText("password");
 
+        pw_in4.setBackground(new java.awt.Color(231, 230, 230));
+        pw_in4.setFont(new java.awt.Font("맑은 고딕", 0, 18)); // NOI18N
         pw_in4.setText("password");
         pw_in4.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -97,117 +108,99 @@ public class UserGUI extends javax.swing.JFrame {
             }
         });
 
-        save_btn.setText("save");
+        Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/user/save_btn.png");
+        ImageIcon icon = new ImageIcon(i);
+        save_btn.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/user/save_clicked.png");
+        icon = new ImageIcon(i);
+        save_btn.setPressedIcon(icon); // NOI18N
         save_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 save_btnActionPerformed(evt);
             }
         });
 
-        close_btn.setText("close");
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/user/cancel_btn.png");
+        icon = new ImageIcon(i);
+        close_btn.setIcon(icon); // NOI18N
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/user/cancel_clicked.png");
+        icon = new ImageIcon(i);
+        close_btn.setPressedIcon(icon); // NOI18N
         close_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 close_btnActionPerformed(evt);
             }
         });
 
-        errorMsg.setForeground(new java.awt.Color(255, 0, 0));
-        errorMsg.setText(" ");
-
-        errorMsg2.setForeground(new java.awt.Color(255, 0, 0));
-        errorMsg2.setText(" ");
-
-        errorMsg4.setForeground(new java.awt.Color(255, 0, 0));
-        errorMsg4.setText(" ");
+        i = Toolkit.getDefaultToolkit().getImage("rsc/images/user/user_bg.png");
+        icon = new ImageIcon(i);
+        bg.setIcon(icon); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(70, 70, 70)
-                .addComponent(id_label)
-                .addGap(54, 54, 54)
+                .addGap(235, 235, 235)
                 .addComponent(user_id))
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(nick_label)
-                .addGap(49, 49, 49)
+                .addGap(235, 235, 235)
                 .addComponent(user_nick))
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(pw_label)
-                .addGap(47, 47, 47)
-                .addComponent(pw_in1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(178, 178, 178)
+                .addComponent(pw_in1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(pw_chk_label)
-                .addGap(49, 49, 49)
-                .addComponent(pw_in2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(errorMsg))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(pw_label2)
-                .addGap(27, 27, 27)
-                .addComponent(pw_in3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(pw_chk_label2)
-                .addGap(34, 34, 34)
-                .addComponent(pw_in4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(errorMsg2))
+                .addGap(178, 178, 178)
+                .addComponent(pw_in2, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(80, 80, 80)
-                .addComponent(errorMsg4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(errorMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
+                .addGap(178, 178, 178)
+                .addComponent(pw_in4, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(80, 80, 80)
+                .addComponent(errorMsg2, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(80, 80, 80)
+                .addComponent(errorMsg3, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(61, 61, 61)
+                .addComponent(save_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
-                .addComponent(save_btn)
-                .addGap(119, 119, 119)
-                .addComponent(close_btn))
+                .addComponent(close_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(178, 178, 178)
+                .addComponent(pw_in3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(bg)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(id_label)
-                    .addComponent(user_id))
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(nick_label)
-                    .addComponent(user_nick))
-                .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pw_label)
-                    .addComponent(pw_in1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pw_chk_label)
-                    .addComponent(pw_in2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(109, 109, 109)
+                .addComponent(user_id)
+                .addGap(29, 29, 29)
+                .addComponent(user_nick)
+                .addGap(36, 36, 36)
+                .addComponent(pw_in1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addComponent(pw_in2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
                 .addComponent(errorMsg)
-                .addGap(2, 2, 2)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(pw_label2))
-                    .addComponent(pw_in3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pw_chk_label2)
-                    .addComponent(pw_in4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
+                .addGap(66, 66, 66)
+                .addComponent(pw_in4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
                 .addComponent(errorMsg2)
-                .addGap(62, 62, 62)
-                .addComponent(errorMsg4)
+                .addGap(18, 18, 18)
+                .addComponent(errorMsg3)
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(save_btn)
-                    .addComponent(close_btn)))
+                    .addComponent(save_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(close_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(380, 380, 380)
+                .addComponent(pw_in3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(bg)
         );
 
         pack();
@@ -243,7 +236,7 @@ public class UserGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     	if(chk_pass && chk_pass2) {
     		if(new String(pw_in1.getPassword()).equals(new String(pw_in3.getPassword()))) {
-    			errorMsg4.setText("기존의 비밀번호와 같습니다");
+    			errorMsg3.setText("기존의 비밀번호와 같습니다");
     		}else {
     			String id = db_cont.getID(nickname);
     			if(db_cont.Password_Chk(id, new String(pw_in1.getPassword()))){
@@ -252,27 +245,26 @@ public class UserGUI extends javax.swing.JFrame {
     					dispose();
     				}
     			}else {
-    				errorMsg4.setText("기존 비밀번호를  확인해주세요");
+    				errorMsg3.setText("기존 비밀번호를  확인해주세요");
     			}
     		}
     	}else {
-    		errorMsg4.setText("다시한번 확인해주세요");
+    		errorMsg3.setText("다시한번 확인해주세요");
     	}
     }                                        
 
     private void close_btnActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
     	dispose();
-    }                                         
+    }                                
 
     /**
      * @param args the command line arguments
      */
     public void open() {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (opbg      /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         /* For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -302,20 +294,15 @@ public class UserGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify                     
+    private javax.swing.JLabel bg;
     private javax.swing.JButton close_btn;
     private javax.swing.JLabel errorMsg;
     private javax.swing.JLabel errorMsg2;
-    private javax.swing.JLabel errorMsg4;
-    private javax.swing.JLabel id_label;
-    private javax.swing.JLabel nick_label;
-    private javax.swing.JLabel pw_chk_label;
-    private javax.swing.JLabel pw_chk_label2;
+    private javax.swing.JLabel errorMsg3;
     private javax.swing.JPasswordField pw_in1;
     private javax.swing.JPasswordField pw_in2;
     private javax.swing.JPasswordField pw_in3;
     private javax.swing.JPasswordField pw_in4;
-    private javax.swing.JLabel pw_label;
-    private javax.swing.JLabel pw_label2;
     private javax.swing.JButton save_btn;
     private javax.swing.JLabel user_id;
     private javax.swing.JLabel user_nick;
