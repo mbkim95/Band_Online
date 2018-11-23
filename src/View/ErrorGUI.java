@@ -28,8 +28,10 @@ public class ErrorGUI extends javax.swing.JFrame {
     	Image i;
     	if(err == 1) {
     		i = Toolkit.getDefaultToolkit().getImage("rsc/images/enterRoom/errorMsg_bg.png");
-    	}else {
+    	}else if(err == 2){
     		i = Toolkit.getDefaultToolkit().getImage("rsc/images/enterRoom/errorMsg_bg2.png");
+    	}else {
+    		i = Toolkit.getDefaultToolkit().getImage("rsc/images/enterRoom/errorMsg_bg3.png");
     	}
     	ImageIcon icon = new ImageIcon(i);
     	bg.setIcon(icon);

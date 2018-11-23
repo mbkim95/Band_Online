@@ -55,6 +55,7 @@ public class SendMsgGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         user = new javax.swing.JLabel();
+        count = new javax.swing.JLabel();
         contentsPane = new javax.swing.JScrollPane();
         contentsArea = new javax.swing.JTextArea();
         send_btn = new javax.swing.JButton();
@@ -67,11 +68,24 @@ public class SendMsgGUI extends javax.swing.JFrame {
 
         user.setFont(new java.awt.Font("¸¼Àº °íµñ", 0, 24)); // NOI18N
         user.setText("User 1");
+        
+        count.setFont(new java.awt.Font("¸¼Àº °íµñ", 0, 20)); // NOI18N
+        count.setForeground(new java.awt.Color(153, 153, 153));
+        count.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        count.setText("0");
 
         contentsArea.setBackground(new java.awt.Color(231, 230, 230));
         contentsArea.setColumns(20);
         contentsArea.setFont(new java.awt.Font("¸¼Àº °íµñ", 0, 18)); // NOI18N
         contentsArea.setRows(5);
+        contentsArea.addKeyListener(new java.awt.event.KeyAdapter() {
+        	public void keyPressed(java.awt.event.KeyEvent evt) {
+                contentsAreaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                contentsAreaKeyReleased(evt);
+            }
+        });
         contentsPane.setViewportView(contentsArea);
         
         Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/sendMsg/send_btn.png");
@@ -110,14 +124,17 @@ public class SendMsgGUI extends javax.swing.JFrame {
                 .addGap(155, 155, 155)
                 .addComponent(user))
             .addGroup(layout.createSequentialGroup()
-                .addGap(85, 85, 85)
-                .addComponent(send_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(480, 480, 480)
+                .addComponent(count))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(61, 61, 61)
+                .addComponent(contentsPane, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(351, 351, 351)
                 .addComponent(cancel_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(61, 61, 61)
-                .addComponent(contentsPane, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(85, 85, 85)
+                .addComponent(send_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(bg)
         );
         layout.setVerticalGroup(
@@ -125,14 +142,15 @@ public class SendMsgGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(93, 93, 93)
                 .addComponent(user)
-                .addGap(402, 402, 402)
-                .addComponent(send_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(528, 528, 528)
+                .addGap(29, 29, 29)
+                .addComponent(count)
+                .addGap(12, 12, 12)
+                .addComponent(contentsPane, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addComponent(cancel_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(194, 194, 194)
-                .addComponent(contentsPane, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(528, 528, 528)
+                .addComponent(send_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(bg)
         );
 
@@ -143,10 +161,10 @@ public class SendMsgGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     	String date = CurrentTime.currentDate();
     	String time = CurrentTime.currentTime();
+    	int len = contentsArea.getText().length();
     	if(online) {
     		try {
     			int offset = 0;
-    			int len = contentsArea.getText().length();
     			int cnt = (len / 15) + 1;    		    		
     			lobby.sendMessage("5 " + receiver + "###" + sender + "***" + cnt + "&&&" + date + "$$$" + time);
     			while(offset < len) {
@@ -164,8 +182,13 @@ public class SendMsgGUI extends javax.swing.JFrame {
     		}
     		dispose();
     	}else {
-    		db_cont.saveMessage(receiver, sender, date, time, contentsArea.getText());
-    		dispose();
+    		if(len < 200) {
+    			db_cont.saveMessage(receiver, sender, date, time, contentsArea.getText());
+    			dispose();
+    		}else {
+    			ErrorGUI error = new ErrorGUI(3);
+    			error.open();
+    		}
     	}
     }                                        
 
@@ -173,6 +196,16 @@ public class SendMsgGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     	dispose();
     }   
+    
+    private void contentsAreaKeyPressed(java.awt.event.KeyEvent evt) {                                        
+        // TODO add your handling code here:
+    	count.setText(Integer.toString(contentsArea.getText().length()));
+    }   
+    
+    private void contentsAreaKeyReleased(java.awt.event.KeyEvent evt) {                                         
+        // TODO add your handling code here:
+    	count.setText(Integer.toString(contentsArea.getText().length()));
+    }  
 
     /**
      * @param args the command line arguments
@@ -216,5 +249,6 @@ public class SendMsgGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane contentsPane;
     private javax.swing.JButton send_btn;
     private javax.swing.JLabel user;
+    private javax.swing.JLabel count;
     // End of variables declaration                   
 }
