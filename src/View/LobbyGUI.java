@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.ListModel;
+import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -77,7 +78,11 @@ public class LobbyGUI extends javax.swing.JFrame {
     }
     
     public void appendLetter(String msg) {
-    	recvMsg.appendLetter(msg);
+    	SwingUtilities.invokeLater(new Runnable() {
+    		public void run() {
+    			recvMsg.appendLetter(msg);    			
+    		}
+    	});
     }
     
     public void showMessage() {
@@ -85,53 +90,68 @@ public class LobbyGUI extends javax.swing.JFrame {
     }
     
     public void appendMsg(String msg) {    	
-    	StyledDocument document = (StyledDocument) textPane.getDocument();    		
-    	try {
-			document.insertString(document.getLength(), msg, null);
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-		}    			
-    
-    	try {
-    		chatScroll.getVerticalScrollBar().setValue(chatScroll.getVerticalScrollBar().getMaximum());		// 채팅창 자동 스크롤
-    	} catch(ArrayIndexOutOfBoundsException | NullPointerException e) {
-    		
-    	}
+    	SwingUtilities.invokeLater(new Runnable() {
+    		public void run() {
+    			StyledDocument document = (StyledDocument) textPane.getDocument();    		
+    			try {
+    				document.insertString(document.getLength(), msg, null);
+    			} catch (BadLocationException e) {
+    				e.printStackTrace();
+    			}    			
+    			
+    			try {
+    				chatScroll.getVerticalScrollBar().setValue(chatScroll.getVerticalScrollBar().getMaximum());		// 채팅창 자동 스크롤
+    			} catch(ArrayIndexOutOfBoundsException | NullPointerException e) {
+    				
+    			}    			
+    		}
+    	});
     }
     
     public void appendSystemMsg(String msg) {
-    	try {
-    		StyledDocument document = (StyledDocument) textPane.getDocument();
-    		SimpleAttributeSet styleSet = new SimpleAttributeSet();
-    		StyleConstants.setForeground(styleSet, new java.awt.Color(0, 204, 51));
-    		StyleConstants.setItalic(styleSet, true);
-        	document.insertString(document.getLength(), msg, styleSet);    		
-    	} catch (BadLocationException e) {
+    	SwingUtilities.invokeLater(new Runnable() {
+    		public void run() {
+    			try {
+    				StyledDocument document = (StyledDocument) textPane.getDocument();
+    				SimpleAttributeSet styleSet = new SimpleAttributeSet();
+    				StyleConstants.setForeground(styleSet, new java.awt.Color(0, 204, 51));
+    				StyleConstants.setItalic(styleSet, true);
+    				document.insertString(document.getLength(), msg, styleSet);    		
+    			} catch (BadLocationException e) {
 //    		e.printStackTrace();
-    		System.out.println("LobbyGUI appendSystemMsg Error");
-    	}
-    	try {
-    		chatScroll.getVerticalScrollBar().setValue(chatScroll.getVerticalScrollBar().getMaximum( ));		// 채팅창 자동 스크롤
-    	} catch(ArrayIndexOutOfBoundsException | NullPointerException e) {
-    		
-    	}
+    				System.out.println("LobbyGUI appendSystemMsg Error");
+    			}
+    			try {
+    				chatScroll.getVerticalScrollBar().setValue(chatScroll.getVerticalScrollBar().getMaximum( ));		// 채팅창 자동 스크롤
+    			} catch(ArrayIndexOutOfBoundsException | NullPointerException e) {
+    				
+    			}
+    		}
+    	});
     }
     
     public void clearUserList() {
-    	String str[] = {""};
-    	userList.setListData(str);
+    	SwingUtilities.invokeLater(new Runnable() {
+    		public void run() {
+    			String str[] = {""};
+    			userList.setListData(str);    			
+    		}
+    	});
 //    	userList.setText("");    	
     }
     
-    public void appendUserList(String nickname) {    	
-    	ListModel<String> list = userList.getModel();
-    	DefaultListModel<String> dList = new DefaultListModel<String>();
-    	
-    	for(int i=0; i<list.getSize(); i++) {
-    		dList.addElement(list.getElementAt(i));
-    	}
-    	dList.addElement(nickname);    	
-    	userList.setModel(dList);
+    public void appendUserList(String nickname) {    	    	
+    	SwingUtilities.invokeLater(new Runnable() {
+    		public void run() {
+    			ListModel<String> list = userList.getModel();
+    			DefaultListModel<String> dList = new DefaultListModel<String>();
+    			for(int i=0; i<list.getSize(); i++) {
+    				dList.addElement(list.getElementAt(i));
+    			}
+    			dList.addElement(nickname);    	
+    			userList.setModel(dList);
+    		}
+    	});
     }    
     
     public void clearGameRoom() {
@@ -201,8 +221,8 @@ public class LobbyGUI extends javax.swing.JFrame {
         next_btn.setEnabled(false);
     }
     
-    public void passwordError() {
-    	ErrorGUI error = new ErrorGUI();
+    public void showError(int err) {
+    	ErrorGUI error = new ErrorGUI(err);
     	error.open();
     }
 

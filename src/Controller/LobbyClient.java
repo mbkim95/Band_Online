@@ -134,7 +134,10 @@ public class LobbyClient {
 				}
 				break;
 			case 7:													// password 틀린 경우
-				lobby.passwordError();
+				lobby.showError(1);
+				break;
+			case 8:
+				lobby.showError(2);
 				break;
 			}					
 		}

@@ -41,6 +41,10 @@ public class RoomServer extends Thread{
 		}			
 	}
 	
+	public int getUserCount() {
+		return clientsMap.size();
+	}
+	
 	public void closeServer() {
 		try {
 			if(socket != null) {

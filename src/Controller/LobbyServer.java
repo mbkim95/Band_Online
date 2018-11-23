@@ -210,10 +210,14 @@ public class LobbyServer extends Thread{
 					nickname = msg.substring(msg.indexOf("###") + 3, msg.length());
 					port = Integer.parseInt(portMap.get(title));
 					System.out.println(title + " : " + port);
-					if(roomMap.get(title).hasPassword()) {					// 비밀번호있는지 확인
-						clientsMap.get(nickname).writeUTF("4 " + title + "###" + port);
+					if(roomMap.get(title).getUserCount() < 5) {
+						if(roomMap.get(title).hasPassword()) {					// 비밀번호있는지 확인
+							clientsMap.get(nickname).writeUTF("4 " + title + "###" + port);
+						}else {
+							clientsMap.get(nickname).writeUTF("3 " + title + "###" + port);
+						}
 					}else {
-						clientsMap.get(nickname).writeUTF("3 " + title + "###" + port);
+						clientsMap.get(nickname).writeUTF("8");
 					}
 				} catch (IOException e) {
 //					e.printStackTrace();
@@ -225,11 +229,15 @@ public class LobbyServer extends Thread{
 					title = msg.substring(2, msg.indexOf("###"));
 					nickname = msg.substring(msg.indexOf("###") +3, msg.indexOf("***"));
 					password = msg.substring(msg.indexOf("***")+3, msg.indexOf("&&&"));
-					port = Integer.parseInt(msg.substring(msg.indexOf("&&&")+3, msg.length()));					
-					if(passwdMap.get(title).equals(password)) {
-						clientsMap.get(nickname).writeUTF("3 " + title + "###" + port);
+					port = Integer.parseInt(msg.substring(msg.indexOf("&&&")+3, msg.length()));		
+					if(roomMap.get(title).getUserCount() < 5) {
+						if(passwdMap.get(title).equals(password)) {
+							clientsMap.get(nickname).writeUTF("3 " + title + "###" + port);
+						}else {
+							clientsMap.get(nickname).writeUTF("7");
+						}						
 					}else {
-						clientsMap.get(nickname).writeUTF("7");
+						clientsMap.get(nickname).writeUTF("8");
 					}
 				} catch (IOException e) {
 //					e.printStackTrace();
