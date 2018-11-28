@@ -13,7 +13,6 @@ import java.awt.event.KeyListener;
 import javax.swing.ImageIcon;
 
 import Controller.RoomClient;
-import Controller.SoundController;
 
 /**
  *
@@ -29,7 +28,7 @@ public class PlayGUI extends javax.swing.JFrame {
     /**
      * Creates new form PlayGUI
      */
-    public PlayGUI() {
+	public PlayGUI() {
         initComponents();
     }
     
@@ -53,29 +52,24 @@ public class PlayGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonInfo = new javax.swing.JLabel();
-        
+
         setLocation(new java.awt.Point(400, 300));
         setResizable(false);
+        setPreferredSize(new java.awt.Dimension(1020, 460));
         
-        Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/key.png");
-		ImageIcon icon = new ImageIcon(i);  //이미지 넣기
+        Image i = Toolkit.getDefaultToolkit().getImage("rsc/images/play/key.png");
+        ImageIcon icon = new ImageIcon(i);
         buttonInfo.setIcon(icon); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(55, Short.MAX_VALUE)
-                .addComponent(buttonInfo)
-                .addGap(42, 42, 42))
+            .addComponent(buttonInfo)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addComponent(buttonInfo)
-                .addContainerGap(67, Short.MAX_VALUE))
+            .addComponent(buttonInfo)
         );
 
         pack();
@@ -186,8 +180,7 @@ public class PlayGUI extends javax.swing.JFrame {
 //				System.out.println(e.getKeyChar());
 			}
 		});
-        //</editor-fold>
-
+        
         /* Create and display the form */
         /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
